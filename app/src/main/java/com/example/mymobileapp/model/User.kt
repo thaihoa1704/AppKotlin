@@ -2,6 +2,7 @@ package com.example.mymobileapp.model
 
 import android.text.TextUtils
 import android.util.Patterns
+import java.io.Serializable
 
 data class User(
     var id: String = "",
@@ -10,7 +11,7 @@ data class User(
     var phone: String = "",
     var password: String = "",
     var type: String = ""
-) {
+) : Serializable {
     constructor(): this("", "", "", "", "", "")
 
     fun validateEmail(): Boolean {

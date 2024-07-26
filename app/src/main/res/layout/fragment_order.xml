@@ -278,9 +278,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_order"/>
 
-        <Button
+        <com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/btn_order"
-            android:layout_width="150dp"
+            android:layout_width="170dp"
             android:layout_height="match_parent"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:background="@drawable/button_default"

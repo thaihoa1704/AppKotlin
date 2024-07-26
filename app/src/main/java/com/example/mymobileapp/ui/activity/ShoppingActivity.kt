@@ -50,13 +50,16 @@ class ShoppingActivity : AppCompatActivity() {
         listFragment.add(R.id.searchFragment)
         listFragment.add(R.id.productListFragment)
         listFragment.add(R.id.addressFragment)
+        listFragment.add(R.id.profileFragment)
 //        listFragment.add(R.id.addAddressFragment)
-//        listFragment.add(R.id.changeNameFragment)
-//        listFragment.add(R.id.passwordFragment)
+        listFragment.add(R.id.changeNameFragment)
+        listFragment.add(R.id.passwordFragment)
         listFragment.add(R.id.orderFragment)
-//        listFragment.add(R.id.detailOrderFragment)
-//        listFragment.add(R.id.rateOrderFragment)
-//        listFragment.add(R.id.handleOrderFragment)
+        listFragment.add(R.id.orderProcessFragment)
+        listFragment.add(R.id.purchaseHistoryFragment)
+        listFragment.add(R.id.detailOrderFragment)
+        listFragment.add(R.id.rateOrderFragment)
+        listFragment.add(R.id.handleOrderFragment)
         return listFragment
     }
 }

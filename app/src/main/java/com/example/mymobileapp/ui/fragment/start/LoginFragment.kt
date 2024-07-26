@@ -31,7 +31,6 @@ import kotlinx.coroutines.flow.collectLatest
 class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var controller: NavController
-    //private lateinit var viewModel: UserViewModel
     private val viewModel by viewModels<LoginViewModel>()
 
 
@@ -39,7 +38,6 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //viewModel = ViewModelProvider(this)[UserViewModel::class.java]
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }

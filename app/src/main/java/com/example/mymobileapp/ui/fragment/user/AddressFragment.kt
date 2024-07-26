@@ -10,11 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mymobileapp.R
 import com.example.mymobileapp.adapter.AddressAdapter
 import com.example.mymobileapp.databinding.FragmentAddressBinding
 import com.example.mymobileapp.listener.ClickItemAddressListener
 import com.example.mymobileapp.model.Address
-import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.AddressViewModel
 import com.example.mymobileapp.viewmodel.UserViewModel
@@ -66,9 +66,11 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
                 }
             }
         }
-
         setupAddressRecyclerView()
 
+        binding.constraintLayout.setOnClickListener {
+            controller.navigate(R.id.action_addressFragment_to_addAddressFragment)
+        }
         binding.imgBack.setOnClickListener{
             controller.popBackStack()
         }

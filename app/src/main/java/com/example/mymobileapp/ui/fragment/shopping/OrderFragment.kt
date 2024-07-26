@@ -1,6 +1,7 @@
 package com.example.mymobileapp.ui.fragment.shopping
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,14 @@ import com.example.mymobileapp.R
 import com.example.mymobileapp.adapter.OrderProductAdapter
 import com.example.mymobileapp.databinding.FragmentOrderBinding
 import com.example.mymobileapp.helper.Convert
+import com.example.mymobileapp.listener.OnClickChoice
 import com.example.mymobileapp.model.Address
+import com.example.mymobileapp.model.CartProduct
+import com.example.mymobileapp.ui.dialog.ChoiceDialog
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.AddressViewModel
 import com.example.mymobileapp.viewmodel.CartViewModel
+import com.example.mymobileapp.viewmodel.OrderViewModel
 import com.example.mymobileapp.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -31,7 +36,9 @@ class OrderFragment : Fragment() {
     private val userViewModel by viewModels<UserViewModel>()
     private val cartViewModel by viewModels<CartViewModel>()
     private val addressViewModel by viewModels<AddressViewModel>()
+    private val orderViewModel by viewModels<OrderViewModel>()
     private var list: List<Address> = ArrayList()
+    private var listOrder: List<CartProduct> = ArrayList()
     private var position = 0
     private val orderProductAdapter by lazy { OrderProductAdapter() }
 
@@ -106,10 +113,10 @@ class OrderFragment : Fragment() {
                     }
                     is Resource.Loading ->{}
                     is Resource.Success -> {
-                        val list = it.data!!.filter { cartProduct ->
+                        listOrder = it.data!!.filter { cartProduct ->
                             cartProduct.select!!
                         }
-                        orderProductAdapter.differ.submitList(list)
+                        orderProductAdapter.differ.submitList(listOrder)
                     }
                 }
             }
@@ -122,6 +129,42 @@ class OrderFragment : Fragment() {
                         tvPriceProduct.text = Convert.DinhDangTien(it) + " đ"
                         tvTotal.text = Convert.DinhDangTien(it + 50) + " đ"
                         tvTotal1.text = Convert.DinhDangTien(it + 50) + " đ"
+                    }
+                }
+            }
+        }
+
+        binding.btnOrder.setOnClickListener{
+            if (binding.tvAddress.text.toString().isEmpty()) {
+                Toast.makeText(requireContext(), "Bạn chưa chọn địa điểm giao hàng!", Toast.LENGTH_SHORT).show()
+            } else {
+                val orderDialog = ChoiceDialog("OrderFragment", object : OnClickChoice {
+                    override fun onClick(choice: Boolean?) {
+                        if (choice == true) {
+                            order()
+                        }
+                    }
+                })
+                orderDialog.show(requireActivity().supportFragmentManager, null)
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            orderViewModel.createOrder.collectLatest{
+                when(it){
+                    is Resource.Error ->{
+                        Toast.makeText(requireContext(), "Lỗi đặt hàng!", Toast.LENGTH_SHORT).show()
+                        binding.btnOrder.setBackgroundColor(android.graphics.Color.parseColor("#000000"))
+                        binding.btnOrder.revertAnimation()
+                        Handler().postDelayed({
+                            controller.popBackStack()
+                        }, 3000)
+                    }
+                    is Resource.Loading -> {
+                        binding.btnOrder.setBackgroundColor(android.graphics.Color.parseColor("#FFFF5722"))
+                        binding.btnOrder.startAnimation()
+                    }
+                    is Resource.Success -> {
+                        controller.navigate(R.id.action_orderFragment_to_handleOrderFragment)
                     }
                 }
             }
@@ -153,5 +196,11 @@ class OrderFragment : Fragment() {
             imgAddAddress.visibility = View.GONE
             tvAddAddress.visibility = View.GONE
         }
+    }
+    private fun order() {
+        val contact = binding.tvUserName.text.toString().trim() + " - " + binding.tvPhone.text.toString().trim()
+        val address = binding.tvAddress.text.toString().trim()
+        val tatol = Convert.ChuyenTien(binding.tvTotal.text.toString().trim()) / 1000
+        orderViewModel.createOrder(listOrder, contact, address, tatol)
     }
 }
