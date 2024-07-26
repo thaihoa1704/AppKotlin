@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MyMobileApp</string>
+    <string name="hello">Xin chào</string>
+    <string name="home">Trang chủ</string>
+    <string name="category">Danh mục</string>
+    <string name="cart">Giỏ hàng</string>
+    <string name="user">Cá nhân</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

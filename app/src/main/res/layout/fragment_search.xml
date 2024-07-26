@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragment.shopping.SearchFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="25dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="31dp"
+                android:src="@drawable/back_icon"
+                android:layout_marginLeft="12dp"/>
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="15dp"
+                app:queryHint="Nhập tên sản phẩm..."
+                app:iconifiedByDefault="false"
+                android:background="@drawable/search_view_bg"
+                android:theme="@style/AppSearchView"/>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/process_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:theme="@style/ProgressBarStyle"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Không tìm thấy sản phẩm phù hợp!"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_product"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+</FrameLayout>

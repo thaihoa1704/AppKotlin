@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginBottom="15dp"
+    android:elevation="2dp"
+    android:background="@drawable/bg_item_cart"
+    android:id="@+id/layout_item_cart">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <CheckBox
+                    android:id="@+id/check_box"
+                    android:layout_width="33dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:buttonTint="@color/black"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"/>
+                <ImageView
+                    android:id="@+id/img_product"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp" />
+
+                <LinearLayout
+                    android:layout_width="275dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_product_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Samsung Galaxy S23 Ultra"
+                        android:textColor="@color/black"
+                        android:gravity="center|left"
+                        android:layout_marginTop="5dp"
+                        android:textSize="19dp" />
+                    <TextView
+                        android:id="@+id/tv_version"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Xanh Botanic - 8GB - 256GB"
+                        android:textColor="@color/black"
+                        android:gravity="center|left"
+                        android:textSize="16dp"
+                        android:layout_marginTop="3dp" />
+
+                    <TextView
+                        android:id="@+id/tv_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="35.000.000 đ"
+                        android:textColor="@color/orange"
+                        android:gravity="center|left"
+                        android:layout_marginTop="3dp"
+                        android:textSize="19dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="3dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_categore_background">
+
+                            <ImageView
+                                android:id="@+id/tv_add"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/add_icon"
+                                android:gravity="center"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <TextView
+                            android:id="@+id/tv_quantity"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textColor="@color/black"
+                            android:textSize="21dp" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/btn_categore_background">
+
+                            <ImageView
+                                android:id="@+id/tv_minus"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/minus_icon"
+                                android:gravity="center"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

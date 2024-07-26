@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MyMobileApp" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
+    <style name="Theme" parent="Theme.MaterialComponents.Light.DarkActionBar" />
+
+    <style name="Theme.MyMobileApp" parent="Base.Theme.MyMobileApp" />
+
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="ProgressBarStyle">
+        <item name="colorAccent">@color/main</item>
+    </style>
+</resources>
