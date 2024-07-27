@@ -44,6 +44,9 @@ class OrderViewModel @Inject constructor(
     private val _orderList = MutableStateFlow<Resource<List<Order>>>(Resource.Loading())
     val orderList: StateFlow<Resource<List<Order>>> = _orderList
 
+    private val _rate = MutableSharedFlow<Resource<String>>()
+    val rate = _rate.asSharedFlow()
+
     fun createOrder(list: List<CartProduct>,contact: String, address: String, total: Int){
         viewModelScope.launch {
             _createOrder.emit(Resource.Loading())
@@ -160,6 +163,33 @@ class OrderViewModel @Inject constructor(
             .update("status", "Chưa đánh giá")
             .addOnSuccessListener{ }
             .addOnFailureListener{}
+        db.collection(ORDER_COLLECTION).document(order.dateTime.toString())
+            .update("status", "Chưa đánh giá")
+            .addOnSuccessListener {}
+            .addOnFailureListener {}
+    }
+    fun updateCancelOrder(order: Order) {
+        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
+            .collection(ORDER_COLLECTION).document(order.dateTime.toString())
+            .update("status", "Đơn hàng đã huỷ")
+            .addOnSuccessListener{
+                updateQuantityProductAfterCancel(order.listProduct!!)
+            }
+            .addOnFailureListener{}
+        db.collection(ORDER_COLLECTION).document(order.dateTime.toString())
+            .update("status", "Đơn hàng đã huỷ")
+            .addOnSuccessListener {}
+            .addOnFailureListener {}
+    }
+    private fun updateQuantityProductAfterCancel(list: List<CartProduct>){
+        for (item in list) {
+            val quantity: Int = item.quantity
+            db.collection(PRODUCT_COLLECTION).document(item.product.id)
+                .collection(VERSION_COLLECTION).document(item.version.id)
+                .update("quantity", FieldValue.increment(quantity.toLong()))
+                .addOnSuccessListener {}
+                .addOnFailureListener {}
+        }
     }
     fun getPurchaseHistory() {
         db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
@@ -177,5 +207,26 @@ class OrderViewModel @Inject constructor(
                     _orderList.emit(Resource.Error(it.message.toString()))
                 }
             }
+    }
+    fun rateOrder(order: Order, star: Int, note: String){
+        viewModelScope.launch {
+            _rate.emit(Resource.Loading())
+        }
+        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
+            .collection(ORDER_COLLECTION).document(order.dateTime.toString())
+            .update("status", "Đã đánh giá", "rateStar", star, "note", note)
+            .addOnSuccessListener{
+                viewModelScope.launch {
+                    _rate.emit(Resource.Success("Đánh giá của bạn đã được gửi đi!"))
+                }
+            }.addOnFailureListener{
+                viewModelScope.launch {
+                    _rate.emit(Resource.Error("Lỗi hệ thống"))
+                }
+            }
+        db.collection(ORDER_COLLECTION).document(order.dateTime.toString())
+            .update("status", "Đã đánh giá", "rateStar", star, "note", note)
+            .addOnSuccessListener {}
+            .addOnFailureListener {}
     }
 }

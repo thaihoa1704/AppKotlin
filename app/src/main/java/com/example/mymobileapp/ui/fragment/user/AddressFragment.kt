@@ -30,6 +30,7 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
     private val userViewModel by viewModels<UserViewModel>()
     private val addressViewModel by viewModels<AddressViewModel>()
     private var position = 0
+    private var check: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,8 +60,10 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
                         binding.processIndicator.visibility = View.INVISIBLE
                         if (it.data!!.isEmpty()) {
                             binding.rcvAddress.visibility = View.INVISIBLE
+                            check = true
                         } else {
                             addressAdapter.differ.submitList(it.data)
+                            check = false
                         }
                     }
                 }

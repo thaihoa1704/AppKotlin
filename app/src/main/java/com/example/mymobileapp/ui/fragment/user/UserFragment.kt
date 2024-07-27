@@ -1,5 +1,6 @@
 package com.example.mymobileapp.ui.fragment.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,10 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.mymobileapp.R
 import com.example.mymobileapp.databinding.FragmentUserBinding
+import com.example.mymobileapp.listener.OnClickChoice
 import com.example.mymobileapp.model.User
+import com.example.mymobileapp.ui.activity.MainActivity
+import com.example.mymobileapp.ui.dialog.ChoiceDialog
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.AddressViewModel
 import com.example.mymobileapp.viewmodel.CartViewModel
@@ -67,9 +71,7 @@ class UserFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             orderViewModel.confirmOrder.collectLatest {
                 when(it){
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
-                    }
+                    is Resource.Error -> {}
                     is Resource.Loading ->{}
                     is Resource.Success -> {
                         if (it.data!!.isNotEmpty()) {
@@ -83,9 +85,7 @@ class UserFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             orderViewModel.shippingOrderList.collectLatest {
                 when(it){
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
-                    }
+                    is Resource.Error -> {}
                     is Resource.Loading ->{}
                     is Resource.Success -> {
                         if (it.data!!.isNotEmpty()) {
@@ -99,9 +99,7 @@ class UserFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             orderViewModel.rateOrderList.collectLatest {
                 when(it){
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
-                    }
+                    is Resource.Error -> {}
                     is Resource.Loading ->{}
                     is Resource.Success -> {
                         if (it.data!!.isNotEmpty()) {
@@ -115,12 +113,8 @@ class UserFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             addressViewModel.addressList.collectLatest {
                 when (it) {
-                    is Resource.Error -> {
-                    }
-
-                    is Resource.Loading -> {
-                    }
-
+                    is Resource.Error -> {}
+                    is Resource.Loading -> {}
                     is Resource.Success -> {
                         if (it.data!!.isEmpty()) {
                             position = -1
@@ -150,7 +144,14 @@ class UserFragment : Fragment() {
             controller.navigate(R.id.action_userFragment_to_addressFragment, bundle)
         }
         binding.tvLogout.setOnClickListener {
-
+            val logoutDialog = ChoiceDialog("UserFragment", object : OnClickChoice {
+                override fun onClick(choice: Boolean?) {
+                    if (choice == true) {
+                        userLogout()
+                    }
+                }
+            })
+            logoutDialog.show(requireActivity().supportFragmentManager, null)
         }
         binding.tvOrder.setOnClickListener { controller.navigate(R.id.action_userFragment_to_purchaseHistoryFragment) }
     }
@@ -158,5 +159,12 @@ class UserFragment : Fragment() {
         val bundle = Bundle()
         bundle.putInt("id", id)
         controller.navigate(R.id.action_userFragment_to_orderProcessFragment, bundle)
+    }
+    private fun userLogout() {
+        userViewModel.userLogout()
+        Toast.makeText(requireContext(), "Tài khoản đã đăng xuất!", Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 }

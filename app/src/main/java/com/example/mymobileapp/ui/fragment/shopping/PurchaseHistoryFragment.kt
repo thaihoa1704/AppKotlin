@@ -53,7 +53,7 @@ class PurchaseHistoryFragment : Fragment(), ClickItemOrderListener {
                     is Resource.Loading -> {}
                     is Resource.Success -> {
                         if (it.data!!.isEmpty()) {
-
+                            binding.tvEmpty.visibility = View.VISIBLE
                         }else{
                             orderAdapter.differ.submitList(it.data)
                         }

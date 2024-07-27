@@ -78,6 +78,8 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
                     is Resource.Success -> {
                         if (it.data!!.isNotEmpty()) {
                             confirmAdapter.differ.submitList(it.data)
+                        }else {
+                            binding.tvEmpty.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -93,6 +95,8 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
                     is Resource.Success -> {
                         if (it.data!!.isNotEmpty()) {
                             shippingAdapter.differ.submitList(it.data)
+                        }else {
+                            binding.tvEmpty.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -108,6 +112,8 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
                     is Resource.Success -> {
                         if (it.data!!.isNotEmpty()) {
                             rateAdapter.differ.submitList(it.data)
+                        }else {
+                            binding.tvEmpty.visibility = View.VISIBLE
                         }
                     }
                 }

@@ -12,6 +12,7 @@ import com.example.mymobileapp.databinding.FragmentProfileBinding
 import com.example.mymobileapp.model.User
 import dagger.hilt.android.AndroidEntryPoint
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
@@ -43,7 +44,9 @@ class ProfileFragment : Fragment() {
         }
 
         binding.tvChangePassword.setOnClickListener {
-            controller.navigate(R.id.action_profileFragment_to_passwordFragment)
+            val bundle = Bundle()
+            bundle.putSerializable("user", user)
+            controller.navigate(R.id.action_profileFragment_to_passwordFragment, bundle)
         }
         binding.imgBack.setOnClickListener { controller.popBackStack() }
     }

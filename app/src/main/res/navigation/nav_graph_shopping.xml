@@ -155,7 +155,8 @@
         android:id="@+id/rateOrderFragment"
         android:name="com.example.mymobileapp.ui.fragment.shopping.RateOrderFragment"
         android:label="fragment_rate_order"
-        tools:layout="@layout/fragment_rate_order" />
+        tools:layout="@layout/fragment_rate_order" >
+    </fragment>
     <fragment
         android:id="@+id/addAddressFragment"
         android:name="com.example.mymobileapp.ui.fragment.user.AddAddressFragment"

@@ -27,7 +27,7 @@ class LoginViewModel @Inject constructor(
     private val _user = MutableStateFlow<Resource<User>>(Resource.Loading())
     val user = _user.asStateFlow()
 
-    fun getUser(){
+    private fun getUser(){
         if(firebaseAuth.uid == null){
             viewModelScope.launch {
                 _user.emit(Resource.Error("User not found"))
