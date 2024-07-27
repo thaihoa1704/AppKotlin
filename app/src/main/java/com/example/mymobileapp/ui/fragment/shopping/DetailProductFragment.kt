@@ -1,7 +1,6 @@
 package com.example.mymobileapp.ui.fragment.shopping
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,11 +21,11 @@ import com.example.mymobileapp.listener.ClickItemVersionListener
 import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.ProductColor
-import com.example.mymobileapp.model.User
 import com.example.mymobileapp.model.Version
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.CartViewModel
 import com.example.mymobileapp.viewmodel.ProductViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -43,6 +42,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
     private lateinit var productColorSelected: ProductColor
     private val phoneVersionAdapter by lazy { PhoneVersionAdapter(this) }
     private lateinit var versionSelected: Version
+    private var startFragment: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,6 +57,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
 
         controller = Navigation.findNavController(view)
         product = requireArguments().getSerializable("ProductModel") as Product
+        startFragment = requireArguments().getString("StartFragment")
         binding.tvProductName.text = product!!.name
         binding.tvDescription.text = product!!.description
 
@@ -133,7 +134,11 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
             }
         }
         binding.imgBack.setOnClickListener{
-            controller.popBackStack()
+            if (startFragment == "ProductListFragment") {
+                removeFragment()
+            } else {
+                controller.popBackStack()
+            }
         }
     }
 
@@ -200,5 +205,11 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
             1,
             false
         )
+    }
+    private fun removeFragment() {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.remove(this)
+        fragmentTransaction.commit()
     }
 }

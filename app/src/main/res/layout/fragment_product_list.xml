@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
+    android:id="@+id/frame_layout_product_list"
     tools:context=".ui.fragment.shopping.ProductListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,7 +14,8 @@
         android:layout_height="match_parent"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:visibility="visible">
         <ImageView
             android:id="@+id/img_back"
             android:layout_width="25dp"
@@ -100,13 +102,11 @@
             android:layout_marginRight="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line"/>
-        <ProgressBar
-            android:id="@+id/process_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
-            android:theme="@style/ProgressBarStyle"
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/process_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:indeterminate="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_sort_by"
             app:layout_constraintBottom_toBottomOf="parent"

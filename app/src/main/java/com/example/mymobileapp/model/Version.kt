@@ -32,13 +32,11 @@ data class Version(
         if (hpType != other.hpType) return false
         if (accessoryType != other.accessoryType) return false
         if (diameter != other.diameter) return false
-        if (price != other.price) return false
-        if (quantity != other.quantity) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(ram, storage, hardDrive, cpu, isBluetooth, hpType, accessoryType, diameter, price, quantity)
+        return Objects.hash(ram, storage, hardDrive, cpu, isBluetooth, hpType, accessoryType, diameter)
     }
 }
