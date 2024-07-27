@@ -39,7 +39,7 @@ class ProfileFragment : Fragment() {
         }
         binding.tvName.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("userName", binding.tvName.text.toString())
+            bundle.putSerializable("user", user)
             controller.navigate(R.id.action_profileFragment_to_changeNameFragment, bundle)
         }
 

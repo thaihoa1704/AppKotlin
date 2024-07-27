@@ -4,15 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymobileapp.model.Address
 import com.example.mymobileapp.util.Resource
-import com.example.mymobileapp.util.constans.ADDRESS_COLLECTION
-import com.example.mymobileapp.util.constans.USER_COLLECTION
+import com.example.mymobileapp.util.constants.ADDRESS_COLLECTION
+import com.example.mymobileapp.util.constants.USER_COLLECTION
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

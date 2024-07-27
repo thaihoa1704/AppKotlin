@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.util.Resource
-import com.example.mymobileapp.util.constans.PRODUCT_COLLECTION
+import com.example.mymobileapp.util.constants.PRODUCT_COLLECTION
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

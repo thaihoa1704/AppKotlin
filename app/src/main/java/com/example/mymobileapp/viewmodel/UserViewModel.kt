@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.mymobileapp.model.Address
 import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
-import com.example.mymobileapp.util.constans.ADDRESS_COLLECTION
-import com.example.mymobileapp.util.constans.USER_COLLECTION
+import com.example.mymobileapp.util.constants.ADDRESS_COLLECTION
+import com.example.mymobileapp.util.constants.USER_COLLECTION
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

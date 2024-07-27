@@ -112,6 +112,9 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
     }
 
     override fun onClickItemProduct(product: Product) {
+        val bundle = Bundle()
+        bundle.putSerializable("ProductModel", product)
+        controller.navigate(R.id.action_cartFragment_to_detailProductFragment, bundle)
     }
 
     override fun incrementQuantity(documentId: String) {

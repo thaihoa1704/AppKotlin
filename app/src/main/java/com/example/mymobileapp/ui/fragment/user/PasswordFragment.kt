@@ -1,6 +1,7 @@
 package com.example.mymobileapp.ui.fragment.user
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -69,6 +70,9 @@ class PasswordFragment : Fragment() {
                     is Resource.Success -> {
                         binding.btnChange.revertAnimation()
                         binding.tvMessage.text = it.data
+                        Handler().postDelayed({
+                            controller.popBackStack()
+                        }, 3000)
                     }
                 }
             }

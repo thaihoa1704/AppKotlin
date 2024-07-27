@@ -2,20 +2,14 @@ package com.example.mymobileapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mymobileapp.model.PhoneVersion
-import com.example.mymobileapp.model.Product
-import com.example.mymobileapp.model.User
 import com.example.mymobileapp.model.Version
 import com.example.mymobileapp.util.Resource
-import com.example.mymobileapp.util.constans.PRODUCT_COLLECTION
-import com.example.mymobileapp.util.constans.VERSION_COLLECTION
+import com.example.mymobileapp.util.constants.PRODUCT_COLLECTION
+import com.example.mymobileapp.util.constants.VERSION_COLLECTION
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

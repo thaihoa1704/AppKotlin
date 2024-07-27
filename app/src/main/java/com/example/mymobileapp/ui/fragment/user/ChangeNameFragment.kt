@@ -1,6 +1,7 @@
 package com.example.mymobileapp.ui.fragment.user
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.mymobileapp.databinding.FragmentChangeNameBinding
+import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +40,8 @@ class ChangeNameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         controller = Navigation.findNavController(view)
 
-        userName = requireArguments().getString("userName")!!
+        val user = arguments?.getSerializable("user") as User
+        userName = user.name
         binding.edtName.text = Editable.Factory.getInstance().newEditable(userName)
         binding.imgDone.visibility = View.GONE
         binding.edtName.addTextChangedListener(textWatcher)
@@ -54,7 +57,11 @@ class ChangeNameFragment : Fragment() {
                     }
                     is Resource.Loading -> {}
                     is Resource.Success -> {
+                        user.name = binding.edtName.text.toString()
                         Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                        Handler().postDelayed({
+                            controller.popBackStack()
+                        }, 3000)
                     }
                 }
             }

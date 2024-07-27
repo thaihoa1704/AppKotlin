@@ -34,9 +34,6 @@
         android:name="com.example.mymobileapp.ui.fragment.shopping.ProductListFragment"
         android:label="fragment_product_list"
         tools:layout="@layout/fragment_product_list" >
-        <action
-            android:id="@+id/action_productListFragment_to_detailProductFragment"
-            app:destination="@id/detailProductFragment" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
@@ -46,6 +43,9 @@
         <action
             android:id="@+id/action_cartFragment_to_orderFragment"
             app:destination="@id/orderFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_detailProductFragment"
+            app:destination="@id/detailProductFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"

@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.util.Resource
-import com.example.mymobileapp.util.constans.CART_COLLECTION
-import com.example.mymobileapp.util.constans.USER_COLLECTION
+import com.example.mymobileapp.util.constants.CART_COLLECTION
+import com.example.mymobileapp.util.constants.USER_COLLECTION
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
