@@ -38,15 +38,27 @@ class ProfileFragment : Fragment() {
             tvPhone.text = user.phone
         }
         binding.tvName.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putSerializable("user", user)
-            controller.navigate(R.id.action_profileFragment_to_changeNameFragment, bundle)
+            if (user.type == "admin") {
+                val bundle = Bundle()
+                bundle.putSerializable("user", user)
+                controller.navigate(R.id.action_profileFragment2_to_changeNameFragment2, bundle)
+            } else{
+                val bundle = Bundle()
+                bundle.putSerializable("user", user)
+                controller.navigate(R.id.action_profileFragment_to_changeNameFragment, bundle)
+            }
         }
 
         binding.tvChangePassword.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putSerializable("user", user)
-            controller.navigate(R.id.action_profileFragment_to_passwordFragment, bundle)
+            if (user.type == "admin") {
+                val bundle = Bundle()
+                bundle.putSerializable("user", user)
+                controller.navigate(R.id.action_profileFragment2_to_passwordFragment2, bundle)
+            }else{
+                val bundle = Bundle()
+                bundle.putSerializable("user", user)
+                controller.navigate(R.id.action_profileFragment_to_passwordFragment, bundle)
+            }
         }
         binding.imgBack.setOnClickListener { controller.popBackStack() }
     }

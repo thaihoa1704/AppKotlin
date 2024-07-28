@@ -1,23 +1,26 @@
 package com.example.mymobileapp.ui.activity
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.mymobileapp.R
+import com.example.mymobileapp.databinding.ActivityAdminBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class AdminActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAdminBinding
+    private lateinit var controller: NavController
+    private lateinit var navHostFragment: NavHostFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_admin)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityAdminBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerViewAdmin) as NavHostFragment
+        controller = navHostFragment.navController
     }
 }

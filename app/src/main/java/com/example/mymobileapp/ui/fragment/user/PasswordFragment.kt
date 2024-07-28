@@ -72,7 +72,7 @@ class PasswordFragment : Fragment() {
                         binding.tvMessage.text = it.data
                         Handler().postDelayed({
                             controller.popBackStack()
-                        }, 3000)
+                        }, 2000)
                     }
                 }
             }

@@ -80,7 +80,6 @@ class CartViewModel @Inject constructor(
 
             }
     }
-
     fun decrementQuantityProductInCart(documentId: String) {
         viewModelScope.launch {
             _cartList.emit(Resource.Loading())
@@ -95,7 +94,6 @@ class CartViewModel @Inject constructor(
 
             }
     }
-
     fun deleteProductInCart(documentId: String) {
         viewModelScope.launch {
             _cartList.emit(Resource.Loading())
@@ -121,7 +119,7 @@ class CartViewModel @Inject constructor(
 
             }
     }
-    fun addToCart(cartProduct: CartProduct){
+    private fun addToCart(cartProduct: CartProduct){
         viewModelScope.launch {
             _cartList.emit(Resource.Loading())
         }
@@ -162,7 +160,7 @@ class CartViewModel @Inject constructor(
     fun selectNoneAllProduct() {
         db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
             .collection(CART_COLLECTION).get()
-            .addOnCompleteListener(OnCompleteListener<QuerySnapshot> { task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val list: MutableList<String> = ArrayList()
                     for (queryDocumentSnapshot in task.result) {
@@ -170,9 +168,8 @@ class CartViewModel @Inject constructor(
                     }
                     updateData(list)
                 }
-            })
+            }
     }
-
     private fun updateData(list: List<String>) {
         val batch = db.batch()
         for (i in list.indices) {

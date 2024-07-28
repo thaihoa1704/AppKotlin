@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_admin"
+    app:startDestination="@id/adminFragment">
+
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.example.mymobileapp.ui.fragment.manage.AdminFragment"
+        android:label="fragment_admin"
+        tools:layout="@layout/fragment_admin" >
+        <action
+            android:id="@+id/action_adminFragment_to_profileFragment2"
+            app:destination="@id/profileFragment2" />
+        <action
+            android:id="@+id/action_adminFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment2"
+        android:name="com.example.mymobileapp.ui.fragment.user.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment2_to_passwordFragment2"
+            app:destination="@id/passwordFragment2" />
+        <action
+            android:id="@+id/action_profileFragment2_to_changeNameFragment2"
+            app:destination="@id/changeNameFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordFragment2"
+        android:name="com.example.mymobileapp.ui.fragment.user.PasswordFragment"
+        android:label="fragment_password"
+        tools:layout="@layout/fragment_password" />
+    <fragment
+        android:id="@+id/changeNameFragment2"
+        android:name="com.example.mymobileapp.ui.fragment.user.ChangeNameFragment"
+        android:label="fragment_change_name"
+        tools:layout="@layout/fragment_change_name" />
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.mymobileapp.ui.fragment.manage.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" />
+</navigation>

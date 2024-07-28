@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymobileapp.databinding.ItemPhoneAttributeBinding
 import com.example.mymobileapp.listener.ClickItemVersionListener
-import com.example.mymobileapp.model.PhoneVersion
 import com.example.mymobileapp.model.Version
 
 class PhoneVersionAdapter(private val clickItemVersionListener: ClickItemVersionListener

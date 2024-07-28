@@ -1,6 +1,5 @@
 package com.example.mymobileapp.listener
 
-import com.example.mymobileapp.model.PhoneVersion
 import com.example.mymobileapp.model.Version
 
 interface ClickItemVersionListener {
