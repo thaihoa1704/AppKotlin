@@ -70,6 +70,15 @@ class AdminFragment : Fragment(), NavigationView.OnNavigationItemSelectedListene
         binding.cardProduct.setOnClickListener {
             controller.navigate(R.id.action_adminFragment_to_categoryFragment)
         }
+        binding.cardAccount.setOnClickListener {
+            controller.navigate(R.id.action_adminFragment_to_accountFragment)
+        }
+        binding.cardOrder.setOnClickListener {
+            controller.navigate(R.id.action_adminFragment_to_orderListFragment)
+        }
+        binding.cardStatistical.setOnClickListener {
+            controller.navigate(R.id.action_adminFragment_to_statisticalFragment)
+        }
     }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

@@ -68,6 +68,8 @@ dependencies {
     annotationProcessor(libs.glide.compiler)
     //circleindicator
     implementation (libs.circleindicator)
+
+    implementation(libs.mpandroidchart)
 }
 
 kapt {

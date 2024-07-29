@@ -16,6 +16,11 @@ import com.example.mymobileapp.helper.Convert
 import com.example.mymobileapp.listener.OnClickChoice
 import com.example.mymobileapp.model.Order
 import com.example.mymobileapp.ui.dialog.ChoiceDialog
+import com.example.mymobileapp.util.constants.CONFIRM_STATUS
+import com.example.mymobileapp.util.constants.NOT_RATE_STATUS
+import com.example.mymobileapp.util.constants.PACKING_STATUS
+import com.example.mymobileapp.util.constants.RATE_STATUS
+import com.example.mymobileapp.util.constants.SHIPPING_STATUS
 import com.example.mymobileapp.viewmodel.OrderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,6 +46,7 @@ class DetailOrderFragment : Fragment() {
         controller = Navigation.findNavController(view)
 
         order = requireArguments().getSerializable("Order") as Order
+
         binding.tvContact.text = order.contact
         binding.tvAddress.text = order.address
         binding.tvTime.text = Convert.getDateTime(order.dateTime)
@@ -49,7 +55,7 @@ class DetailOrderFragment : Fragment() {
         orderProductAdapter.differ.submitList(order.listProduct)
 
         var price = 0
-        for (item in order.listProduct!!) {
+        for (item in order.listProduct) {
             price += item.quantity * item.version.price
         }
         binding.tvPrice.text = Convert.DinhDangTien(price) + " đ"
@@ -63,29 +69,27 @@ class DetailOrderFragment : Fragment() {
             binding.constraintLayout2.visibility = View.GONE
         }
 
-        val status = order.status.toString()
+        val status = order.status
         when (status) {
-            "Chờ xác nhận" -> {
-                //this.id = 1
+            CONFIRM_STATUS -> {
                 binding.btnCancel.visibility = View.VISIBLE
                 binding.btnProcess.text = "Đơn hàng đang được xử lý"
             }
-
-            "Đơn hàng đang trên đường giao đến bạn" -> {
-                //this.id = 2
+            PACKING_STATUS -> {
+                binding.btnCancel.visibility = View.GONE
+                binding.btnProcess.text = "Đơn hàng đang được chuẩn bị"
+            }
+            SHIPPING_STATUS -> {
                 binding.btnCancel.visibility = View.GONE
                 binding.btnProcess.text = "Đã nhận được hàng"
             }
-
-            "Chưa đánh giá" -> {
-                //this.id = 3
+            NOT_RATE_STATUS -> {
                 binding.btnCancel.visibility = View.GONE
                 binding.btnProcess.text = "Đánh giá"
             }
-
-            "Đã đánh giá" -> {
+            RATE_STATUS -> {
                 binding.btnCancel.visibility = View.GONE
-                binding.btnProcess.text = status
+                binding.btnProcess.text = "Xem đánh giá"
             }
         }
 
@@ -100,11 +104,16 @@ class DetailOrderFragment : Fragment() {
             cancelDialog.show(requireActivity().supportFragmentManager, null)
         }
         binding.btnProcess.setOnClickListener {
-            if (status == "Đơn hàng đang trên đường giao đến bạn") {
+            if (status == SHIPPING_STATUS) {
                 orderViewModel.updateReceiveOrder(order)
-            } else if (status == "Chưa đánh giá") {
+            } else if (status == NOT_RATE_STATUS) {
                 val bundle = Bundle()
                 bundle.putSerializable("Order", order)
+                controller.navigate(R.id.action_detailOrderFragment_to_rateOrderFragment, bundle)
+            } else if (status == RATE_STATUS) {
+                val bundle = Bundle()
+                bundle.putSerializable("Order", order)
+                bundle.putString("rate", RATE_STATUS)
                 controller.navigate(R.id.action_detailOrderFragment_to_rateOrderFragment, bundle)
             }
         }

@@ -16,6 +16,15 @@
         <action
             android:id="@+id/action_adminFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_accountFragment"
+            app:destination="@id/accountFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_orderListFragment"
+            app:destination="@id/orderListFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_statisticalFragment"
+            app:destination="@id/statisticalFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment2"
@@ -43,5 +52,56 @@
         android:id="@+id/categoryFragment"
         android:name="com.example.mymobileapp.ui.fragment.manage.CategoryFragment"
         android:label="fragment_category"
-        tools:layout="@layout/fragment_category" />
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_categoryFragment_to_productListFragment2"
+            app:destination="@id/productListFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/productListFragment2"
+        android:name="com.example.mymobileapp.ui.fragment.shopping.ProductListFragment"
+        android:label="fragment_product_list"
+        tools:layout="@layout/fragment_product_list" >
+        <action
+            android:id="@+id/action_productListFragment2_to_addProductFragment"
+            app:destination="@id/addProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addProductFragment"
+        android:name="com.example.mymobileapp.ui.fragment.manage.AddProductFragment"
+        android:label="fragment_add_product"
+        tools:layout="@layout/fragment_add_product" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.mymobileapp.ui.fragment.manage.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_accountFragment_to_detailAccountFragment"
+            app:destination="@id/detailAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderListFragment"
+        android:name="com.example.mymobileapp.ui.fragment.manage.OrderListFragment"
+        android:label="fragment_order_list"
+        tools:layout="@layout/fragment_order_list" />
+    <fragment
+        android:id="@+id/detailAccountFragment"
+        android:name="com.example.mymobileapp.ui.fragment.manage.DetailAccountFragment"
+        android:label="fragment_detail_account"
+        tools:layout="@layout/fragment_detail_account" >
+        <action
+            android:id="@+id/action_detailAccountFragment_to_addressFragment2"
+            app:destination="@id/addressFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/statisticalFragment"
+        android:name="com.example.mymobileapp.ui.fragment.manage.StatisticalFragment"
+        android:label="fragment_statistical"
+        tools:layout="@layout/fragment_statistical" />
+    <fragment
+        android:id="@+id/addressFragment2"
+        android:name="com.example.mymobileapp.ui.fragment.user.AddressFragment"
+        android:label="fragment_address"
+        tools:layout="@layout/fragment_address" />
 </navigation>

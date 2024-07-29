@@ -21,7 +21,7 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Đơn mua"
+            android:text="Đơn hàng"
             android:textColor="@color/black"
             android:textSize="25dp"
             android:gravity="center"
@@ -38,100 +38,195 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
 
-        <LinearLayout
-            android:id="@+id/linearLayout1"
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line"
             android:layout_marginTop="7dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:orientation="horizontal">
+            android:layout_marginRight="8dp">
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/linearLayout1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tv_confirm"
+                android:orientation="horizontal">
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chờ xác nhận"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="5dp"/>
-                <View
-                    android:id="@+id/line_confirm"
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:background="@color/orange"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:visibility="gone"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tv_shipping"
+                    android:layout_weight="0.2"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_confirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chờ xác nhận"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"/>
+                    <View
+                        android:id="@+id/line_confirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="@color/orange"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chờ giao hàng"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="5dp"/>
-                <View
-                    android:id="@+id/line_shipping"
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:background="@color/orange"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:visibility="gone"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tv_rate"
+                    android:layout_weight="0.2"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_pack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đang chuẩn bị"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"/>
+                    <View
+                        android:id="@+id/line_pack"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="@color/orange"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đánh giá"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="5dp"/>
-                <View
-                    android:id="@+id/line_rate"
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:background="@color/orange"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:visibility="gone"/>
+                    android:layout_weight="0.2"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_shipping"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chờ giao hàng"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"/>
+                    <View
+                        android:id="@+id/line_shipping"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="@color/orange"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_delivered"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đã giao"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"/>
+                    <View
+                        android:id="@+id/line_delivered"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="@color/orange"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đã hủy"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"/>
+                    <View
+                        android:id="@+id/line_cancel"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="@color/orange"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </HorizontalScrollView>
 
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
             app:layout_constraintBottom_toBottomOf="parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
                 <TextView
-                    android:id="@+id/tv_empty"
+                    android:id="@+id/tv_empty1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Không có đơn hàng!"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textSize="22dp"
+                    android:layout_marginTop="60dp"
+                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/tv_empty2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Không có đơn hàng!"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textSize="22dp"
+                    android:layout_marginTop="60dp"
+                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/tv_empty3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Không có đơn hàng!"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textSize="22dp"
+                    android:layout_marginTop="60dp"
+                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/tv_empty4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Không có đơn hàng!"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textSize="22dp"
+                    android:layout_marginTop="60dp"
+                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/tv_empty5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Không có đơn hàng!"
@@ -147,13 +242,25 @@
                     android:layout_marginTop="3dp"
                     android:visibility="visible"/>
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_pack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:visibility="gone"/>
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_shipping"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:visibility="gone"/>
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_rate"
+                    android:id="@+id/rcv_complete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:visibility="gone"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_cancel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"

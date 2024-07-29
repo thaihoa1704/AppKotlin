@@ -28,6 +28,18 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         controller = Navigation.findNavController(view)
 
+        binding.imgPhone.setOnClickListener { moveToNewFragment("Điện thoại") }
+        binding.imgHeadPhone.setOnClickListener { moveToNewFragment("Tai nghe") }
+        binding.imgLaptop.setOnClickListener { moveToNewFragment("Laptop") }
+        binding.imgWatch.setOnClickListener { moveToNewFragment("Đồng hồ") }
+        binding.imageAccessory.setOnClickListener { moveToNewFragment("Phụ kiện") }
+        binding.imgSpecial.setOnClickListener { moveToNewFragment("Đặc biệt") }
         binding.imgBack.setOnClickListener { controller.popBackStack() }
+    }
+    private fun moveToNewFragment(category: String) {
+        val bundle = Bundle()
+        bundle.putString("category", category)
+        bundle.putString("type", "admin")
+        controller.navigate(R.id.action_categoryFragment_to_productListFragment2, bundle)
     }
 }

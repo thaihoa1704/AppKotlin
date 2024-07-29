@@ -12,7 +12,7 @@
         android:layout_height="70dp"
         app:cardCornerRadius="100dp"
         app:strokeWidth="3dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:theme="@style/Theme"/>
     <TextView
         android:id="@+id/tv_name"
@@ -21,6 +21,6 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="21dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:text="Thai Hoa"/>
 </LinearLayout>

@@ -15,6 +15,7 @@ import com.example.mymobileapp.adapter.AddressAdapter
 import com.example.mymobileapp.databinding.FragmentAddressBinding
 import com.example.mymobileapp.listener.ClickItemAddressListener
 import com.example.mymobileapp.model.Address
+import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.AddressViewModel
 import com.example.mymobileapp.viewmodel.UserViewModel
@@ -27,10 +28,11 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
     private lateinit var binding: FragmentAddressBinding
     private lateinit var controller: NavController
     private lateinit var addressAdapter: AddressAdapter
-    private val userViewModel by viewModels<UserViewModel>()
     private val addressViewModel by viewModels<AddressViewModel>()
     private var position = 0
     private var check: Boolean = false
+    private var user = User()
+    private var type = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +48,19 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
         controller = Navigation.findNavController(view)
 
         position = requireArguments().getInt("position")
+        user = requireArguments().getSerializable("user") as User
+        type = requireArguments().getString("type").toString()
 
+        if (type == "admin") {
+            binding.label.text = "Địa chỉ khách hàng"
+            binding.constraintLayout.visibility = View.INVISIBLE
+            binding.line2.visibility = View.INVISIBLE
+            binding.rcvAddress.isEnabled = false
+        } else{
+            binding.constraintLayout.visibility = View.VISIBLE
+        }
+
+        addressViewModel.getAddressAccount(user)
         lifecycleScope.launchWhenStarted {
             addressViewModel.addressList.collectLatest {
                 when (it) {
@@ -79,13 +93,17 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
         }
     }
     private fun setupAddressRecyclerView() {
-        addressAdapter = AddressAdapter(position, this)
+        addressAdapter = AddressAdapter( position, this)
         binding.rcvAddress.apply {
             layoutManager = LinearLayoutManager(this@AddressFragment.context)
             adapter = addressAdapter
         }
     }
     override fun onClick(address: Address) {
-        addressViewModel.selectAddress(address)
+        if (type == "admin") {
+            return
+        } else {
+            addressViewModel.selectAddress(address)
+        }
     }
 }

@@ -32,6 +32,7 @@ class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.
     private lateinit var binding: FragmentProductListBinding
     private lateinit var controller: NavController
     private lateinit var category: String
+    private lateinit var type: String
     private lateinit var productAdapter: ProductAdapter
     private lateinit var orderPriceAdapter: OrderPriceAdapter
     private val filterViewModel by viewModels<FilterViewModel>()
@@ -55,6 +56,15 @@ class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.
         controller = Navigation.findNavController(view)
 
         category = requireArguments().getString("category")!!
+        type = requireArguments().getString("type")!!
+        if (type == "admin") {
+            binding.imgAdd.visibility = View.VISIBLE
+            binding.imgAdd.setOnClickListener {
+                controller.navigate(R.id.action_productListFragment2_to_addProductFragment)
+            }
+        } else {
+            binding.imgAdd.visibility = View.GONE
+        }
         binding.tvCategoryName.text = category
 
         setupProductRecyclerView()

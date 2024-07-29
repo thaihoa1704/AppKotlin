@@ -103,7 +103,6 @@ class SearchFragment : Fragment(), ClickItemProductListener {
         binding.rvProduct.visibility = View.INVISIBLE
         binding.tvEmpty.visibility = View.VISIBLE
     }
-
     private fun show() {
         binding.processBar.visibility = View.GONE
         binding.rvProduct.visibility = View.VISIBLE

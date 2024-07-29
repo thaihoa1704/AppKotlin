@@ -96,6 +96,20 @@
         android:textSize="18dp"
         android:gravity="left|top"
         android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/tv_note1"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/gray1"
+        android:textSize="18dp"
+        android:gravity="left|top"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/tv_note"
@@ -104,28 +118,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="105dp"
+        android:layout_marginRight="105dp"
         android:layout_marginTop="90dp"
         android:textSize="18dp"
         android:textColor="@color/gray"
         android:gravity="center|bottom"
-        android:text="Hãy chia sẻ nhận xét"
-        android:enabled="false"/>
-
-    <TextView
-        android:id="@+id/tv_note1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_note"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:textSize="18dp"
-        android:textColor="@color/gray"
-        android:gravity="center"
-        android:text="cho sản phẩm này bạn nhé!"
+        android:text="Hãy chia sẻ nhận xét cho sản phẩm này bạn nhé!"
         android:enabled="false"/>
 
     <Button

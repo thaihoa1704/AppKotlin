@@ -3,6 +3,7 @@ package com.example.mymobileapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymobileapp.model.Address
+import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.util.constants.ADDRESS_COLLECTION
 import com.example.mymobileapp.util.constants.USER_COLLECTION
@@ -23,12 +24,8 @@ class AddressViewModel @Inject constructor(
     private val _addressList = MutableStateFlow<Resource<List<Address>>>(Resource.Loading())
     val addressList: StateFlow<Resource<List<Address>>> = _addressList
 
-    init {
-        getAddress()
-    }
-
-    private fun getAddress() {
-        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!).collection(ADDRESS_COLLECTION)
+    fun getAddressAccount(user: User) {
+        db.collection(USER_COLLECTION).document(user.id).collection(ADDRESS_COLLECTION)
             .addSnapshotListener { value, error ->
                 if (error != null || value == null) {
                     viewModelScope.launch {

@@ -3,9 +3,13 @@ package com.example.mymobileapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymobileapp.model.Address
+import com.example.mymobileapp.model.Order
+import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.util.constants.ADDRESS_COLLECTION
+import com.example.mymobileapp.util.constants.ORDER_COLLECTION
+import com.example.mymobileapp.util.constants.PRODUCT_COLLECTION
 import com.example.mymobileapp.util.constants.USER_COLLECTION
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -37,6 +41,12 @@ class UserViewModel @Inject constructor(
 
     private val _user = MutableStateFlow<Resource<User>>(Resource.Loading())
     val user = _user.asStateFlow()
+
+    private val _userList = MutableStateFlow<Resource<List<User>>>(Resource.Loading())
+    val userList = _userList.asStateFlow()
+
+    private val _orderList = MutableStateFlow<Resource<List<Order>>>(Resource.Loading())
+    val orderList = _orderList.asStateFlow()
 
     init {
         getUser()
@@ -180,6 +190,36 @@ class UserViewModel @Inject constructor(
             .update("password", password)
             .addOnSuccessListener {}
             .addOnFailureListener{}
+    }
+
+    fun getAllUser(){
+        db.collection(USER_COLLECTION).whereNotEqualTo("type", "admin")
+            .addSnapshotListener { value, error ->
+                if (error != null || value == null) {
+                    viewModelScope.launch {
+                        _userList.emit(Resource.Error(error?.message.toString()))
+                    }
+                } else {
+                    val list = value.toObjects(User::class.java)
+                    viewModelScope.launch {
+                        _userList.emit(Resource.Success(list))
+                    }
+                }
+            }
+    }
+    fun getOrderOfUser(user: User){
+        db.collection(USER_COLLECTION).document(user.id)
+            .collection(ORDER_COLLECTION)
+            .get().addOnSuccessListener {
+                val list = it.toObjects(Order::class.java)
+                viewModelScope.launch {
+                    _orderList.emit(Resource.Success(list))
+                }
+            }.addOnFailureListener{
+                viewModelScope.launch {
+                    _orderList.emit(Resource.Error(it.message.toString()))
+                }
+            }
     }
 
     fun userLogout(){

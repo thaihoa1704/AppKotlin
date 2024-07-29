@@ -65,8 +65,9 @@ class UserFragment : Fragment() {
         }
 
         orderViewModel.getConfirmOrder()
+        orderViewModel.getPackOrder()
         orderViewModel.getShippingOrder()
-        orderViewModel.getRateOrder()
+        orderViewModel.getNotRateOrder()
 
         lifecycleScope.launchWhenStarted {
             orderViewModel.confirmOrder.collectLatest {
@@ -77,6 +78,20 @@ class UserFragment : Fragment() {
                         if (it.data!!.isNotEmpty()) {
                             binding.tvQuantityConfirm.text = it.data.size.toString()
                             binding.cvConfirm.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            orderViewModel.packOrder.collectLatest {
+                when(it){
+                    is Resource.Error -> {}
+                    is Resource.Loading ->{}
+                    is Resource.Success -> {
+                        if (it.data!!.isNotEmpty()) {
+                            binding.tvQuantityBox.text = it.data.size.toString()
+                            binding.cvBox.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -97,7 +112,7 @@ class UserFragment : Fragment() {
             }
         }
         lifecycleScope.launchWhenStarted {
-            orderViewModel.rateOrderList.collectLatest {
+            orderViewModel.notRateOrderList.collectLatest {
                 when(it){
                     is Resource.Error -> {}
                     is Resource.Loading ->{}
@@ -130,8 +145,15 @@ class UserFragment : Fragment() {
             }
         }
         binding.imgConfirm.setOnClickListener { moveToNewFragment(1) }
-        binding.imgShipping.setOnClickListener { moveToNewFragment(2) }
-        binding.imgRate.setOnClickListener { moveToNewFragment(3) }
+        binding.imgBoxPack.setOnClickListener { moveToNewFragment(2) }
+        binding.imgShipping.setOnClickListener { moveToNewFragment(3) }
+        binding.tvOrder.setOnClickListener { moveToNewFragment(4) }
+
+        binding.imgRate.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putInt("id", 1)
+            controller.navigate(R.id.action_userFragment_to_deliveredFragment, bundle)
+        }
 
         binding.tvProfileUser.setOnClickListener {
             val bundle = Bundle()
@@ -153,7 +175,6 @@ class UserFragment : Fragment() {
             })
             logoutDialog.show(requireActivity().supportFragmentManager, null)
         }
-        binding.tvOrder.setOnClickListener { controller.navigate(R.id.action_userFragment_to_purchaseHistoryFragment) }
     }
     private fun moveToNewFragment(id: Int) {
         val bundle = Bundle()

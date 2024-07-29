@@ -19,6 +19,7 @@ import com.example.mymobileapp.helper.Convert
 import com.example.mymobileapp.listener.OnClickChoice
 import com.example.mymobileapp.model.Address
 import com.example.mymobileapp.model.CartProduct
+import com.example.mymobileapp.model.User
 import com.example.mymobileapp.ui.dialog.ChoiceDialog
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.AddressViewModel
@@ -40,6 +41,7 @@ class OrderFragment : Fragment() {
     private var list: List<Address> = ArrayList()
     private var listOrder: List<CartProduct> = ArrayList()
     private var position = 0
+    private var user = User()
     private val orderProductAdapter by lazy { OrderProductAdapter() }
 
     override fun onCreateView(
@@ -61,9 +63,10 @@ class OrderFragment : Fragment() {
                     is Resource.Error -> {}
                     is Resource.Loading -> {}
                     is Resource.Success -> {
+                        user = it.data!!
                         binding.apply {
-                            tvUserName.text = it.data?.name
-                            tvPhone.text = it.data?.phone
+                            tvUserName.text = it.data.name
+                            tvPhone.text = it.data.phone
                         }
                     }
                 }
@@ -73,12 +76,8 @@ class OrderFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             addressViewModel.addressList.collectLatest {
                 when (it) {
-                    is Resource.Error -> {
-                    }
-
-                    is Resource.Loading -> {
-                    }
-
+                    is Resource.Error -> {}
+                    is Resource.Loading -> {}
                     is Resource.Success -> {
                         list = it.data!!
                         if (it.data.isEmpty()) {
@@ -99,6 +98,7 @@ class OrderFragment : Fragment() {
 
         binding.imgChangeAddress.setOnClickListener{
             val bundle = Bundle()
+            bundle.putSerializable("user", user)
             bundle.putInt("position", position)
             controller.navigate(R.id.action_orderFragment_to_addressFragment, bundle)
         }
@@ -200,7 +200,7 @@ class OrderFragment : Fragment() {
     private fun order() {
         val contact = binding.tvUserName.text.toString().trim() + " - " + binding.tvPhone.text.toString().trim()
         val address = binding.tvAddress.text.toString().trim()
-        val tatol = Convert.ChuyenTien(binding.tvTotal.text.toString().trim()) / 1000
-        orderViewModel.createOrder(listOrder, contact, address, tatol)
+        val total = Convert.ChuyenTien(binding.tvTotal.text.toString().trim()) / 1000
+        orderViewModel.createOrder(listOrder, contact, address, total)
     }
 }

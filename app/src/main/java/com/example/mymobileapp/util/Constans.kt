@@ -10,4 +10,10 @@ object constants {
     const val CATEGORY_COLLECTION = "Category"
     const val BRAND_COLLECTION = "Brand"
     const val PRICE_COLLECTION = "Price"
+    const val CONFIRM_STATUS = "Chờ xác nhận"
+    const val PACKING_STATUS = "Đang được chuẩn bị"
+    const val SHIPPING_STATUS = "Đang được giao"
+    const val NOT_RATE_STATUS = "Chưa đánh giá"
+    const val RATE_STATUS = "Đã đánh giá"
+    const val CANCEL_STATUS = "Đã huỷ"
 }

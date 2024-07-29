@@ -17,6 +17,7 @@ import androidx.navigation.Navigation
 import com.example.mymobileapp.databinding.FragmentRateOrderBinding
 import com.example.mymobileapp.model.Order
 import com.example.mymobileapp.util.Resource
+import com.example.mymobileapp.util.constants.RATE_STATUS
 import com.example.mymobileapp.viewmodel.OrderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -41,6 +42,17 @@ class RateOrderFragment : Fragment() {
         controller = Navigation.findNavController(view)
 
         val order = requireArguments().getSerializable("Order") as Order
+        val rate = requireArguments().getString("rate")
+
+        if (rate == RATE_STATUS) {
+            binding.ratingBar.rating = order.rateStar.toFloat()
+            binding.tvNote.visibility = View.GONE
+            binding.tvNote1.text = order.note
+            binding.btnSend.visibility = View.GONE
+            binding.edtNote.visibility = View.GONE
+        } else {
+            return
+        }
 
         binding.ratingBar.onRatingBarChangeListener =
             OnRatingBarChangeListener { ratingBar, rating, _ ->
@@ -95,7 +107,6 @@ class RateOrderFragment : Fragment() {
             val note = binding.edtNote.text.toString().trim()
             if (note.isNotEmpty()) {
                 binding.tvNote.visibility = View.GONE
-                binding.tvNote1.visibility = View.GONE
             }
         }
 

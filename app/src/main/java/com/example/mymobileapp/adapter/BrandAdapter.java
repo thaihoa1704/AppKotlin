@@ -18,7 +18,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
     private Context context;
     private List<Brand> brandList;
     private int selectedPosition;
-    private ClickItemBrandListener clickItemBrandListener;
+    private final ClickItemBrandListener clickItemBrandListener;
 
     public void setData(Context context, List<Brand> brandList, int position){
         this.context = context;
@@ -53,7 +53,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
     }
 
     public class BrandViewHolder extends RecyclerView.ViewHolder {
-        private ItemBrandBinding binding;
+        private final ItemBrandBinding binding;
 
         public BrandViewHolder(ItemBrandBinding binding) {
             super(binding.getRoot());

@@ -62,8 +62,8 @@
             android:id="@+id/action_userFragment_to_addressFragment"
             app:destination="@id/addressFragment" />
         <action
-            android:id="@+id/action_userFragment_to_purchaseHistoryFragment"
-            app:destination="@id/purchaseHistoryFragment" />
+            android:id="@+id/action_userFragment_to_deliveredFragment"
+            app:destination="@id/deliveredFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailProductFragment"
@@ -124,15 +124,6 @@
             app:destination="@id/passwordFragment" />
     </fragment>
     <fragment
-        android:id="@+id/purchaseHistoryFragment"
-        android:name="com.example.mymobileapp.ui.fragment.shopping.PurchaseHistoryFragment"
-        android:label="fragment_purchase_history"
-        tools:layout="@layout/fragment_purchase_history" >
-        <action
-            android:id="@+id/action_purchaseHistoryFragment_to_detailOrderFragment"
-            app:destination="@id/detailOrderFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/changeNameFragment"
         android:name="com.example.mymobileapp.ui.fragment.user.ChangeNameFragment"
         android:label="fragment_change_name"
@@ -162,4 +153,13 @@
         android:name="com.example.mymobileapp.ui.fragment.user.AddAddressFragment"
         android:label="fragment_add_address"
         tools:layout="@layout/fragment_add_address" />
+    <fragment
+        android:id="@+id/deliveredFragment"
+        android:name="com.example.mymobileapp.ui.fragment.shopping.DeliveredFragment"
+        android:label="fragment_delivered"
+        tools:layout="@layout/fragment_delivered" >
+        <action
+            android:id="@+id/action_deliveredFragment_to_detailOrderFragment"
+            app:destination="@id/detailOrderFragment" />
+    </fragment>
 </navigation>
