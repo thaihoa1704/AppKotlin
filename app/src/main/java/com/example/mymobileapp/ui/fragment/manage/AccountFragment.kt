@@ -72,7 +72,7 @@ class AccountFragment : Fragment(), ClickItemAccountListener {
 
     override fun onClickItemAccount(user: User) {
         val bundle = Bundle()
-        bundle.putSerializable("UserModel", user)
+        bundle.putSerializable("user", user)
         controller.navigate(R.id.action_accountFragment_to_detailAccountFragment, bundle)
     }
 }

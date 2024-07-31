@@ -51,6 +51,7 @@ class UserFragment : Fragment() {
 
         cartViewModel.selectNoneAllProduct()
 
+        var type = ""
         lifecycleScope.launchWhenStarted {
             userViewModel.user.collectLatest {
                 when (it) {
@@ -58,6 +59,7 @@ class UserFragment : Fragment() {
                     is Resource.Loading -> {}
                     is Resource.Success ->{
                         user = it.data!!
+                        type = it.data.type
                         binding.tvUserName.text = it.data.name
                     }
                 }
@@ -144,14 +146,16 @@ class UserFragment : Fragment() {
                 }
             }
         }
-        binding.imgConfirm.setOnClickListener { moveToNewFragment(1) }
-        binding.imgBoxPack.setOnClickListener { moveToNewFragment(2) }
-        binding.imgShipping.setOnClickListener { moveToNewFragment(3) }
-        binding.tvOrder.setOnClickListener { moveToNewFragment(4) }
+        binding.imgConfirm.setOnClickListener { moveToNewFragment(1, user) }
+        binding.imgBoxPack.setOnClickListener { moveToNewFragment(2, user) }
+        binding.imgShipping.setOnClickListener { moveToNewFragment(3, user) }
+        binding.tvOrder.setOnClickListener { moveToNewFragment(4, user) }
 
         binding.imgRate.setOnClickListener {
             val bundle = Bundle()
             bundle.putInt("id", 1)
+            bundle.putSerializable("user", user)
+            bundle.putString("type", type)
             controller.navigate(R.id.action_userFragment_to_deliveredFragment, bundle)
         }
 
@@ -163,10 +167,11 @@ class UserFragment : Fragment() {
         binding.tvAddress.setOnClickListener {
             val bundle = Bundle()
             bundle.putInt("position", position)
+            bundle.putSerializable("user", user)
             controller.navigate(R.id.action_userFragment_to_addressFragment, bundle)
         }
         binding.tvLogout.setOnClickListener {
-            val logoutDialog = ChoiceDialog("UserFragment", object : OnClickChoice {
+            val logoutDialog = ChoiceDialog("userFragment", object : OnClickChoice {
                 override fun onClick(choice: Boolean?) {
                     if (choice == true) {
                         userLogout()
@@ -176,9 +181,10 @@ class UserFragment : Fragment() {
             logoutDialog.show(requireActivity().supportFragmentManager, null)
         }
     }
-    private fun moveToNewFragment(id: Int) {
+    private fun moveToNewFragment(id: Int, user: User) {
         val bundle = Bundle()
         bundle.putInt("id", id)
+        bundle.putSerializable("user", user)
         controller.navigate(R.id.action_userFragment_to_orderProcessFragment, bundle)
     }
     private fun userLogout() {

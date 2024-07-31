@@ -88,7 +88,7 @@ class AdminFragment : Fragment(), NavigationView.OnNavigationItemSelectedListene
                 controller.navigate(R.id.action_adminFragment_to_profileFragment2, bundle)
             }
             R.id.nav_logout -> {
-                val logoutDialog = ChoiceDialog("AdminActivity", object : OnClickChoice {
+                val logoutDialog = ChoiceDialog("adminActivity", object : OnClickChoice {
                     override fun onClick(choice: Boolean?) {
                         if (choice == true) {
                             userLogout()

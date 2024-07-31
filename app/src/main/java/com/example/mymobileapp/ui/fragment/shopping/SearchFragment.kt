@@ -119,7 +119,7 @@ class SearchFragment : Fragment(), ClickItemProductListener {
 
     override fun onClickItemProduct(product: Product) {
         val bundle = Bundle()
-        bundle.putSerializable("ProductModel", product)
+        bundle.putSerializable("product", product)
         controller.navigate(R.id.action_searchFragment_to_detailProductFragment, bundle)
     }
     private fun filterList(text: String) {

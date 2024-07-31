@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.model.Order
+import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.util.constants.CANCEL_STATUS
 import com.example.mymobileapp.util.constants.CART_COLLECTION
@@ -63,16 +64,18 @@ class OrderViewModel @Inject constructor(
     private val _time = MutableStateFlow<Resource<List<Order>>>(Resource.Loading())
     val time: StateFlow<Resource<List<Order>>> = _time
 
-    private val _rate = MutableSharedFlow<Resource<String>>()
-    val rate = _rate.asSharedFlow()
+    private val _message = MutableSharedFlow<Resource<String>>()
+    val message = _message.asSharedFlow()
 
-    fun createOrder(list: List<CartProduct>,contact: String, address: String, total: Int){
+    fun createOrder(userId: String, list: List<CartProduct>
+                    ,contact: String, address: String, total: Int){
         viewModelScope.launch {
             _createOrder.emit(Resource.Loading())
         }
         val timestamp = System.currentTimeMillis()
 
         val hashMap = HashMap<String, Any>()
+        hashMap["userId"] = userId
         hashMap["dateTime"] = timestamp
         hashMap["contact"] = contact
         hashMap["address"] = address
@@ -82,14 +85,12 @@ class OrderViewModel @Inject constructor(
         hashMap["rateStar"] = 0
         hashMap["note"] = ""
 
-        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
+        db.collection(USER_COLLECTION).document(userId)
             .collection(ORDER_COLLECTION).document(timestamp.toString())
             .set(hashMap)
             .addOnSuccessListener {
                 viewModelScope.launch {
                     _createOrder.emit(Resource.Success("Success"))
-                    deleteProductInCart(list)
-                    updateQuantityProduct(list)
                 }
             }.addOnFailureListener {
                 viewModelScope.launch {
@@ -100,6 +101,8 @@ class OrderViewModel @Inject constructor(
             .set(hashMap)
             .addOnSuccessListener {}
             .addOnFailureListener {}
+        deleteProductInCart(list)
+        updateQuantityProduct(list)
     }
 
     private fun deleteProductInCart(list: List<CartProduct>){
@@ -178,21 +181,19 @@ class OrderViewModel @Inject constructor(
     }
     fun getRateOrder(){
         db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
-            .collection(ORDER_COLLECTION)
-            .whereEqualTo("status", RATE_STATUS)
-            .orderBy("dateTime", Query.Direction.DESCENDING)
+            .collection(ORDER_COLLECTION).whereEqualTo("status", RATE_STATUS)
             .addSnapshotListener { value, error ->
-                if (error != null || value == null) {
-                    viewModelScope.launch {
-                        _rateOrderList.emit(Resource.Error(error?.message.toString()))
-                    }
-                }else {
-                    val list = value.toObjects(Order::class.java)
-                    viewModelScope.launch {
-                        _rateOrderList.emit(Resource.Success(list))
-                    }
+            if (error != null || value == null) {
+                viewModelScope.launch {
+                    _rateOrderList.emit(Resource.Error(error?.message.toString()))
+                }
+            } else {
+                val list = value.toObjects(Order::class.java)
+                viewModelScope.launch {
+                    _rateOrderList.emit(Resource.Success(list))
                 }
             }
+        }
     }
     fun getNotRateOrder(){
         db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
@@ -230,29 +231,83 @@ class OrderViewModel @Inject constructor(
                 }
             }
     }
-    fun updateReceiveOrder(order: Order) {
-        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
-            .collection(ORDER_COLLECTION).document(order.dateTime.toString())
-            .update("status", NOT_RATE_STATUS)
-            .addOnSuccessListener{ }
-            .addOnFailureListener{}
-        db.collection(ORDER_COLLECTION).document(order.dateTime.toString())
-            .update("status", NOT_RATE_STATUS)
-            .addOnSuccessListener {}
-            .addOnFailureListener {}
+
+    fun getRateOrderByTime(star: Long, end: Long){
+        val queryAll = db.collection(ORDER_COLLECTION).whereEqualTo("status", RATE_STATUS)
+                            .orderBy("dateTime", Query.Direction.ASCENDING)
+        val queryTime = db.collection(ORDER_COLLECTION).whereEqualTo("status", RATE_STATUS)
+                            .orderBy("dateTime", Query.Direction.ASCENDING)
+                            .startAt(star).endAt(end)
+
+        val query: Query = if (star == 0L && end == 0L) {
+            queryAll
+        } else {
+            queryTime
+        }
+
+        query.addSnapshotListener { value, error ->
+            if (error != null || value == null) {
+                viewModelScope.launch {
+                    _rateOrderList.emit(Resource.Error(error?.message.toString()))
+                }
+            } else {
+                val list = value.toObjects(Order::class.java)
+                viewModelScope.launch {
+                    _rateOrderList.emit(Resource.Success(list))
+                }
+            }
+        }
     }
+    fun getNotRateOrderByTime(star: Long, end: Long){
+        val queryAll = db.collection(ORDER_COLLECTION).whereEqualTo("status", NOT_RATE_STATUS)
+                            .orderBy("dateTime", Query.Direction.ASCENDING)
+        val queryTime = db.collection(ORDER_COLLECTION).whereEqualTo("status", NOT_RATE_STATUS)
+                            .orderBy("dateTime", Query.Direction.ASCENDING)
+                            .startAt(star).endAt(end)
+
+        val query: Query = if (star == 0L && end == 0L) {
+            queryAll
+        } else {
+            queryTime
+        }
+
+        query.addSnapshotListener { value, error ->
+            if (error != null || value == null) {
+                viewModelScope.launch {
+                    _notRateOrderList.emit(Resource.Error(error?.message.toString()))
+                }
+            }else {
+                val list = value.toObjects(Order::class.java)
+                viewModelScope.launch {
+                    _notRateOrderList.emit(Resource.Success(list))
+                }
+            }
+        }
+    }
+
     fun updateCancelOrder(order: Order) {
+        viewModelScope.launch {
+            _message.emit(Resource.Loading())
+        }
         db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
             .collection(ORDER_COLLECTION).document(order.dateTime.toString())
             .update("status", CANCEL_STATUS)
             .addOnSuccessListener{
-                updateQuantityProductAfterCancel(order.listProduct!!)
+                updateQuantityProductAfterCancel(order.listProduct)
             }
             .addOnFailureListener{}
         db.collection(ORDER_COLLECTION).document(order.dateTime.toString())
             .update("status", CANCEL_STATUS)
-            .addOnSuccessListener {}
-            .addOnFailureListener {}
+            .addOnSuccessListener {
+                viewModelScope.launch {
+                    _message.emit(Resource.Success("Đơn hàng đã bị huỷ"))
+                }
+            }
+            .addOnFailureListener {
+                viewModelScope.launch {
+                    _message.emit(Resource.Error("Error"))
+                }
+            }
     }
     private fun updateQuantityProductAfterCancel(list: List<CartProduct>){
         for (item in list) {
@@ -284,18 +339,18 @@ class OrderViewModel @Inject constructor(
     }
     fun rateOrder(order: Order, star: Int, note: String){
         viewModelScope.launch {
-            _rate.emit(Resource.Loading())
+            _message.emit(Resource.Loading())
         }
         db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
             .collection(ORDER_COLLECTION).document(order.dateTime.toString())
             .update("status", RATE_STATUS, "rateStar", star, "note", note)
             .addOnSuccessListener{
                 viewModelScope.launch {
-                    _rate.emit(Resource.Success("Đánh giá của bạn đã được gửi đi!"))
+                    _message.emit(Resource.Success("Đánh giá của bạn đã được gửi đi!"))
                 }
             }.addOnFailureListener{
                 viewModelScope.launch {
-                    _rate.emit(Resource.Error("Lỗi hệ thống"))
+                    _message.emit(Resource.Error("Lỗi hệ thống"))
                 }
             }
         db.collection(ORDER_COLLECTION).document(order.dateTime.toString())
@@ -317,18 +372,46 @@ class OrderViewModel @Inject constructor(
                 }
             }
     }
-    fun getOrderCompleteListByTime(time: Long, time1: Long){
+    fun getAll(){
         db.collection(ORDER_COLLECTION)
-            .whereIn("status", mutableListOf(NOT_RATE_STATUS, RATE_STATUS))
-            .startAt(time).endAt(time1)
             .get().addOnSuccessListener {
                 val list = it.toObjects(Order::class.java)
                 viewModelScope.launch {
-                    _completeOrderList.emit(Resource.Success(list))
+                    _time.emit(Resource.Success(list))
                 }
             }.addOnFailureListener{
                 viewModelScope.launch {
-                    _completeOrderList.emit(Resource.Error(it.message.toString()))
+                    _time.emit(Resource.Error(it.message.toString()))
+                }
+            }
+    }
+    fun updateOrder(order: Order, updateStatus: String){
+        viewModelScope.launch {
+            _message.emit(Resource.Loading())
+        }
+        db.collection(USER_COLLECTION).document(order.userId)
+            .collection(ORDER_COLLECTION).document(order.dateTime.toString())
+            .update("status", updateStatus)
+            .addOnSuccessListener{
+                viewModelScope.launch {
+                    _message.emit(Resource.Success("Success"))
+                }
+            }
+            .addOnFailureListener{
+                viewModelScope.launch {
+                    _message.emit(Resource.Error("Error"))
+                }
+            }
+        db.collection(ORDER_COLLECTION).document(order.dateTime.toString())
+            .update("status", updateStatus)
+            .addOnSuccessListener {
+                viewModelScope.launch {
+                    _message.emit(Resource.Success("Đơn hàng đã được xác nhận"))
+                }
+            }
+            .addOnFailureListener {
+                viewModelScope.launch {
+                    _message.emit(Resource.Error("Error"))
                 }
             }
     }

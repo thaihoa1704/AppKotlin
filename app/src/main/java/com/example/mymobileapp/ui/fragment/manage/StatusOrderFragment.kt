@@ -1,24 +1,22 @@
-package com.example.mymobileapp.ui.fragment.shopping
+package com.example.mymobileapp.ui.fragment.manage
 
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymobileapp.R
 import com.example.mymobileapp.adapter.OrderAdapter
-import com.example.mymobileapp.databinding.FragmentOrderProcessBinding
+import com.example.mymobileapp.databinding.FragmentStatusOrderBinding
 import com.example.mymobileapp.listener.ClickItemOrderListener
 import com.example.mymobileapp.model.Order
-import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.OrderViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,47 +24,38 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
-class OrderProcessFragment : Fragment(), ClickItemOrderListener {
-    private lateinit var binding: FragmentOrderProcessBinding
-    private lateinit var controller: NavController
+class StatusOrderFragment : Fragment(), ClickItemOrderListener {
+    private lateinit var binding: FragmentStatusOrderBinding
     private lateinit var confirmAdapter: OrderAdapter
     private lateinit var packAdapter: OrderAdapter
     private lateinit var shippingAdapter: OrderAdapter
-    private lateinit var completeAdapter: OrderAdapter
     private lateinit var cancelAdapter: OrderAdapter
     private val orderViewModel by viewModels<OrderViewModel>()
-    private lateinit var user: User
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentOrderProcessBinding.inflate(inflater, container, false)
+        binding = FragmentStatusOrderBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        controller = Navigation.findNavController(view)
-
-        user = requireArguments().getSerializable("user") as User
 
         orderViewModel.getConfirmOrder()
         orderViewModel.getPackOrder()
         orderViewModel.getShippingOrder()
-        orderViewModel.getCompleteOrder()
         orderViewModel.getCancelOrder()
 
         setConfirmOrderRecycleView()
         setPackOrderRecycleView()
         setShippingOrderRecycleView()
-        setCompleteOrderRecycleView()
         setCancelOrderRecycleView()
 
         var confirm = -1
         var pack = -1
         var shipping = -1
-        var complete = -1
         var cancel = -1
         lifecycleScope.launchWhenStarted {
             orderViewModel.confirmOrder.collectLatest {
@@ -123,24 +112,6 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
             }
         }
         lifecycleScope.launchWhenStarted {
-            orderViewModel.completeOrderList.collectLatest {
-                when(it){
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
-                    }
-                    is Resource.Loading ->{}
-                    is Resource.Success -> {
-                        if (it.data!!.isEmpty()) {
-                            complete = 0
-                        }else{
-                            complete = 1
-                            completeAdapter.differ.submitList(it.data)
-                        }
-                    }
-                }
-            }
-        }
-        lifecycleScope.launchWhenStarted {
             orderViewModel.cancelOrderList.collectLatest {
                 when(it){
                     is Resource.Error -> {
@@ -162,7 +133,6 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
         binding.tvConfirm.setOnClickListener { setConfirm(confirm) }
         binding.tvPack.setOnClickListener { setPack(pack) }
         binding.tvShipping.setOnClickListener { setShipping(shipping) }
-        binding.tvDelivered.setOnClickListener { setDelivered(complete) }
         binding.tvCancel.setOnClickListener { setCancel(cancel) }
 
         var id = 0
@@ -180,14 +150,13 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
                 setShipping(shipping)
             }
             4 -> {
-                setDelivered(complete)
+                setCancel(cancel)
             }
         }
         binding.imgBack.setOnClickListener {
-            controller.popBackStack()
+
         }
     }
-
     private fun setCancel(cancel: Int) {
         if (cancel == 0) {
             binding.tvEmpty5.visibility = View.VISIBLE
@@ -201,7 +170,6 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.GONE
         binding.rcvPack.visibility = View.GONE
-        binding.rcvComplete.visibility = View.GONE
         binding.rcvCancel.visibility = View.VISIBLE
         binding.tvConfirm.setTextColor(Color.parseColor("#FF000000"))
         binding.tvConfirm.typeface = Typeface.DEFAULT
@@ -212,9 +180,6 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
         binding.tvPack.setTextColor(Color.parseColor("#FF000000"))
         binding.tvPack.typeface = Typeface.DEFAULT
         binding.linePack.visibility = View.GONE
-        binding.tvDelivered.setTextColor(Color.parseColor("#FF000000"))
-        binding.tvDelivered.typeface = Typeface.DEFAULT
-        binding.lineDelivered.visibility = View.GONE
         binding.tvCancel.setTextColor(Color.parseColor("#FF5722"))
         binding.tvCancel.typeface = Typeface.DEFAULT_BOLD
         binding.lineCancel.visibility = View.VISIBLE
@@ -233,7 +198,6 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.GONE
         binding.rcvPack.visibility = View.VISIBLE
-        binding.rcvComplete.visibility = View.GONE
         binding.rcvCancel.visibility = View.GONE
         binding.tvConfirm.setTextColor(Color.parseColor("#FF000000"))
         binding.tvConfirm.typeface = Typeface.DEFAULT
@@ -244,9 +208,6 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
         binding.tvPack.setTextColor(Color.parseColor("#FF5722"))
         binding.tvPack.typeface = Typeface.DEFAULT_BOLD
         binding.linePack.visibility = View.VISIBLE
-        binding.tvDelivered.setTextColor(Color.parseColor("#FF000000"))
-        binding.tvDelivered.typeface = Typeface.DEFAULT
-        binding.lineDelivered.visibility = View.GONE
         binding.tvCancel.setTextColor(Color.parseColor("#FF000000"))
         binding.tvCancel.typeface = Typeface.DEFAULT
         binding.lineCancel.visibility = View.GONE
@@ -265,7 +226,6 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
         binding.rcvConfirm.visibility = View.VISIBLE
         binding.rcvShipping.visibility = View.GONE
         binding.rcvPack.visibility = View.GONE
-        binding.rcvComplete.visibility = View.GONE
         binding.rcvCancel.visibility = View.GONE
         binding.tvConfirm.setTextColor(Color.parseColor("#FF5722"))
         binding.tvConfirm.typeface = Typeface.DEFAULT_BOLD
@@ -276,9 +236,6 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
         binding.tvPack.setTextColor(Color.parseColor("#FF000000"))
         binding.tvPack.typeface = Typeface.DEFAULT
         binding.linePack.visibility = View.GONE
-        binding.tvDelivered.setTextColor(Color.parseColor("#FF000000"))
-        binding.tvDelivered.typeface = Typeface.DEFAULT
-        binding.lineDelivered.visibility = View.GONE
         binding.tvCancel.setTextColor(Color.parseColor("#FF000000"))
         binding.tvCancel.typeface = Typeface.DEFAULT
         binding.lineCancel.visibility = View.GONE
@@ -297,7 +254,6 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.VISIBLE
         binding.rcvPack.visibility = View.GONE
-        binding.rcvComplete.visibility = View.GONE
         binding.rcvCancel.visibility = View.GONE
         binding.tvShipping.setTextColor(Color.parseColor("#FF5722"))
         binding.tvShipping.typeface = Typeface.DEFAULT_BOLD
@@ -308,50 +264,15 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
         binding.tvPack.setTextColor(Color.parseColor("#FF000000"))
         binding.tvPack.typeface = Typeface.DEFAULT
         binding.linePack.visibility = View.GONE
-        binding.tvDelivered.setTextColor(Color.parseColor("#FF000000"))
-        binding.tvDelivered.typeface = Typeface.DEFAULT
-        binding.lineDelivered.visibility = View.GONE
         binding.tvCancel.setTextColor(Color.parseColor("#FF000000"))
         binding.tvCancel.typeface = Typeface.DEFAULT
         binding.lineCancel.visibility = View.GONE
-    }
-
-    private fun setDelivered(complete: Int) {
-        if (complete == 0) {
-            binding.tvEmpty4.visibility = View.VISIBLE
-        } else{
-            binding.tvEmpty4.visibility = View.GONE
-        }
-        binding.tvEmpty1.visibility = View.GONE
-        binding.tvEmpty2.visibility = View.GONE
-        binding.tvEmpty3.visibility = View.GONE
-        binding.tvEmpty5.visibility = View.GONE
-        binding.rcvConfirm.visibility = View.GONE
-        binding.rcvShipping.visibility = View.GONE
-        binding.rcvComplete.visibility = View.VISIBLE
-        binding.rcvCancel.visibility = View.GONE
-        binding.rcvPack.visibility = View.GONE
-        binding.tvDelivered.setTextColor(Color.parseColor("#FF5722"))
-        binding.tvDelivered.typeface = Typeface.DEFAULT_BOLD
-        binding.lineDelivered.visibility = View.VISIBLE
-        binding.tvConfirm.setTextColor(Color.parseColor("#FF000000"))
-        binding.tvConfirm.typeface = Typeface.DEFAULT
-        binding.lineConfirm.visibility = View.GONE
-        binding.tvShipping.setTextColor(Color.parseColor("#FF000000"))
-        binding.tvShipping.typeface = Typeface.DEFAULT
-        binding.lineShipping.visibility = View.GONE
-        binding.tvCancel.setTextColor(Color.parseColor("#FF000000"))
-        binding.tvCancel.typeface = Typeface.DEFAULT
-        binding.lineCancel.visibility = View.GONE
-        binding.tvPack.setTextColor(Color.parseColor("#FF000000"))
-        binding.tvPack.typeface = Typeface.DEFAULT
-        binding.linePack.visibility = View.GONE
     }
 
     private fun setConfirmOrderRecycleView() {
         confirmAdapter = OrderAdapter(this)
         binding.rcvConfirm.apply {
-            layoutManager = LinearLayoutManager(this@OrderProcessFragment.context)
+            layoutManager = LinearLayoutManager(this@StatusOrderFragment.context)
             adapter = confirmAdapter
         }
     }
@@ -359,7 +280,7 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
     private fun setPackOrderRecycleView() {
         packAdapter = OrderAdapter(this)
         binding.rcvPack.apply {
-            layoutManager = LinearLayoutManager(this@OrderProcessFragment.context)
+            layoutManager = LinearLayoutManager(this@StatusOrderFragment.context)
             adapter = packAdapter
         }
     }
@@ -367,30 +288,19 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
     private fun setShippingOrderRecycleView() {
         shippingAdapter = OrderAdapter(this)
         binding.rcvShipping.apply {
-            layoutManager = LinearLayoutManager(this@OrderProcessFragment.context)
+            layoutManager = LinearLayoutManager(this@StatusOrderFragment.context)
             adapter = shippingAdapter
-        }
-    }
-
-    private fun setCompleteOrderRecycleView() {
-        completeAdapter = OrderAdapter(this)
-        binding.rcvComplete.apply {
-            layoutManager = LinearLayoutManager(this@OrderProcessFragment.context)
-            adapter = completeAdapter
         }
     }
     private fun setCancelOrderRecycleView() {
         cancelAdapter = OrderAdapter(this)
         binding.rcvCancel.apply {
-            layoutManager = LinearLayoutManager(this@OrderProcessFragment.context)
+            layoutManager = LinearLayoutManager(this@StatusOrderFragment.context)
             adapter = cancelAdapter
         }
     }
+
     override fun onClick(order: Order) {
-        val bundle = Bundle()
-        bundle.putSerializable("order", order)
-        bundle.putSerializable("user", user)
-        bundle.putString("from", "orderProcessFragment")
-        controller.navigate(R.id.action_orderProcessFragment_to_detailOrderFragment, bundle)
+
     }
 }

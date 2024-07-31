@@ -90,11 +90,7 @@ class LoginFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.user.collectLatest {
                 when (it) {
-                    is Resource.Error -> {
-                        Handler().postDelayed({
-                            controller.navigate(R.id.action_splashFragment_to_loginFragment)
-                        }, 3000)
-                    }
+                    is Resource.Error -> {}
                     is Resource.Loading -> {}
                     is Resource.Success ->{
                         Handler().postDelayed({

@@ -1,6 +1,7 @@
 package com.example.mymobileapp.ui.fragment.shopping
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +22,12 @@ import com.example.mymobileapp.listener.ClickItemVersionListener
 import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.ProductColor
+import com.example.mymobileapp.model.User
 import com.example.mymobileapp.model.Version
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.CartViewModel
 import com.example.mymobileapp.viewmodel.ProductViewModel
+import com.example.mymobileapp.viewmodel.UserViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -36,6 +39,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
     private lateinit var controller: NavController
     private val viewModel by viewModels<ProductViewModel>()
     private val cartViewModel by viewModels<CartViewModel>()
+    private val userViewModel by viewModels<UserViewModel>()
     private var product: Product? = null
     private val imageAdapter by lazy { ImageAdapter() }
     private val colorAdapter by lazy { ColorAdapter(this) }
@@ -43,6 +47,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
     private val phoneVersionAdapter by lazy { PhoneVersionAdapter(this) }
     private lateinit var versionSelected: Version
     private var startFragment: String? = null
+    private var type = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,9 +60,21 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lifecycleScope.launchWhenStarted {
+            userViewModel.user.collectLatest {
+                when (it) {
+                    is Resource.Error -> {}
+                    is Resource.Loading -> {}
+                    is Resource.Success ->{
+                        type = it.data!!.type
+                    }
+                }
+            }
+        }
+
         controller = Navigation.findNavController(view)
-        product = requireArguments().getSerializable("ProductModel") as Product
-        startFragment = requireArguments().getString("StartFragment")
+        product = requireArguments().getSerializable("product") as Product
+        startFragment = requireArguments().getString("startFragment")
         binding.tvProductName.text = product!!.name
         binding.tvDescription.text = product!!.description
 
@@ -104,13 +121,17 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
                                     setAddButtonOff()
                                 } else {
                                     versionSelected = it.data[0]
-                                    setAddButtonOn()
+                                    setAddButtonOn(type, it.data[0].quantity)
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+
+        if (type == "admin") {
+            binding.btnAdd.isEnabled = false
         }
 
         binding.btnAdd.setOnClickListener{
@@ -134,7 +155,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
             }
         }
         binding.imgBack.setOnClickListener{
-            if (startFragment == "ProductListFragment") {
+            if (startFragment == "productListFragment") {
                 removeFragment()
             } else {
                 controller.popBackStack()
@@ -142,12 +163,17 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
         }
     }
 
-    private fun setAddButtonOn() {
-        binding.apply {
-            tvPrice.visibility = View.VISIBLE
-            btnAdd.text = "Thêm vào giỏ hàng"
-            btnAdd.isEnabled = true
-            btnAdd.visibility = View.VISIBLE
+    private fun setAddButtonOn(type: String, quantity: Int) {
+        binding.tvPrice.visibility = View.VISIBLE
+        binding.btnAdd.visibility = View.VISIBLE
+
+        if (type == "admin") {
+            binding.btnAdd.text = "Số lượng: " + quantity.toString()
+        } else {
+            binding.apply {
+                btnAdd.text = "Thêm vào giỏ hàng"
+                btnAdd.isEnabled = true
+            }
         }
     }
 

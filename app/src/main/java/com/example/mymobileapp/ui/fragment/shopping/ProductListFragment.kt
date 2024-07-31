@@ -202,8 +202,8 @@ class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.
     }
     private fun addFragment(fragment: Fragment, product: Product) {
         val bundle = Bundle()
-        bundle.putSerializable("ProductModel", product)
-        bundle.putString("StartFragment", "ProductListFragment");
+        bundle.putSerializable("product", product)
+        bundle.putString("startFragment", "productListFragment");
         fragment.arguments = bundle
         val fragmentManager = requireActivity().supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()

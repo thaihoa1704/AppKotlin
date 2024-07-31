@@ -3,6 +3,7 @@ package com.example.mymobileapp.model
 import java.io.Serializable
 
 data class Order(
+    var userId: String = "",
     var listProduct: List<CartProduct> = emptyList(),
     var dateTime: Long = 0,
     var contact: String = "",
@@ -12,5 +13,5 @@ data class Order(
     var rateStar: Int = 0,
     var note: String = ""
 ) : Serializable {
-    constructor() : this(emptyList(), 0, "", "", "", 0, 0, "")
+    constructor() : this("", emptyList(), 0, "", "", "", 0, 0, "")
 }

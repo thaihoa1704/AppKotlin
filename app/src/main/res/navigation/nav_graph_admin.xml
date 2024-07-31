@@ -84,7 +84,14 @@
         android:id="@+id/orderListFragment"
         android:name="com.example.mymobileapp.ui.fragment.manage.OrderListFragment"
         android:label="fragment_order_list"
-        tools:layout="@layout/fragment_order_list" />
+        tools:layout="@layout/fragment_order_list" >
+        <action
+            android:id="@+id/action_orderListFragment_to_deliveredFragment2"
+            app:destination="@id/deliveredFragment2" />
+        <action
+            android:id="@+id/action_orderListFragment_to_statusOrderFragment"
+            app:destination="@id/statusOrderFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailAccountFragment"
         android:name="com.example.mymobileapp.ui.fragment.manage.DetailAccountFragment"
@@ -93,6 +100,9 @@
         <action
             android:id="@+id/action_detailAccountFragment_to_addressFragment2"
             app:destination="@id/addressFragment2" />
+        <action
+            android:id="@+id/action_detailAccountFragment_to_orderProcessFragment2"
+            app:destination="@id/orderProcessFragment2" />
     </fragment>
     <fragment
         android:id="@+id/statisticalFragment"
@@ -104,4 +114,45 @@
         android:name="com.example.mymobileapp.ui.fragment.user.AddressFragment"
         android:label="fragment_address"
         tools:layout="@layout/fragment_address" />
+    <fragment
+        android:id="@+id/orderProcessFragment2"
+        android:name="com.example.mymobileapp.ui.fragment.shopping.OrderProcessFragment"
+        android:label="fragment_order_process"
+        tools:layout="@layout/fragment_order_process" >
+        <action
+            android:id="@+id/action_orderProcessFragment2_to_detailOrderFragment2"
+            app:destination="@id/detailOrderFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/deliveredFragment2"
+        android:name="com.example.mymobileapp.ui.fragment.shopping.DeliveredFragment"
+        android:label="fragment_delivered"
+        tools:layout="@layout/fragment_delivered" >
+        <action
+            android:id="@+id/action_deliveredFragment2_to_detailOrderFragment2"
+            app:destination="@id/detailOrderFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailOrderFragment2"
+        android:name="com.example.mymobileapp.ui.fragment.shopping.DetailOrderFragment"
+        android:label="fragment_detail_order"
+        tools:layout="@layout/fragment_detail_order" >
+        <action
+            android:id="@+id/action_detailOrderFragment2_to_rateOrderFragment2"
+            app:destination="@id/rateOrderFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/rateOrderFragment2"
+        android:name="com.example.mymobileapp.ui.fragment.shopping.RateOrderFragment"
+        android:label="fragment_rate_order"
+        tools:layout="@layout/fragment_rate_order" />
+    <fragment
+        android:id="@+id/statusOrderFragment"
+        android:name="com.example.mymobileapp.ui.fragment.manage.StatusOrderFragment"
+        android:label="fragment_status_order"
+        tools:layout="@layout/fragment_status_order" >
+        <action
+            android:id="@+id/action_statusOrderFragment_to_detailOrderFragment2"
+            app:destination="@id/detailOrderFragment2" />
+    </fragment>
 </navigation>

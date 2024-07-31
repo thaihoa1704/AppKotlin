@@ -113,7 +113,7 @@ class HomeFragment : Fragment(), ClickItemProductListener {
 
     override fun onClickItemProduct(product: Product) {
         val bundle = Bundle()
-        bundle.putSerializable("ProductModel", product)
+        bundle.putSerializable("product", product)
         controller.navigate(R.id.action_homeFragment_to_detailProductFragment, bundle)
     }
 }

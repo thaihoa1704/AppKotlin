@@ -52,12 +52,12 @@ class StatisticalFragment : Fragment() {
     private val dateFormat1 = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
     private var dateString: String = ""
     private var dateString1: String = ""
-    private var confirm = 10
-    private var pack = 10
-    private var shipping = 10
-    private var notRate = 10
-    private var rate = 10
-    private var cancel = 12
+    private var confirm = 0
+    private var pack = 0
+    private var shipping = 0
+    private var notRate = 0
+    private var rate = 0
+    private var cancel = 0
     private val list = mutableListOf<CartProduct>()
     private val listCount = mutableListOf<ProductCount>()
     private val countAdapter by lazy { CountAdapter() }
@@ -139,27 +139,26 @@ class StatisticalFragment : Fragment() {
                                 listCount.add(productCount)
                             }
                             countAdapter.differ.submitList(listCount)
+                            binding.scrollView.visibility = View.VISIBLE
+                            setPieCharOrder()
+                            setQuantity()
                         }
                     }
                 }
             }
         }
-//        val frequencyMap: MutableMap<CartProduct, Int> = HashMap()
-//        for (s in list) {
-//            var count = frequencyMap[s]
-//            if (count == null) count = 0
-//            frequencyMap[s] = count + 1
-//        }
         binding.imgSearch.setOnClickListener {
-            //dateTime = dateFormat.parse(binding.tvDate.text.toString())!!.time
-            //dateTime1 = dateFormat.parse(binding.tvDate1.text.toString())!!.time
             val start = dateFormat1.parse(dateString)!!.time
             val end = dateFormat1.parse(dateString1)!!.time
             orderViewModel.getOrderListByTime(start, end)
-            //orderViewModel.getOrderCompleteListByTime(start, end)
         }
-        setPieCharOrder()
 
+        binding.imgBack.setOnClickListener {
+            controller.popBackStack()
+        }
+    }
+
+    private fun setQuantity() {
         binding.apply {
             tvConfirm.text = confirm.toString()
             tvPack.text = pack.toString()
@@ -168,12 +167,9 @@ class StatisticalFragment : Fragment() {
             tvRate.text = rate.toString()
             tvCancel.text = cancel.toString()
         }
-        binding.imgBack.setOnClickListener {
-            controller.popBackStack()
-        }
     }
+
     private fun setPieCharOrder() {
-        Toast.makeText(requireContext(), RATE_STATUS, Toast.LENGTH_SHORT).show()
         val entries = listOf(
             PieEntry(confirm.toFloat(), ""),
             PieEntry(pack.toFloat(), ""),
@@ -203,17 +199,6 @@ class StatisticalFragment : Fragment() {
             pieChart.setDrawCenterText(true)
             pieChart.invalidate()
         }
-//        binding.pieChart.data = data
-//
-//        pieChart.setEntryLabelColor(Color.WHITE)
-//        binding.pieChart.setUsePercentValues(true)
-//        binding.pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
-//        binding.pieChart.setUsePercentValues(true)
-//        binding.pieChart.description.isEnabled = false
-//        binding.pieChart.centerText = "Đơn hàng"
-//        binding.pieChart.animateY(1000)
-//        binding.pieChart.setDrawCenterText(true)
-//        binding.pieChart.invalidate()
     }
 
     private val textWatcher: TextWatcher = object : TextWatcher {

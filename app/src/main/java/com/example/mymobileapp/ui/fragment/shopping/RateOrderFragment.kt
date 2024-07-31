@@ -41,7 +41,7 @@ class RateOrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         controller = Navigation.findNavController(view)
 
-        val order = requireArguments().getSerializable("Order") as Order
+        val order = requireArguments().getSerializable("order") as Order
         val rate = requireArguments().getString("rate")
 
         if (rate == RATE_STATUS) {
@@ -75,7 +75,7 @@ class RateOrderFragment : Fragment() {
         }
 
         lifecycleScope.launchWhenStarted {
-            orderViewModel.rate.collectLatest {
+            orderViewModel.message.collectLatest {
                 when(it){
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()

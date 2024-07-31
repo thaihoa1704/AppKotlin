@@ -141,7 +141,7 @@ class OrderFragment : Fragment() {
                 val orderDialog = ChoiceDialog("OrderFragment", object : OnClickChoice {
                     override fun onClick(choice: Boolean?) {
                         if (choice == true) {
-                            order()
+                            order(user.id)
                         }
                     }
                 })
@@ -164,6 +164,8 @@ class OrderFragment : Fragment() {
                         binding.btnOrder.startAnimation()
                     }
                     is Resource.Success -> {
+                        binding.btnOrder.revertAnimation()
+                        Toast.makeText(requireContext(), "Đặt hàng thành công!", Toast.LENGTH_SHORT).show()
                         controller.navigate(R.id.action_orderFragment_to_handleOrderFragment)
                     }
                 }
@@ -197,10 +199,10 @@ class OrderFragment : Fragment() {
             tvAddAddress.visibility = View.GONE
         }
     }
-    private fun order() {
+    private fun order(userId: String) {
         val contact = binding.tvUserName.text.toString().trim() + " - " + binding.tvPhone.text.toString().trim()
         val address = binding.tvAddress.text.toString().trim()
         val total = Convert.ChuyenTien(binding.tvTotal.text.toString().trim()) / 1000
-        orderViewModel.createOrder(listOrder, contact, address, total)
+        orderViewModel.createOrder(userId, listOrder, contact, address, total)
     }
 }

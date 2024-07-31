@@ -47,7 +47,7 @@ class DetailAccountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         controller = Navigation.findNavController(view)
 
-        val user = arguments?.getSerializable("UserModel") as User
+        val user = arguments?.getSerializable("user") as User
 
         binding.apply {
             tvName.text = user.name

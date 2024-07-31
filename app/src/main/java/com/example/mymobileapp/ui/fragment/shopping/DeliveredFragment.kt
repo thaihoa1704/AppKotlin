@@ -18,6 +18,7 @@ import com.example.mymobileapp.adapter.OrderAdapter
 import com.example.mymobileapp.databinding.FragmentDeliveredBinding
 import com.example.mymobileapp.listener.ClickItemOrderListener
 import com.example.mymobileapp.model.Order
+import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.OrderViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,9 +32,12 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
     private val orderViewModel by viewModels<OrderViewModel>()
     private lateinit var rateAdapter: OrderAdapter
     private lateinit var notRateAdapter: OrderAdapter
-    private var notRate = -1
-    private var rate = -1
-    private var id = 1
+//    private var notRate = -1
+//    private var rate = -1
+//    private var id = 1
+//    private var type = ""
+    private var from = ""
+//    private var user = User()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,12 +51,25 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
         super.onViewCreated(view, savedInstanceState)
         controller = Navigation.findNavController(view)
 
-        orderViewModel.getRateOrder()
-        orderViewModel.getNotRateOrder()
+        //type = requireArguments().getString("type").toString()
+        from = requireArguments().getString("from").toString()
+        val start = requireArguments().getLong("start")
+        val end = requireArguments().getLong("end")
+        val user = requireArguments().getSerializable("user") as User
+
+        if(user.type == "admin"){
+            orderViewModel.getRateOrderByTime(start, end)
+            orderViewModel.getNotRateOrderByTime(start, end)
+        }
+        if (user.type == "customer"){
+            orderViewModel.getRateOrder()
+            orderViewModel.getNotRateOrder()
+        }
 
         setRateOrderRecycleView()
         setNotRateOrderRecycleView()
 
+        var rate = -1
         lifecycleScope.launchWhenStarted {
             orderViewModel.rateOrderList.collectLatest {
                 when(it){
@@ -71,6 +88,8 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
                 }
             }
         }
+
+        var notRate = -1
         lifecycleScope.launchWhenStarted {
             orderViewModel.notRateOrderList.collectLatest {
                 when(it){
@@ -90,27 +109,31 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
             }
         }
 
-        binding.tvNotRate.setOnClickListener { notRate() }
-        binding.tvRate.setOnClickListener { rate() }
+        binding.tvNotRate.setOnClickListener { notRate(notRate) }
+        binding.tvRate.setOnClickListener { rate(rate) }
 
+        var id = 0
         if (arguments != null) {
             id = requireArguments().getInt("id")
         }
         when (id) {
             1 -> {
-                notRate()
+                notRate(notRate)
             }
             2 -> {
-                rate()
+                rate(rate)
             }
         }
 
         binding.imgBack.setOnClickListener {
-            controller.popBackStack()
+            if (user.type == "admin") {
+                removeFragment()
+            } else {
+                controller.popBackStack()
+            }
         }
-
     }
-    private fun notRate(){
+    private fun notRate(notRate: Int){
         if (notRate == 0) {
             binding.tvEmpty1.visibility = View.VISIBLE
             binding.rcvRate.visibility = View.GONE
@@ -127,7 +150,7 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
         binding.tvRate.typeface = Typeface.DEFAULT
         binding.lineRate.visibility = View.GONE
     }
-    private fun rate(){
+    private fun rate(rate: Int){
         if (rate == 0) {
             binding.tvEmpty2.visibility = View.VISIBLE
             binding.rcvRate.visibility = View.GONE
@@ -163,8 +186,14 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
 
     override fun onClick(order: Order) {
         val bundle = Bundle()
-        bundle.putSerializable("Order", order)
-        bundle.putString("From", "DeliveredFragment")
+        bundle.putSerializable("order", order)
+        bundle.putString("from", from)
         controller.navigate(R.id.action_deliveredFragment_to_detailOrderFragment, bundle)
+    }
+    private fun removeFragment() {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.remove(this)
+        fragmentTransaction.commit()
     }
 }
