@@ -34,7 +34,6 @@ class UserFragment : Fragment() {
     private val userViewModel by viewModels<UserViewModel>()
     private val orderViewModel by viewModels<OrderViewModel>()
     private val addressViewModel by viewModels<AddressViewModel>()
-    private lateinit var user: User
     private var position = 0
 
     override fun onCreateView(
@@ -51,7 +50,7 @@ class UserFragment : Fragment() {
 
         cartViewModel.selectNoneAllProduct()
 
-        var type = ""
+        var user = User()
         lifecycleScope.launchWhenStarted {
             userViewModel.user.collectLatest {
                 when (it) {
@@ -59,24 +58,26 @@ class UserFragment : Fragment() {
                     is Resource.Loading -> {}
                     is Resource.Success ->{
                         user = it.data!!
-                        type = it.data.type
                         binding.tvUserName.text = it.data.name
+                        orderViewModel.getConfirmOrder(it.data.id)
+                        orderViewModel.getPackOrder(it.data.id)
+                        orderViewModel.getShippingOrder(it.data.id)
+                        orderViewModel.getNotRateOrder(it.data.id)
                     }
                 }
             }
         }
 
-        orderViewModel.getConfirmOrder()
-        orderViewModel.getPackOrder()
-        orderViewModel.getShippingOrder()
-        orderViewModel.getNotRateOrder()
-
         lifecycleScope.launchWhenStarted {
-            orderViewModel.confirmOrder.collectLatest {
+            orderViewModel.confirmOrderList.collectLatest {
                 when(it){
                     is Resource.Error -> {}
-                    is Resource.Loading ->{}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.cvConfirm.visibility = View.GONE
+                    }
                     is Resource.Success -> {
+                        binding.linearProgress.visibility = View.INVISIBLE
                         if (it.data!!.isNotEmpty()) {
                             binding.tvQuantityConfirm.text = it.data.size.toString()
                             binding.cvConfirm.visibility = View.VISIBLE
@@ -86,11 +87,15 @@ class UserFragment : Fragment() {
             }
         }
         lifecycleScope.launchWhenStarted {
-            orderViewModel.packOrder.collectLatest {
+            orderViewModel.packOrderList.collectLatest {
                 when(it){
                     is Resource.Error -> {}
-                    is Resource.Loading ->{}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.cvBox.visibility = View.GONE
+                    }
                     is Resource.Success -> {
+                        binding.linearProgress.visibility = View.INVISIBLE
                         if (it.data!!.isNotEmpty()) {
                             binding.tvQuantityBox.text = it.data.size.toString()
                             binding.cvBox.visibility = View.VISIBLE
@@ -103,8 +108,12 @@ class UserFragment : Fragment() {
             orderViewModel.shippingOrderList.collectLatest {
                 when(it){
                     is Resource.Error -> {}
-                    is Resource.Loading ->{}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.cvShipping.visibility = View.GONE
+                    }
                     is Resource.Success -> {
+                        binding.linearProgress.visibility = View.INVISIBLE
                         if (it.data!!.isNotEmpty()) {
                             binding.tvQuantityShipping.text = it.data.size.toString()
                             binding.cvShipping.visibility = View.VISIBLE
@@ -117,8 +126,12 @@ class UserFragment : Fragment() {
             orderViewModel.notRateOrderList.collectLatest {
                 when(it){
                     is Resource.Error -> {}
-                    is Resource.Loading ->{}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.cvRate.visibility = View.GONE
+                    }
                     is Resource.Success -> {
+                        binding.linearProgress.visibility = View.INVISIBLE
                         if (it.data!!.isNotEmpty()) {
                             binding.tvQuantityRate.text = it.data.size.toString()
                             binding.cvRate.visibility = View.VISIBLE
@@ -155,7 +168,7 @@ class UserFragment : Fragment() {
             val bundle = Bundle()
             bundle.putInt("id", 1)
             bundle.putSerializable("user", user)
-            bundle.putString("type", type)
+            bundle.putString("type", user.type)
             controller.navigate(R.id.action_userFragment_to_deliveredFragment, bundle)
         }
 
@@ -172,12 +185,12 @@ class UserFragment : Fragment() {
         }
         binding.tvLogout.setOnClickListener {
             val logoutDialog = ChoiceDialog("userFragment", object : OnClickChoice {
-                override fun onClick(choice: Boolean?) {
-                    if (choice == true) {
-                        userLogout()
-                    }
+            override fun onClick(choice: Boolean?) {
+                if (choice == true) {
+                    userLogout()
                 }
-            })
+            }
+        })
             logoutDialog.show(requireActivity().supportFragmentManager, null)
         }
     }

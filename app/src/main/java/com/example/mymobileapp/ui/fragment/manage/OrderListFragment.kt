@@ -56,12 +56,6 @@ class OrderListFragment : Fragment() {
 
         controller = Navigation.findNavController(view)
 
-//        if (savedInstanceState != null) {
-//            binding.tvDate.text = savedInstanceState.getString("start")
-//            binding.tvDate1.text = savedInstanceState.getString("end")
-//            binding.layoutSearch.visibility = View.VISIBLE
-//        }
-
         var user = User()
         lifecycleScope.launchWhenStarted {
             userViewModel.user.collectLatest {
@@ -76,16 +70,29 @@ class OrderListFragment : Fragment() {
         }
 
         orderViewModel.getAll()
+
         lifecycleScope.launchWhenStarted {
             orderViewModel.time.collectLatest {
                 when(it){
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
                     }
-                    is Resource.Loading ->{}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.tvQuantity.text = ""
+                        binding.apply {
+                            tvConfirm.text = " "
+                            tvPack.text = " "
+                            tvShipping.text = " "
+                            tvNotRate.text = " "
+                            tvRate.text = " "
+                            tvCancel.text = " "
+                        }
+                    }
                     is Resource.Success -> {
+                        binding.linearProgress.visibility = View.INVISIBLE
                         if (it.data!!.isEmpty()) {
-                            binding.tvTotal.text = "Tổng số đơn hàng: 0"
+                            binding.tvQuantity.text = "0"
                             setQuantity(0, 0, 0, 0, 0, 0)
                         }else{
                             var confirm = 0
@@ -94,7 +101,7 @@ class OrderListFragment : Fragment() {
                             var notRate = 0
                             var rate = 0
                             var cancel = 0
-                            binding.tvTotal.text = "Tổng số đơn hàng: " + it.data.size.toString()
+                            binding.tvQuantity.text = it.data.size.toString()
                             for (i in it.data) {
                                 when (i.status) {
                                     CONFIRM_STATUS -> { confirm++ }
@@ -133,87 +140,72 @@ class OrderListFragment : Fragment() {
                 dateString1 = "$day-${month + 1}-$year 23:59:59"
             }, 2024, 6, 29).show()
         }
-//        dateString = binding.tvDate.text.toString().trim() + " 00:00:00"
-//        dateString1 = binding.tvDate1.text.toString().trim() + " 23:59:59"
 
-        var start: Long = 0
-        var end: Long = 0
+        var start = 0L
+        var end = 0L
         binding.btnFind.setOnClickListener {
-            start = dateFormat1.parse(dateString)!!.time
-            end = dateFormat1.parse(dateString1)!!.time
-            orderViewModel.getOrderListByTime(start, end)
+            if (dateString == "" || dateString1 == "") {
+                Toast.makeText(requireContext(), "Không được để trống khoảng thời gian!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }else {
+                start = dateFormat1.parse(dateString)!!.time
+                end = dateFormat1.parse(dateString1)!!.time
+                orderViewModel.getOrderListByTime(start, end)
+            }
         }
         binding.btnAll.setOnClickListener {
             orderViewModel.getAll()
             binding.btnSearch.visibility = View.VISIBLE
             binding.layoutSearch.visibility = View.GONE
             binding.btnFind.visibility = View.GONE
+            binding.tvDate.text = ""
+            binding.tvDate1.text = ""
         }
         binding.layoutConfirm.setOnClickListener {
-            if (binding.tvQuantity.text.toString() == "0"){
-                Toast.makeText(requireContext(), "Không có đơn hàng nào", Toast.LENGTH_SHORT).show()
+            if (binding.tvConfirm.text.toString() == "0"){
+                Toast.makeText(requireContext(), "Không có đơn hàng nào!", Toast.LENGTH_SHORT).show()
             } else{
-                moveToNewFragment(user, start, end)
+                addFragment(StatusOrderFragment(), user, start, end, 1)
             }
         }
         binding.layoutPack.setOnClickListener {
-            if (binding.tvQuantity.text.toString() == "0"){
-                Toast.makeText(requireContext(), "Không có đơn hàng nào", Toast.LENGTH_SHORT).show()
+            if (binding.tvPack.text.toString() == "0"){
+                Toast.makeText(requireContext(), "Không có đơn hàng nào!", Toast.LENGTH_SHORT).show()
             } else{
-                moveToNewFragment(user, start, end)
+                addFragment(StatusOrderFragment(), user, start, end, 2)
             }
         }
         binding.layoutShipping.setOnClickListener {
-            if (binding.tvQuantity.text.toString() == "0"){
-                Toast.makeText(requireContext(), "Không có đơn hàng nào", Toast.LENGTH_SHORT).show()
+            if (binding.tvShipping.text.toString() == "0"){
+                Toast.makeText(requireContext(), "Không có đơn hàng nào!", Toast.LENGTH_SHORT).show()
             } else{
-                moveToNewFragment(user, start, end)
+                addFragment(StatusOrderFragment(), user, start, end, 3)
             }
         }
         binding.layoutNotRate.setOnClickListener {
-            if (binding.tvQuantity.text.toString() == "0"){
-                Toast.makeText(requireContext(), "Không có đơn hàng nào", Toast.LENGTH_SHORT).show()
+            if (binding.tvNotRate.text.toString() == "0"){
+                Toast.makeText(requireContext(), "Không có đơn hàng nào!", Toast.LENGTH_SHORT).show()
             } else{
                 addFragment(DeliveredFragment(), user, start, end, 1)
             }
         }
         binding.layoutRate.setOnClickListener {
-            if (binding.tvQuantity.text.toString() == "0"){
-                Toast.makeText(requireContext(), "Không có đơn hàng nào", Toast.LENGTH_SHORT).show()
+            if (binding.tvRate.text.toString() == "0"){
+                Toast.makeText(requireContext(), "Không có đơn hàng nào!", Toast.LENGTH_SHORT).show()
             } else{
                 addFragment(DeliveredFragment(), user, start, end, 2)
             }
         }
         binding.layoutCancel.setOnClickListener {
-            if (binding.tvQuantity.text.toString() == "0"){
-                Toast.makeText(requireContext(), "Không có đơn hàng nào", Toast.LENGTH_SHORT).show()
+            if (binding.tvCancel.text.toString() == "0"){
+                Toast.makeText(requireContext(), "Không có đơn hàng nào!", Toast.LENGTH_SHORT).show()
             } else{
-                moveToNewFragment(user, start, end)
+                addFragment(StatusOrderFragment(), user, start, end, 4)
             }
         }
-
         binding.imgBack.setOnClickListener {
             controller.popBackStack()
         }
-    }
-
-    private fun moveToNewFragment(user: User, start: Long, end: Long) {
-        val bundle = Bundle()
-        bundle.putSerializable("user", user)
-        bundle.putString("type", "admin")
-        bundle.putString("from", "orderListFragment")
-        bundle.putLong("start", start)
-        bundle.putLong("end", end)
-        controller.navigate(R.id.action_orderListFragment_to_statusOrderFragment, bundle)
-    }
-    private fun moveToCompleteFragment(user: User, start: Long, end: Long) {
-        val bundle = Bundle()
-        bundle.putSerializable("user", user)
-        bundle.putString("type", "admin")
-        bundle.putString("from", "orderListFragment")
-        bundle.putLong("start", start)
-        bundle.putLong("end", end)
-        controller.navigate(R.id.action_orderListFragment_to_deliveredFragment2, bundle)
     }
 
     private fun setQuantity(confirm: Int, pack: Int, shipping: Int, notRate: Int, rate: Int, cancel: Int) {
@@ -251,16 +243,6 @@ class OrderListFragment : Fragment() {
         super.onSaveInstanceState(outState)
     }
 
-//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-//        super.onViewStateRestored(savedInstanceState)
-//        dateString = savedInstanceState?.getString("start", "").toString()
-//        dateString1 = savedInstanceState?.getString("end", "").toString()
-//        if (dateString != "null" && dateString1 != "null") {
-//            binding.tvDate.text = dateString
-//            binding.tvDate1.text = dateString1
-//            binding.layoutSearch.visibility = View.VISIBLE
-//        }
-//    }
     private fun addFragment(fragment: Fragment, user: User, start: Long, end: Long, id: Int) {
         val bundle = Bundle()
         bundle.putSerializable("user", user)

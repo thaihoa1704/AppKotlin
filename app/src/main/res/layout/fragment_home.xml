@@ -55,13 +55,32 @@
                     android:textColor="@color/black"/>
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="155dp"
+                android:layout_height="180dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginLeft="18dp"
                 android:layout_marginRight="18dp">
-            </LinearLayout>
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <me.relex.circleindicator.CircleIndicator3
+                    android:id="@+id/circle_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp"
+                    android:layout_marginBottom="8dp"
+                    app:ci_drawable="@drawable/circle_selected"
+                    app:ci_drawable_unselected="@drawable/circle_unselected"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -70,16 +89,16 @@
                 android:textSize="24dp"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="5dp">
             </TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp">
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -88,30 +107,30 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_gravity="center"
                         android:background="@drawable/btn_categore_background">
 
                         <ImageView
                             android:id="@+id/img_phone"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:src="@drawable/smartphone_icon"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Điện thoại"
+                        android:layout_marginTop="5dp"
                         android:gravity="center"
+                        android:text="Điện thoại"
                         android:textColor="@color/black"
-                        android:textSize="17dp"
-                        android:layout_marginTop="5dp"/>
+                        android:textSize="18dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -121,30 +140,30 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_gravity="center"
                         android:background="@drawable/btn_categore_background">
 
                         <ImageView
                             android:id="@+id/img_laptop"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
                             android:src="@drawable/computer_icon"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Laptop"
+                        android:layout_marginTop="5dp"
                         android:gravity="center"
+                        android:text="Laptop"
                         android:textColor="@color/black"
-                        android:textSize="17dp"
-                        android:layout_marginTop="5dp"/>
+                        android:textSize="18dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -154,30 +173,30 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_gravity="center"
                         android:background="@drawable/btn_categore_background">
 
                         <ImageView
                             android:id="@+id/img_headPhone"
-                            android:layout_width="39dp"
-                            android:layout_height="39dp"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
                             android:src="@drawable/headphones_icon"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tai nghe"
+                        android:layout_marginTop="5dp"
                         android:gravity="center"
+                        android:text="Tai nghe"
                         android:textColor="@color/black"
-                        android:textSize="17dp"
-                        android:layout_marginTop="5dp"/>
+                        android:textSize="18dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -187,15 +206,15 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
                         android:layout_gravity="center"
                         android:background="@drawable/btn_categore_background">
 
                         <ImageView
                             android:id="@+id/img_watch"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
                             android:src="@drawable/watch_icon"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -206,55 +225,23 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
                         android:text="Đồng hồ"
-                        android:gravity="center"
                         android:textColor="@color/black"
-                        android:textSize="17dp"
-                        android:layout_marginTop="5dp" />
+                        android:textSize="18dp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    android:orientation="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/btn_categore_background">
-
-                        <ImageView
-                            android:id="@+id/image_accessory"
-                            android:layout_width="33dp"
-                            android:layout_height="33dp"
-                            android:src="@drawable/cable_icon"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Phụ kiện"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="17dp"
-                        android:layout_marginTop="5dp" />
-                </LinearLayout>
             </LinearLayout>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:text="Sản phẩm nổi bật"
                 android:textSize="23dp"
                 android:gravity="center|left"
                 android:textColor="@color/black"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="7dp"
                 android:layout_marginLeft="10dp"/>
 
             <ProgressBar
@@ -274,6 +261,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp" />
         </LinearLayout>
+
     </ScrollView>
 
 </FrameLayout>

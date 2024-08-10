@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/frame_layout_status"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.manage.StatusOrderFragment">
 
@@ -166,11 +168,23 @@
             </LinearLayout>
         </HorizontalScrollView>
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/linear_progress"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            app:indicatorColor="@color/black"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"/>
+
         <ScrollView
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+            app:layout_constraintTop_toBottomOf="@+id/linear_progress"
             android:layout_width="0dp"
             android:layout_height="0dp">
 
@@ -180,51 +194,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_empty1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="60dp"
-                    android:text="Không có đơn hàng!"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_empty2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="60dp"
-                    android:text="Không có đơn hàng!"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_empty3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="60dp"
-                    android:text="Không có đơn hàng!"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_empty4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="60dp"
-                    android:text="Không có đơn hàng!"
-                    android:textColor="@color/black"
-                    android:textSize="22dp"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_empty5"
+                    android:id="@+id/tv_empty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

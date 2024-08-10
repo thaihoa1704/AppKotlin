@@ -12,9 +12,16 @@ import com.example.mymobileapp.helper.Convert
 import com.example.mymobileapp.listener.ClickItemOrderListener
 import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.model.Order
+import com.example.mymobileapp.util.constants.CANCEL_STATUS
+import com.example.mymobileapp.util.constants.CONFIRM_STATUS
+import com.example.mymobileapp.util.constants.NOT_RATE_STATUS
+import com.example.mymobileapp.util.constants.PACKING_STATUS
+import com.example.mymobileapp.util.constants.RATE_STATUS
+import com.example.mymobileapp.util.constants.SHIPPING_STATUS
 
-class OrderAdapter(private val clickItemOrderListener: ClickItemOrderListener
+class OrderAdapter(private val type: String, private val clickItemOrderListener: ClickItemOrderListener
 ): RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
+    private var userType = type
 
     private val diffCallback = object : DiffUtil.ItemCallback<Order>() {
         override fun areItemsTheSame(oldItem: Order, newItem: Order): Boolean {
@@ -45,13 +52,13 @@ class OrderAdapter(private val clickItemOrderListener: ClickItemOrderListener
                                  private val clickItemOrderListener: ClickItemOrderListener
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(order: Order) {
-            val product = order.listProduct!![0].product
+            val product = order.listProduct[0].product
             val img = product.images[0]
             Glide.with(itemView).load(img).into(binding.imgProduct)
             binding.tvProductName.text = product.name
 
             val category: String = product.category
-            val cartProduct = order.listProduct!![0]
+            val cartProduct = order.listProduct[0]
             if (category == "Điện thoại") {
                 setPhoneVersionData(cartProduct)
             } else if (category == "Laptop") {
@@ -69,7 +76,7 @@ class OrderAdapter(private val clickItemOrderListener: ClickItemOrderListener
             val price: String = Convert.DinhDangTien(cartProduct.version.price) + " đ"
             binding.tvPrice.text = price
 
-            if (order.listProduct!!.size > 1) {
+            if (order.listProduct.size > 1) {
                 binding.tvAnother.visibility = View.VISIBLE
                 binding.line1.visibility = View.VISIBLE
             } else {
@@ -78,35 +85,49 @@ class OrderAdapter(private val clickItemOrderListener: ClickItemOrderListener
             }
 
             var totalQuantity = 0
-            for (item in order.listProduct!!) {
+            for (item in order.listProduct) {
                 totalQuantity += item.quantity
             }
             binding.tvTotalQuantity.text = totalQuantity.toString()
             val totalPrice: String = Convert.DinhDangTien(order.total) + " đ"
             binding.tvTatolPrice.text = totalPrice
 
-            val process: String = order.status.toString()
-            when (process) {
-                "Chờ xác nhận" -> {
-                    binding.btnProcess.text = "Đang xử lý"
-                    binding.tvStatus.visibility = View.GONE
-                    //binding.btnProcess.setBackgroundColor(Color.parseColor("#CECFCF"));
+            when (val process: String = order.status) {
+                CONFIRM_STATUS -> {
+                    if (userType == "customer") {
+                        binding.btnProcess.text = "Đang xử lý"
+                        binding.tvStatus.visibility = View.GONE
+                    } else {
+                        binding.btnProcess.text = CONFIRM_STATUS
+                    }
                 }
-                "Đơn hàng đang trên đường giao đến bạn" -> {
-                    binding.tvStatus.text = process
-                    binding.tvStatus.visibility = View.VISIBLE
-                    binding.btnProcess.text = "Đã nhận được hàng"
-                    //binding.btnProcess.setBackgroundColor(Color.parseColor("#49d7c8"));
+                PACKING_STATUS -> {
+                    binding.btnProcess.text = PACKING_STATUS
                 }
-                "Chưa đánh giá" -> {
-                    binding.tvStatus.visibility = View.GONE
-                    binding.btnProcess.text = "Đánh giá"
-                    //binding.btnProcess.setBackgroundColor(Color.parseColor("#49d7c8"));
+                SHIPPING_STATUS -> {
+                    if (userType == "customer") {
+                        binding.tvStatus.text = "Đơn hàng đang trên đường giao đến bạn"
+                        binding.tvStatus.visibility = View.VISIBLE
+                        binding.btnProcess.text = "Đã nhận được hàng"
+                    } else {
+                        binding.btnProcess.text = "Đơn hàng đang được giao"
+                    }
                 }
-                "Đã đánh giá" -> {
+                NOT_RATE_STATUS -> {
+                    if (userType == "customer") {
+                        binding.tvStatus.visibility = View.GONE
+                        binding.btnProcess.text = "Đánh giá"
+                    } else {
+                        binding.btnProcess.text = NOT_RATE_STATUS
+                    }
+                }
+                RATE_STATUS -> {
                     binding.tvStatus.visibility = View.GONE
                     binding.btnProcess.text = process
-                    //binding.btnProcess.setBackgroundColor(Color.parseColor("#49d7c8"));
+                }
+                CANCEL_STATUS -> {
+                    binding.btnProcess.text = process
+                    binding.tvStatus.visibility = View.GONE
                 }
             }
 

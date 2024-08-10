@@ -38,6 +38,8 @@ class AddAddressFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         controller = Navigation.findNavController(view)
 
+        //var position = requireArguments().getInt("position")
+
         binding.btnAdd.isEnabled = false
         binding.edtAddress1.addTextChangedListener(textWatcher)
         binding.edtAddress2.addTextChangedListener(textWatcher)
@@ -72,7 +74,8 @@ class AddAddressFragment : Fragment() {
         }
 
         binding.imgBack.setOnClickListener{
-            controller.popBackStack()
+            //controller.popBackStack()
+            removeFragment()
         }
     }
     private val textWatcher: TextWatcher = object : TextWatcher {
@@ -87,5 +90,11 @@ class AddAddressFragment : Fragment() {
 
         override fun afterTextChanged(editable: Editable) {
         }
+    }
+    private fun removeFragment() {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.remove(this)
+        fragmentTransaction.commit()
     }
 }

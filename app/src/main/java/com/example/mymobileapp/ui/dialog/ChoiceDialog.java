@@ -29,24 +29,29 @@ public class ChoiceDialog extends DialogFragment {
         binding = ChoiceDialogBinding.inflate(getLayoutInflater());
         dialog.setContentView(binding.getRoot());
 
-        if (fragmentName.equals("CartFragment")){
+        if (fragmentName.equals("cartFragment")){
             binding.label.setVisibility(View.GONE);
             binding.tvTitle1.setText("Xoá sản phẩm khỏi giỏ hàng?");
             binding.tvTitle2.setVisibility(View.GONE);
             binding.btnYes.setText("Xoá");
-        } else if (fragmentName.equals("OrderFragment")){
+        } else if (fragmentName.equals("orderFragment")){
             binding.label.setText("XÁC NHẬN ĐẶT HÀNG");
             binding.label.setVisibility(View.VISIBLE);
             binding.tvTitle1.setText("Bạn có chắc chắn muốn đặt hàng");
             binding.tvTitle2.setVisibility(View.GONE);
             binding.btnYes.setText("Thanh toán");
-        } else if (fragmentName.equals("DetailOrderFragment")){
+        } else if (fragmentName.equals("detailOrderFragment")){
             binding.label.setText("XÁC NHẬN HUỶ ĐƠN HÀNG");
             binding.label.setVisibility(View.VISIBLE);
             binding.tvTitle1.setVisibility(View.GONE);
             binding.tvTitle2.setVisibility(View.VISIBLE);
             binding.btnYes.setText("Huỷ đơn");
-        } else {
+        } else if (fragmentName.equals("userFragment") || fragmentName.equals("adminActivity")){
+            binding.label.setVisibility(View.GONE);
+            binding.tvTitle1.setText("Bạn có muốn đăng xuất không?");
+            binding.tvTitle2.setVisibility(View.GONE);
+            binding.btnYes.setText("Đăng xuất");
+        } else if (fragmentName.equals("editImage")) {
             binding.label.setVisibility(View.GONE);
             binding.tvTitle1.setText("Bạn có muốn đăng xuất không?");
             binding.tvTitle2.setVisibility(View.GONE);

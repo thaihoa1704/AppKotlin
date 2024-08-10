@@ -17,6 +17,8 @@ import com.example.mymobileapp.adapter.OrderAdapter
 import com.example.mymobileapp.databinding.FragmentStatusOrderBinding
 import com.example.mymobileapp.listener.ClickItemOrderListener
 import com.example.mymobileapp.model.Order
+import com.example.mymobileapp.model.User
+import com.example.mymobileapp.ui.fragment.shopping.DetailOrderFragment
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.OrderViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +33,8 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
     private lateinit var shippingAdapter: OrderAdapter
     private lateinit var cancelAdapter: OrderAdapter
     private val orderViewModel by viewModels<OrderViewModel>()
+    private var user = User()
+    private var idStatus = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,51 +47,80 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        orderViewModel.getConfirmOrder()
-        orderViewModel.getPackOrder()
-        orderViewModel.getShippingOrder()
-        orderViewModel.getCancelOrder()
+        val start = requireArguments().getLong("start")
+        val end = requireArguments().getLong("end")
+        user = requireArguments().getSerializable("user") as User
+        idStatus = requireArguments().getInt("id")
 
-        setConfirmOrderRecycleView()
-        setPackOrderRecycleView()
-        setShippingOrderRecycleView()
-        setCancelOrderRecycleView()
+        orderViewModel.getConfirmOrderByTime(start, end)
+        orderViewModel.getPackOrderByTime(start, end)
+        orderViewModel.getShippingOrderByTime(start, end)
+        orderViewModel.getCancelOrderByTime(start, end)
 
-        var confirm = -1
-        var pack = -1
-        var shipping = -1
-        var cancel = -1
+        var confirm = 0
+        var pack = 0
+        var shipping = 0
+        var cancel = 0
+
         lifecycleScope.launchWhenStarted {
-            orderViewModel.confirmOrder.collectLatest {
+            orderViewModel.confirmOrderList.collectLatest {
                 when(it){
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
+                    is Resource.Error -> {}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.rcvConfirm.visibility = View.GONE
                     }
-                    is Resource.Loading ->{}
                     is Resource.Success -> {
-                        if (it.data!!.isEmpty()) {
-                            confirm = 0
-                        }else{
-                            confirm = 1
-                            confirmAdapter.differ.submitList(it.data)
+                        binding.linearProgress.visibility = View.INVISIBLE
+                        if (idStatus == 1) {
+                            binding.rcvConfirm.visibility = View.VISIBLE
+                            if (it.data!!.isEmpty()) {
+                                confirm = 0
+                            }else{
+                                confirm = it.data.size
+                                confirmAdapter.differ.submitList(it.data)
+                            }
+                            setConfirm(confirm)
+                            idStatus = 0
+                        } else {
+                            if (it.data!!.isEmpty()) {
+                                confirm = 0
+                            }else{
+                                confirm = it.data.size
+                                confirmAdapter.differ.submitList(it.data)
+                            }
                         }
                     }
                 }
             }
         }
         lifecycleScope.launchWhenStarted {
-            orderViewModel.packOrder.collectLatest {
+            orderViewModel.packOrderList.collectLatest {
                 when(it){
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
+                    is Resource.Error -> {}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.rcvPack.visibility = View.GONE
                     }
-                    is Resource.Loading ->{}
                     is Resource.Success -> {
-                        if (it.data!!.isEmpty()) {
-                            pack = 0
-                        }else{
-                            pack = 1
-                            shippingAdapter.differ.submitList(it.data)
+                        binding.linearProgress.visibility = View.INVISIBLE
+                        if (idStatus == 2){
+                            binding.rcvPack.visibility = View.VISIBLE
+                            if (it.data!!.isEmpty()) {
+                                pack = 0
+                            }else{
+                                pack = it.data.size
+                                packAdapter.differ.submitList(it.data)
+                            }
+                            setPack(pack)
+                            idStatus = 0
+                        } else {
+                            if (it.data!!.isEmpty()) {
+                                pack = 0
+                            }else {
+                                pack = it.data.size
+                                packAdapter.differ.submitList(it.data)
+                            }
                         }
                     }
                 }
@@ -96,16 +129,30 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
         lifecycleScope.launchWhenStarted {
             orderViewModel.shippingOrderList.collectLatest {
                 when(it){
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
+                    is Resource.Error -> {}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.rcvShipping.visibility = View.GONE
                     }
-                    is Resource.Loading ->{}
                     is Resource.Success -> {
-                        if (it.data!!.isEmpty()) {
-                            shipping = 0
+                        binding.linearProgress.visibility = View.INVISIBLE
+                        if (idStatus == 3){
+                            binding.rcvShipping.visibility = View.VISIBLE
+                            if (it.data!!.isEmpty()) {
+                                shipping = 0
+                            }else {
+                                shipping = it.data.size
+                                shippingAdapter.differ.submitList(it.data)
+                            }
+                            setShipping(shipping)
+                            idStatus = 0
                         } else {
-                            shipping = 1
-                            shippingAdapter.differ.submitList(it.data)
+                            if (it.data!!.isEmpty()) {
+                                shipping = 0
+                            } else {
+                                shipping = it.data.size
+                                shippingAdapter.differ.submitList(it.data)
+                            }
                         }
                     }
                 }
@@ -114,59 +161,57 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
         lifecycleScope.launchWhenStarted {
             orderViewModel.cancelOrderList.collectLatest {
                 when(it){
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
+                    is Resource.Error -> {}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.rcvCancel.visibility = View.GONE
                     }
-                    is Resource.Loading ->{}
                     is Resource.Success -> {
-                        if (it.data!!.isEmpty()) {
-                            cancel = 0
-                        }else{
-                            cancel = 1
-                            cancelAdapter.differ.submitList(it.data)
+                        binding.linearProgress.visibility = View.INVISIBLE
+                        if (idStatus == 4){
+                            binding.rcvCancel.visibility = View.VISIBLE
+                            if (it.data!!.isEmpty()) {
+                                cancel = 0
+                            }else {
+                                cancel = it.data.size
+                                cancelAdapter.differ.submitList(it.data)
+                            }
+                            setCancel(cancel)
+                            idStatus = 0
+                        } else {
+                            if (it.data!!.isEmpty()) {
+                                cancel = 0
+                            } else {
+                                cancel = it.data.size
+                                cancelAdapter.differ.submitList(it.data)
+                            }
                         }
                     }
                 }
             }
         }
 
+        setConfirmOrderRecycleView()
+        setPackOrderRecycleView()
+        setShippingOrderRecycleView()
+        setCancelOrderRecycleView()
+
         binding.tvConfirm.setOnClickListener { setConfirm(confirm) }
         binding.tvPack.setOnClickListener { setPack(pack) }
         binding.tvShipping.setOnClickListener { setShipping(shipping) }
         binding.tvCancel.setOnClickListener { setCancel(cancel) }
 
-        var id = 0
-        if (arguments != null) {
-            id = requireArguments().getInt("id")
-        }
-        when (id) {
-            1 -> {
-                setConfirm(confirm)
-            }
-            2 -> {
-                setPack(pack)
-            }
-            3 -> {
-                setShipping(shipping)
-            }
-            4 -> {
-                setCancel(cancel)
-            }
-        }
         binding.imgBack.setOnClickListener {
-
+            removeFragment()
         }
     }
     private fun setCancel(cancel: Int) {
+        idStatus = 4
         if (cancel == 0) {
-            binding.tvEmpty5.visibility = View.VISIBLE
+            binding.tvEmpty.visibility = View.VISIBLE
         }else{
-            binding.tvEmpty5.visibility = View.GONE
+            binding.tvEmpty.visibility = View.GONE
         }
-        binding.tvEmpty1.visibility = View.GONE
-        binding.tvEmpty2.visibility = View.GONE
-        binding.tvEmpty3.visibility = View.GONE
-        binding.tvEmpty4.visibility = View.GONE
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.GONE
         binding.rcvPack.visibility = View.GONE
@@ -186,15 +231,12 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
     }
 
     private fun setPack(pack: Int) {
+        idStatus = 2
         if (pack == 0) {
-            binding.tvEmpty2.visibility = View.VISIBLE
+            binding.tvEmpty.visibility = View.VISIBLE
         } else{
-            binding.tvEmpty2.visibility = View.GONE
+            binding.tvEmpty.visibility = View.GONE
         }
-        binding.tvEmpty1.visibility = View.GONE
-        binding.tvEmpty3.visibility = View.GONE
-        binding.tvEmpty4.visibility = View.GONE
-        binding.tvEmpty5.visibility = View.GONE
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.GONE
         binding.rcvPack.visibility = View.VISIBLE
@@ -214,15 +256,12 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
     }
 
     private fun setConfirm(confirm: Int) {
+        idStatus = 1
         if (confirm == 0) {
-            binding.tvEmpty1.visibility = View.VISIBLE
+            binding.tvEmpty.visibility = View.VISIBLE
         } else{
-            binding.tvEmpty1.visibility = View.GONE
+            binding.tvEmpty.visibility = View.GONE
         }
-        binding.tvEmpty2.visibility = View.GONE
-        binding.tvEmpty3.visibility = View.GONE
-        binding.tvEmpty4.visibility = View.GONE
-        binding.tvEmpty5.visibility = View.GONE
         binding.rcvConfirm.visibility = View.VISIBLE
         binding.rcvShipping.visibility = View.GONE
         binding.rcvPack.visibility = View.GONE
@@ -242,15 +281,12 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
     }
 
     private fun setShipping(shipping: Int) {
+        idStatus = 3
         if (shipping == 0) {
-            binding.tvEmpty3.visibility = View.VISIBLE
+            binding.tvEmpty.visibility = View.VISIBLE
         } else{
-            binding.tvEmpty3.visibility = View.GONE
+            binding.tvEmpty.visibility = View.GONE
         }
-        binding.tvEmpty1.visibility = View.GONE
-        binding.tvEmpty2.visibility = View.GONE
-        binding.tvEmpty4.visibility = View.GONE
-        binding.tvEmpty5.visibility = View.GONE
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.VISIBLE
         binding.rcvPack.visibility = View.GONE
@@ -270,37 +306,53 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
     }
 
     private fun setConfirmOrderRecycleView() {
-        confirmAdapter = OrderAdapter(this)
+        confirmAdapter = OrderAdapter("admin",this)
         binding.rcvConfirm.apply {
             layoutManager = LinearLayoutManager(this@StatusOrderFragment.context)
             adapter = confirmAdapter
         }
     }
-
     private fun setPackOrderRecycleView() {
-        packAdapter = OrderAdapter(this)
+        packAdapter = OrderAdapter("admin",this)
         binding.rcvPack.apply {
             layoutManager = LinearLayoutManager(this@StatusOrderFragment.context)
             adapter = packAdapter
         }
     }
-
     private fun setShippingOrderRecycleView() {
-        shippingAdapter = OrderAdapter(this)
+        shippingAdapter = OrderAdapter("admin",this)
         binding.rcvShipping.apply {
             layoutManager = LinearLayoutManager(this@StatusOrderFragment.context)
             adapter = shippingAdapter
         }
     }
     private fun setCancelOrderRecycleView() {
-        cancelAdapter = OrderAdapter(this)
+        cancelAdapter = OrderAdapter("admin",this)
         binding.rcvCancel.apply {
             layoutManager = LinearLayoutManager(this@StatusOrderFragment.context)
             adapter = cancelAdapter
         }
     }
-
     override fun onClick(order: Order) {
-
+        addFragment(DetailOrderFragment(), user, order)
+    }
+    private fun addFragment(fragment: Fragment, user: User, order: Order) {
+        val bundle = Bundle()
+        bundle.putSerializable("user", user)
+        bundle.putSerializable("order", order)
+        bundle.putString("type", "admin")
+        bundle.putString("from", "deliveredFragment")
+        fragment.arguments = bundle
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.frame_layout_status, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+    private fun removeFragment() {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.remove(this)
+        fragmentTransaction.commit()
     }
 }

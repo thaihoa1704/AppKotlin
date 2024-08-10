@@ -37,11 +37,11 @@ class OrderViewModel @Inject constructor(
     private val _createOrder = MutableSharedFlow<Resource<String>>()
     val createOrder = _createOrder.asSharedFlow()
 
-    private val _confirmOrder = MutableStateFlow<Resource<List<Order>>>(Resource.Loading())
-    val confirmOrder: StateFlow<Resource<List<Order>>> = _confirmOrder
+    private val _confirmOrderList = MutableStateFlow<Resource<List<Order>>>(Resource.Loading())
+    val confirmOrderList: StateFlow<Resource<List<Order>>> = _confirmOrderList
 
-    private val _packOrder = MutableStateFlow<Resource<List<Order>>>(Resource.Loading())
-    val packOrder: StateFlow<Resource<List<Order>>> = _packOrder
+    private val _packOrderList = MutableStateFlow<Resource<List<Order>>>(Resource.Loading())
+    val packOrderList: StateFlow<Resource<List<Order>>> = _packOrderList
 
     private val _shippingOrderList = MutableStateFlow<Resource<List<Order>>>(Resource.Loading())
     val shippingOrderList: StateFlow<Resource<List<Order>>> = _shippingOrderList
@@ -125,44 +125,44 @@ class OrderViewModel @Inject constructor(
         }
     }
 
-    fun getConfirmOrder(){
-        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
+    fun getConfirmOrder(userId: String){
+        db.collection(USER_COLLECTION).document(userId)
             .collection(ORDER_COLLECTION)
             .whereEqualTo("status", CONFIRM_STATUS)
             .orderBy("dateTime", Query.Direction.DESCENDING)
             .addSnapshotListener { value, error ->
                 if (error != null || value == null) {
                     viewModelScope.launch {
-                        _confirmOrder.emit(Resource.Error(error?.message.toString()))
+                        _confirmOrderList.emit(Resource.Error(error?.message.toString()))
                     }
                 }else {
                     val list = value.toObjects(Order::class.java)
                     viewModelScope.launch {
-                        _confirmOrder.emit(Resource.Success(list))
+                        _confirmOrderList.emit(Resource.Success(list))
                     }
                 }
             }
     }
-    fun getPackOrder(){
-        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
+    fun getPackOrder(userId: String){
+        db.collection(USER_COLLECTION).document(userId)
             .collection(ORDER_COLLECTION)
             .whereEqualTo("status", PACKING_STATUS)
             .orderBy("dateTime", Query.Direction.DESCENDING)
             .addSnapshotListener { value, error ->
                 if (error != null || value == null) {
                     viewModelScope.launch {
-                        _packOrder.emit(Resource.Error(error?.message.toString()))
+                        _packOrderList.emit(Resource.Error(error?.message.toString()))
                     }
                 }else {
                     val list = value.toObjects(Order::class.java)
                     viewModelScope.launch {
-                        _packOrder.emit(Resource.Success(list))
+                        _packOrderList.emit(Resource.Success(list))
                     }
                 }
             }
     }
-    fun getShippingOrder(){
-        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
+    fun getShippingOrder(userId: String){
+        db.collection(USER_COLLECTION).document(userId)
             .collection(ORDER_COLLECTION)
             .whereEqualTo("status", SHIPPING_STATUS)
             .orderBy("dateTime", Query.Direction.DESCENDING)
@@ -179,8 +179,8 @@ class OrderViewModel @Inject constructor(
                 }
             }
     }
-    fun getRateOrder(){
-        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
+    fun getRateOrder(userId: String){
+        db.collection(USER_COLLECTION).document(userId)
             .collection(ORDER_COLLECTION).whereEqualTo("status", RATE_STATUS)
             .addSnapshotListener { value, error ->
             if (error != null || value == null) {
@@ -195,8 +195,8 @@ class OrderViewModel @Inject constructor(
             }
         }
     }
-    fun getNotRateOrder(){
-        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
+    fun getNotRateOrder(userId: String){
+        db.collection(USER_COLLECTION).document(userId)
             .collection(ORDER_COLLECTION)
             .whereEqualTo("status", NOT_RATE_STATUS)
             .orderBy("dateTime", Query.Direction.DESCENDING)
@@ -213,8 +213,8 @@ class OrderViewModel @Inject constructor(
                 }
             }
     }
-    fun getCancelOrder(){
-        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
+    fun getCancelOrder(userId: String){
+        db.collection(USER_COLLECTION).document(userId)
             .collection(ORDER_COLLECTION)
             .whereEqualTo("status", CANCEL_STATUS)
             .orderBy("dateTime", Query.Direction.DESCENDING)
@@ -319,8 +319,8 @@ class OrderViewModel @Inject constructor(
                 .addOnFailureListener {}
         }
     }
-    fun getCompleteOrder() {
-        db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
+    fun getCompleteOrder(userId: String) {
+        db.collection(USER_COLLECTION).document(userId)
             .collection(ORDER_COLLECTION)
             .whereIn("status", mutableListOf(NOT_RATE_STATUS, RATE_STATUS))
             .orderBy("dateTime", Query.Direction.DESCENDING)
@@ -361,29 +361,32 @@ class OrderViewModel @Inject constructor(
     fun getOrderListByTime(time: Long, time1: Long){
         db.collection(ORDER_COLLECTION).orderBy("dateTime", Query.Direction.ASCENDING)
             .startAt(time).endAt(time1)
-            .get().addOnSuccessListener {
-                val list = it.toObjects(Order::class.java)
-                viewModelScope.launch {
-                    _time.emit(Resource.Success(list))
-                }
-            }.addOnFailureListener{
-                viewModelScope.launch {
-                    _time.emit(Resource.Error(it.message.toString()))
+            .addSnapshotListener { value, error ->
+                if (error != null || value == null) {
+                    viewModelScope.launch {
+                        _time.emit(Resource.Error(error?.message.toString()))
+                    }
+                } else {
+                    val list = value.toObjects(Order::class.java)
+                    viewModelScope.launch {
+                        _time.emit(Resource.Success(list))
+                    }
                 }
             }
     }
     fun getAll(){
-        db.collection(ORDER_COLLECTION)
-            .get().addOnSuccessListener {
-                val list = it.toObjects(Order::class.java)
+        db.collection(ORDER_COLLECTION).addSnapshotListener { value, error ->
+            if (error != null || value == null) {
+                viewModelScope.launch {
+                    _time.emit(Resource.Error(error?.message.toString()))
+                }
+            } else {
+                val list = value.toObjects(Order::class.java)
                 viewModelScope.launch {
                     _time.emit(Resource.Success(list))
                 }
-            }.addOnFailureListener{
-                viewModelScope.launch {
-                    _time.emit(Resource.Error(it.message.toString()))
-                }
             }
+        }
     }
     fun updateOrder(order: Order, updateStatus: String){
         viewModelScope.launch {
@@ -406,7 +409,7 @@ class OrderViewModel @Inject constructor(
             .update("status", updateStatus)
             .addOnSuccessListener {
                 viewModelScope.launch {
-                    _message.emit(Resource.Success("Đơn hàng đã được xác nhận"))
+                    _message.emit(Resource.Success("Success"))
                 }
             }
             .addOnFailureListener {
@@ -414,5 +417,109 @@ class OrderViewModel @Inject constructor(
                     _message.emit(Resource.Error("Error"))
                 }
             }
+    }
+    fun getConfirmOrderByTime(star: Long, end: Long){
+        val queryAll = db.collection(ORDER_COLLECTION).whereEqualTo("status", CONFIRM_STATUS)
+            .orderBy("dateTime", Query.Direction.ASCENDING)
+        val queryTime = db.collection(ORDER_COLLECTION).whereEqualTo("status", CONFIRM_STATUS)
+            .orderBy("dateTime", Query.Direction.ASCENDING)
+            .startAt(star).endAt(end)
+
+        val query: Query = if (star == 0L && end == 0L) {
+            queryAll
+        } else {
+            queryTime
+        }
+
+        query.addSnapshotListener { value, error ->
+            if (error != null || value == null) {
+                viewModelScope.launch {
+                    _confirmOrderList.emit(Resource.Error(error?.message.toString()))
+                }
+            } else {
+                val list = value.toObjects(Order::class.java)
+                viewModelScope.launch {
+                    _confirmOrderList.emit(Resource.Success(list))
+                }
+            }
+        }
+    }
+    fun getPackOrderByTime(star: Long, end: Long){
+        val queryAll = db.collection(ORDER_COLLECTION).whereEqualTo("status", PACKING_STATUS)
+            .orderBy("dateTime", Query.Direction.ASCENDING)
+        val queryTime = db.collection(ORDER_COLLECTION).whereEqualTo("status", PACKING_STATUS)
+            .orderBy("dateTime", Query.Direction.ASCENDING)
+            .startAt(star).endAt(end)
+
+        val query: Query = if (star == 0L && end == 0L) {
+            queryAll
+        } else {
+            queryTime
+        }
+
+        query.addSnapshotListener { value, error ->
+            if (error != null || value == null) {
+                viewModelScope.launch {
+                    _packOrderList.emit(Resource.Error(error?.message.toString()))
+                }
+            } else {
+                val list = value.toObjects(Order::class.java)
+                viewModelScope.launch {
+                    _packOrderList.emit(Resource.Success(list))
+                }
+            }
+        }
+    }
+    fun getShippingOrderByTime(star: Long, end: Long){
+        val queryAll = db.collection(ORDER_COLLECTION).whereEqualTo("status", SHIPPING_STATUS)
+            .orderBy("dateTime", Query.Direction.ASCENDING)
+        val queryTime = db.collection(ORDER_COLLECTION).whereEqualTo("status", SHIPPING_STATUS)
+            .orderBy("dateTime", Query.Direction.ASCENDING)
+            .startAt(star).endAt(end)
+
+        val query: Query = if (star == 0L && end == 0L) {
+            queryAll
+        } else {
+            queryTime
+        }
+
+        query.addSnapshotListener { value, error ->
+            if (error != null || value == null) {
+                viewModelScope.launch {
+                    _shippingOrderList.emit(Resource.Error(error?.message.toString()))
+                }
+            } else {
+                val list = value.toObjects(Order::class.java)
+                viewModelScope.launch {
+                    _shippingOrderList.emit(Resource.Success(list))
+                }
+            }
+        }
+    }
+    fun getCancelOrderByTime(star: Long, end: Long){
+        val queryAll = db.collection(ORDER_COLLECTION).whereEqualTo("status", CANCEL_STATUS)
+            .orderBy("dateTime", Query.Direction.ASCENDING)
+        val queryTime = db.collection(ORDER_COLLECTION).whereEqualTo("status", CANCEL_STATUS)
+            .orderBy("dateTime", Query.Direction.ASCENDING)
+            .startAt(star).endAt(end)
+
+        val query: Query = if (star == 0L && end == 0L) {
+            queryAll
+        } else {
+            queryTime
+        }
+
+        query.addSnapshotListener { value, error ->
+            if (error != null || value == null) {
+                viewModelScope.launch {
+                    _cancelOrderList.emit(Resource.Error(error?.message.toString()))
+                }
+            } else {
+                val list = value.toObjects(Order::class.java)
+                viewModelScope.launch {
+                    _cancelOrderList.emit(Resource.Success(list))
+                }
+            }
+        }
     }
 }

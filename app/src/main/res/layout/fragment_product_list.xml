@@ -12,17 +12,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginBottom="10dp">
-        <ImageView
-            android:id="@+id/img_back"
-            android:layout_width="25dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="4dp"
-            android:src="@drawable/back_icon"
+        android:layout_marginLeft="8dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/line"/>
+            app:layout_constraintBottom_toTopOf="@+id/line">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_back"
+                android:layout_width="25dp"
+                android:layout_height="24dp"
+                android:src="@drawable/back_icon"
+                android:layout_marginRight="2dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
             android:id="@+id/tv_category_name"
             android:layout_width="match_parent"
@@ -62,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             app:layout_constraintBottom_toTopOf="@+id/rcv_product"
-            app:layout_constraintEnd_toStartOf="@+id/tv_filter"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line">
 
             <ImageView
@@ -89,17 +97,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:text="Bộ lọc"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line"/>
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/process_indicator"
             android:layout_width="match_parent"

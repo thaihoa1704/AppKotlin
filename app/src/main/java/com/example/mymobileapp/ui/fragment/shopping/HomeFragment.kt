@@ -12,9 +12,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymobileapp.R
+import com.example.mymobileapp.adapter.ImageAdapter
 import com.example.mymobileapp.adapter.ProductAdapter
 import com.example.mymobileapp.databinding.FragmentHomeBinding
 import com.example.mymobileapp.listener.ClickItemProductListener
+import com.example.mymobileapp.listener.ClickItemProductListener1
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.CartViewModel
@@ -25,13 +27,14 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
-class HomeFragment : Fragment(), ClickItemProductListener {
+class HomeFragment : Fragment(), ClickItemProductListener, ClickItemProductListener1 {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var controller: NavController
     private val viewModel by viewModels<UserViewModel>()
     private val productViewModel by viewModels<SpecialProductViewModel>()
     private val cartViewModel by viewModels<CartViewModel>()
     private lateinit var productAdapter: ProductAdapter
+    private val imageAdapter by lazy { ImageAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +61,21 @@ class HomeFragment : Fragment(), ClickItemProductListener {
                 }
             }
         }
+
+        viewModel.getBanner()
+        lifecycleScope.launchWhenStarted {
+            viewModel.banner.collectLatest {
+                when (it) {
+                    is Resource.Error -> {}
+                    is Resource.Loading -> {}
+                    is Resource.Success ->{
+                        val list = it.data
+                        imageAdapter.differ.submitList(list!![0].str)
+                    }
+                }
+            }
+        }
+        setSlideImage()
 
         setupProductRecyclerView()
 
@@ -86,15 +104,16 @@ class HomeFragment : Fragment(), ClickItemProductListener {
         binding.imgHeadPhone.setOnClickListener { moveToNewFragment("Tai nghe") }
         binding.imgLaptop.setOnClickListener { moveToNewFragment("Laptop") }
         binding.imgWatch.setOnClickListener { moveToNewFragment("Đồng hồ") }
-        binding.imageAccessory.setOnClickListener { moveToNewFragment("Phụ kiện") }
+        //binding.imageAccessory.setOnClickListener { moveToNewFragment("Phụ kiện") }
     }
     private fun moveToNewFragment(category: String) {
         val bundle = Bundle()
         bundle.putString("category", category)
+        bundle.putString("type", "customer")
         controller.navigate(R.id.action_homeFragment_to_productListFragment, bundle)
     }
     private fun setupProductRecyclerView() {
-        productAdapter = ProductAdapter(this)
+        productAdapter = ProductAdapter("customer",this, this)
         binding.rcvProduct.apply {
             layoutManager = LinearLayoutManager(this@HomeFragment.context, LinearLayoutManager.HORIZONTAL, false)
             adapter = productAdapter
@@ -115,5 +134,15 @@ class HomeFragment : Fragment(), ClickItemProductListener {
         val bundle = Bundle()
         bundle.putSerializable("product", product)
         controller.navigate(R.id.action_homeFragment_to_detailProductFragment, bundle)
+    }
+    private fun setSlideImage() {
+        binding.apply {
+            viewPagerImage.adapter = imageAdapter
+            circleIndicator.setViewPager(viewPagerImage)
+        }
+    }
+
+    override fun onClickItemProduct1(product: Product) {
+        //Do nothing
     }
 }

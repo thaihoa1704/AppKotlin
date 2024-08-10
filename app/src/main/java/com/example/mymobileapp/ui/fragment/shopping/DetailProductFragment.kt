@@ -1,7 +1,6 @@
 package com.example.mymobileapp.ui.fragment.shopping
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymobileapp.adapter.ColorAdapter
-import com.example.mymobileapp.adapter.ImageAdapter
+import com.example.mymobileapp.adapter.ImageProductAdapter
 import com.example.mymobileapp.adapter.PhoneVersionAdapter
 import com.example.mymobileapp.databinding.FragmentDetailProductBinding
 import com.example.mymobileapp.helper.Convert
@@ -22,13 +21,11 @@ import com.example.mymobileapp.listener.ClickItemVersionListener
 import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.ProductColor
-import com.example.mymobileapp.model.User
 import com.example.mymobileapp.model.Version
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.CartViewModel
 import com.example.mymobileapp.viewmodel.ProductViewModel
 import com.example.mymobileapp.viewmodel.UserViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -37,15 +34,18 @@ import kotlinx.coroutines.flow.collectLatest
 class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersionListener {
     private lateinit var binding: FragmentDetailProductBinding
     private lateinit var controller: NavController
+    private lateinit var versionSelected: Version
+    private lateinit var productColorSelected: ProductColor
+
     private val viewModel by viewModels<ProductViewModel>()
     private val cartViewModel by viewModels<CartViewModel>()
     private val userViewModel by viewModels<UserViewModel>()
-    private var product: Product? = null
-    private val imageAdapter by lazy { ImageAdapter() }
+
+    private val imageAdapter by lazy { ImageProductAdapter() }
     private val colorAdapter by lazy { ColorAdapter(this) }
-    private lateinit var productColorSelected: ProductColor
     private val phoneVersionAdapter by lazy { PhoneVersionAdapter(this) }
-    private lateinit var versionSelected: Version
+
+    private var product: Product? = null
     private var startFragment: String? = null
     private var type = ""
 
@@ -74,10 +74,12 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
 
         controller = Navigation.findNavController(view)
         product = requireArguments().getSerializable("product") as Product
-        startFragment = requireArguments().getString("startFragment")
+        startFragment = requireArguments().getString("from")
+
         binding.tvProductName.text = product!!.name
         binding.tvDescription.text = product!!.description
 
+        productColorSelected = ProductColor()
         versionSelected = Version()
 
         imageAdapter.differ.submitList(product!!.images)
@@ -86,6 +88,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
         colorAdapter.differ.submitList(product!!.colors)
         setColorAdapter()
 
+        viewModel.getVersion(product!!.id)
         lifecycleScope.launchWhenStarted {
             viewModel.versionList.collectLatest {
                 when (it) {
@@ -154,6 +157,9 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
                 }
             }
         }
+        binding.tvSeeMore.setOnClickListener{
+
+        }
         binding.imgBack.setOnClickListener{
             if (startFragment == "productListFragment") {
                 removeFragment()
@@ -174,6 +180,12 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
                 btnAdd.text = "Thêm vào giỏ hàng"
                 btnAdd.isEnabled = true
             }
+        }
+    }
+    private fun setAddButtonOff() {
+        binding.apply {
+            tvPrice.text = "Hết hàng!"
+            btnAdd.visibility = View.GONE
         }
     }
 
@@ -201,28 +213,27 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
     }
 
     override fun onClickColor(productColor: ProductColor) {
-        binding.tvColor.text = productColor.color
         productColorSelected = productColor
         binding.tvVersion.visibility = View.VISIBLE
-        viewModel.getVersion(product!!.id)
 
         if (versionSelected.id != "0"){
-            viewModel.getDetailPhone(product!!.id, productColorSelected.color, versionSelected.ram, versionSelected.storage)
+            viewModel.getDetailPhone(product!!.id, productColorSelected.name, versionSelected.ram, versionSelected.storage)
         }
     }
 
     override fun onClick(version: Version) {
         versionSelected = version
-        viewModel.getDetailPhone(product!!.id, productColorSelected.color, version.ram, version.storage)
-    }
-    private fun setAddButtonOff() {
-        binding.apply {
-            tvPrice.visibility = View.INVISIBLE
-            btnAdd.text = "Hết hàng"
-            btnAdd.isEnabled = false
-            btnAdd.visibility = View.VISIBLE
+
+        if (productColorSelected.name != "") {
+            viewModel.getDetailPhone(
+                product!!.id,
+                productColorSelected.name,
+                version.ram,
+                version.storage
+            )
         }
     }
+
     private fun getCartProductObj(): CartProduct {
         return CartProduct(
             versionSelected.id,

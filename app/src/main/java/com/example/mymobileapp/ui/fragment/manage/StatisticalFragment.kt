@@ -16,10 +16,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mymobileapp.R
 import com.example.mymobileapp.adapter.CountAdapter
 import com.example.mymobileapp.databinding.FragmentStatisticalBinding
+import com.example.mymobileapp.helper.Convert
 import com.example.mymobileapp.model.CartProduct
+import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.ProductCount
+import com.example.mymobileapp.model.Temp
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.util.constants.CANCEL_STATUS
 import com.example.mymobileapp.util.constants.CONFIRM_STATUS
@@ -60,7 +64,6 @@ class StatisticalFragment : Fragment() {
     private var cancel = 0
     private val list = mutableListOf<CartProduct>()
     private val listCount = mutableListOf<ProductCount>()
-    private val countAdapter by lazy { CountAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,7 +100,7 @@ class StatisticalFragment : Fragment() {
             binding.layoutSearch.visibility = View.VISIBLE
         }
 
-        setupProductRecyclerView()
+//        setupProductRecyclerView()
         lifecycleScope.launchWhenStarted {
             orderViewModel.time.collectLatest {
                 when(it){
@@ -109,6 +112,7 @@ class StatisticalFragment : Fragment() {
                         if (it.data!!.isEmpty()) {
                             binding.tvEmpty.visibility = View.VISIBLE
                         }else{
+                            var total = 0
                             binding.tvEmpty.visibility = View.GONE
                             binding.tvQuantity.text = it.data.size.toString()
                             for (i in it.data) {
@@ -119,14 +123,17 @@ class StatisticalFragment : Fragment() {
                                     NOT_RATE_STATUS -> {
                                         notRate++
                                         list.addAll(i.listProduct)
+                                        total += i.total
                                     }
                                     RATE_STATUS -> {
                                         rate++
                                         list.addAll(i.listProduct)
+                                        total += i.total
                                     }
                                     CANCEL_STATUS -> { cancel++ }
                                 }
                             }
+                            binding.tvPrice.text = Convert.DinhDangTien(total) + " đ"
                             val frequencyMap: MutableMap<CartProduct, Int> = HashMap()
                             for (s in list) {
                                 var count = frequencyMap[s]
@@ -138,8 +145,6 @@ class StatisticalFragment : Fragment() {
                                 val productCount = ProductCount(key, value)
                                 listCount.add(productCount)
                             }
-                            countAdapter.differ.submitList(listCount)
-                            binding.scrollView.visibility = View.VISIBLE
                             setPieCharOrder()
                             setQuantity()
                         }
@@ -151,6 +156,10 @@ class StatisticalFragment : Fragment() {
             val start = dateFormat1.parse(dateString)!!.time
             val end = dateFormat1.parse(dateString1)!!.time
             orderViewModel.getOrderListByTime(start, end)
+            binding.scrollView.visibility = View.VISIBLE
+        }
+        binding.btnProduct.setOnClickListener {
+            addFragment(ProductOrderFragment(), listCount)
         }
 
         binding.imgBack.setOnClickListener {
@@ -219,10 +228,15 @@ class StatisticalFragment : Fragment() {
 
         }
     }
-    private fun setupProductRecyclerView() {
-        binding.rcvProduct.apply {
-            layoutManager = LinearLayoutManager(this@StatisticalFragment.context)
-            adapter = countAdapter
-        }
+    private fun addFragment(fragment: Fragment, list: List<ProductCount>) {
+        val bundle = Bundle()
+        val temp = Temp(list)
+        bundle.putSerializable("list", temp)
+        fragment.arguments = bundle
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.frame_layout_statistical, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 }

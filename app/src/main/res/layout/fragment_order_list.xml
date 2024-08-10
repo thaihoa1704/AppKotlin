@@ -42,39 +42,62 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_label" />
 
-        <Button
-            android:id="@+id/btn_all"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linear_button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Tất cả"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="20dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line" />
+            app:layout_constraintTop_toBottomOf="@+id/line"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btn_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tất cả"
+                    android:background="@color/lavender"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Tìm kiếm"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            app:layout_constraintStart_toEndOf="@+id/btn_all"
-            app:layout_constraintTop_toBottomOf="@+id/line" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btn_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tìm kiếm"
+                    android:background="@color/lavender"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layout_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal"
             android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_all">
+            app:layout_constraintTop_toBottomOf="@+id/linear_button">
 
             <ImageView
                 android:id="@+id/img_from"
@@ -93,16 +116,26 @@
                 android:text="Từ:"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_date"
+            <LinearLayout
                 android:layout_width="100dp"
-                android:layout_height="30dp"
+                android:layout_height="33dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:gravity="center|bottom"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="center|bottom"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@android:color/darker_gray"/>
+            </LinearLayout>
+
 
             <ImageView
                 android:id="@+id/img_to"
@@ -122,31 +155,52 @@
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/tv_date1"
+            <LinearLayout
                 android:layout_width="100dp"
-                android:layout_height="30dp"
+                android:layout_height="33dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:gravity="center|bottom"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_date1"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:gravity="center|bottom"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@android:color/darker_gray"/>
+            </LinearLayout>
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_find"
-            android:layout_width="wrap_content"
+            android:layout_width="177dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
             android:text="Tìm kiếm"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="20dp"
+            android:background="@color/lavender"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_search" />
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/linear_progress"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="5dp"
+            app:indicatorColor="@color/black"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_find"/>
         <TextView
             android:id="@+id/tv_total"
             android:layout_width="wrap_content"
@@ -156,7 +210,7 @@
             android:textColor="@color/black"
             android:textSize="23dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_find" />
+            app:layout_constraintTop_toBottomOf="@+id/linear_progress" />
 
         <TextView
             android:id="@+id/tv_quantity"
@@ -167,7 +221,7 @@
             android:textColor="@color/black"
             android:textSize="23dp"
             app:layout_constraintStart_toEndOf="@+id/tv_total"
-            app:layout_constraintTop_toBottomOf="@+id/btn_find" />
+            app:layout_constraintTop_toBottomOf="@+id/linear_progress" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -226,7 +280,7 @@
 
                             <TextView
                                 android:id="@+id/tv_confirm"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="30dp"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/black"

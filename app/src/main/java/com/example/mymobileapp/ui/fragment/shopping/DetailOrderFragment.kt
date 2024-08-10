@@ -21,6 +21,7 @@ import com.example.mymobileapp.model.Order
 import com.example.mymobileapp.model.User
 import com.example.mymobileapp.ui.dialog.ChoiceDialog
 import com.example.mymobileapp.util.Resource
+import com.example.mymobileapp.util.constants.CANCEL_STATUS
 import com.example.mymobileapp.util.constants.CONFIRM_STATUS
 import com.example.mymobileapp.util.constants.NOT_RATE_STATUS
 import com.example.mymobileapp.util.constants.PACKING_STATUS
@@ -40,6 +41,7 @@ class DetailOrderFragment : Fragment() {
     private val orderProductAdapter by lazy { OrderProductAdapter() }
     private val orderViewModel by viewModels<OrderViewModel>()
     private lateinit var user: User
+    private var from = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +57,17 @@ class DetailOrderFragment : Fragment() {
 
         order = requireArguments().getSerializable("order") as Order
         user = requireArguments().getSerializable("user") as User
+        from = requireArguments().getString("from").toString()
+
+        if (from == "detailAccountFragment" &&
+            order.status == CONFIRM_STATUS||
+            order.status == PACKING_STATUS||
+            order.status == SHIPPING_STATUS||
+            order.status == NOT_RATE_STATUS)
+        {
+            binding.btnCancel.isEnabled = false
+            binding.btnProcess.isEnabled = false
+        }
 
         binding.tvContact.text = order.contact
         binding.tvAddress.text = order.address
@@ -81,19 +94,23 @@ class DetailOrderFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             orderViewModel.message.collectLatest {
                 when(it){
-                    is Resource.Error -> {
-
-                    }
+                    is Resource.Error -> {}
                     is Resource.Loading -> {}
                     is Resource.Success -> {
                         Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
+                        Handler().postDelayed({
+                            if (user.type == "admin") {
+                                removeFragment()
+                            } else {
+                                controller.popBackStack()
+                            }
+                        }, 3000)
                     }
                 }
             }
         }
 
         val status = order.status
-
         when (status) {
             CONFIRM_STATUS -> {
                 if (user.type == "customer") {
@@ -110,12 +127,14 @@ class DetailOrderFragment : Fragment() {
                     binding.btnProcess.text = "Đơn hàng đang được chuẩn bị"
                 } else {
                     binding.btnCancel.visibility = View.GONE
+                    binding.btnProcess.isEnabled = true
                     binding.btnProcess.text = "Xác nhận giao đơn hàng"
                 }
             }
             SHIPPING_STATUS -> {
                 if (user.type == "customer") {
                     binding.btnCancel.visibility = View.GONE
+                    binding.btnProcess.isEnabled = true
                     binding.btnProcess.text = "Đã nhận được hàng"
                 } else {
                     binding.btnCancel.visibility = View.GONE
@@ -125,6 +144,7 @@ class DetailOrderFragment : Fragment() {
             NOT_RATE_STATUS -> {
                 if (user.type == "customer") {
                     binding.btnCancel.visibility = View.GONE
+                    binding.btnProcess.isEnabled = true
                     binding.btnProcess.text = "Đánh giá"
                 }else{
                     binding.btnCancel.visibility = View.GONE
@@ -135,10 +155,14 @@ class DetailOrderFragment : Fragment() {
                 binding.btnCancel.visibility = View.GONE
                 binding.btnProcess.text = "Xem đánh giá"
             }
+            CANCEL_STATUS -> {
+                binding.btnCancel.visibility = View.GONE
+                binding.btnProcess.text = "Đơn hàng đã bị huỷ"
+            }
         }
 
         binding.btnCancel.setOnClickListener {
-            val cancelDialog = ChoiceDialog("DetailOrderFragment", object : OnClickChoice {
+            val cancelDialog = ChoiceDialog("detailOrderFragment", object : OnClickChoice {
                 override fun onClick(choice: Boolean?) {
                     if (choice == true) {
                         cancelOrder(order)
@@ -152,6 +176,9 @@ class DetailOrderFragment : Fragment() {
                 if (user.type == "customer") {
                     //DO NOTHING
                 }else{
+                    Handler().postDelayed({
+                        removeFragment()
+                    }, 3000)
                     orderViewModel.updateOrder(order, PACKING_STATUS)
                 }
             }else if (status == PACKING_STATUS) {
@@ -159,10 +186,16 @@ class DetailOrderFragment : Fragment() {
                     //DO NOTHING
                 } else {
                     orderViewModel.updateOrder(order, SHIPPING_STATUS)
+                    Handler().postDelayed({
+                        removeFragment()
+                    }, 3000)
                 }
             } else if (status == SHIPPING_STATUS) {
                 if (user.type == "customer") {
                     orderViewModel.updateOrder(order, NOT_RATE_STATUS)
+                    Handler().postDelayed({
+                        controller.popBackStack()
+                    }, 3000)
                 }else {
                     //DO NOTHING
                 }
@@ -175,14 +208,31 @@ class DetailOrderFragment : Fragment() {
                     //DO NOTHING
                 }
             } else if (status == RATE_STATUS) {
-                val bundle = Bundle()
-                bundle.putSerializable("Order", order)
-                bundle.putString("rate", RATE_STATUS)
-                controller.navigate(R.id.action_detailOrderFragment_to_rateOrderFragment, bundle)
+                if (from == "detailAccountFragment") {
+                    val bundle = Bundle()
+                    bundle.putSerializable("order", order)
+                    bundle.putString("rate", RATE_STATUS)
+                    controller.navigate(R.id.action_detailOrderFragment2_to_rateOrderFragment2, bundle)
+                } else {
+                    if (user.type == "customer") {
+                        val bundle = Bundle()
+                        bundle.putSerializable("order", order)
+                        bundle.putString("rate", RATE_STATUS)
+                        controller.navigate(R.id.action_detailOrderFragment_to_rateOrderFragment, bundle)
+                    } else {
+                        addFragment(RateOrderFragment(), order, RATE_STATUS)
+                    }
+                }
+            } else if (status == CANCEL_STATUS) {
+                //DO NOTHING
             }
         }
         binding.imgBack.setOnClickListener{
-            controller.popBackStack()
+            if (user.type == "admin") {
+                removeFragment()
+            } else {
+                controller.popBackStack()
+            }
         }
 
     }
@@ -194,5 +244,23 @@ class DetailOrderFragment : Fragment() {
     }
     private fun cancelOrder(order: Order) {
         orderViewModel.updateCancelOrder(order)
+    }
+    private fun removeFragment() {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.remove(this)
+        fragmentTransaction.commit()
+    }
+    private fun addFragment(fragment: Fragment, order: Order, status: String) {
+        val bundle = Bundle()
+        bundle.putSerializable("order", order)
+        bundle.putString("rate", status)
+        bundle.putString("type", "admin")
+        fragment.arguments = bundle
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.frame_layout_delivered, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 }

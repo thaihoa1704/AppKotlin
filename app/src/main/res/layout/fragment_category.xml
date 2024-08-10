@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="Laptop"
+                android:text="Đồng hồ"
                 android:textColor="@color/black"
                 android:textSize="22dp" />
         </LinearLayout>

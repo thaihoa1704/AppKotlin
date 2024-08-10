@@ -15,6 +15,7 @@ import com.example.mymobileapp.adapter.AddressAdapter
 import com.example.mymobileapp.databinding.FragmentAddressBinding
 import com.example.mymobileapp.listener.ClickItemAddressListener
 import com.example.mymobileapp.model.Address
+import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.AddressViewModel
@@ -32,7 +33,7 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
     private var position = 0
     private var check: Boolean = false
     private var user = User()
-    private var type = ""
+    private var typeN = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,9 +50,9 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
 
         position = requireArguments().getInt("position")
         user = requireArguments().getSerializable("user") as User
-        type = requireArguments().getString("type").toString()
+        typeN = requireArguments().getString("type").toString()
 
-        if (type == "admin") {
+        if (typeN == "admin") {
             binding.label.text = "Địa chỉ khách hàng"
             binding.constraintLayout.visibility = View.INVISIBLE
             binding.line2.visibility = View.INVISIBLE
@@ -86,7 +87,8 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
         setupAddressRecyclerView()
 
         binding.constraintLayout.setOnClickListener {
-            controller.navigate(R.id.action_addressFragment_to_addAddressFragment)
+            addFragment(AddAddressFragment())
+            //controller.navigate(R.id.action_addressFragment_to_addAddressFragment)
         }
         binding.imgBack.setOnClickListener{
             controller.popBackStack()
@@ -100,10 +102,17 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
         }
     }
     override fun onClick(address: Address) {
-        if (type == "admin") {
-            return
-        } else {
+        if (user.type == "customer") {
             addressViewModel.selectAddress(address)
+        } else {
+            //DO NOTHING
         }
+    }
+    private fun addFragment(fragment: Fragment) {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.frame_layout_address, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 }

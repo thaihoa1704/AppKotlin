@@ -83,21 +83,24 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="70dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/bg_constrain_layout"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="12dp">
 
             <TextView
                 android:id="@+id/label"
                 android:layout_width="0dp"
-                android:layout_height="27dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="15dp"
                 android:textSize="21dp"
                 android:textColor="@color/black"
                 android:text="Tổng giá trị:"
+                android:gravity="bottom"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_buy"/>
@@ -107,6 +110,7 @@
                 android:textColor="@color/orange"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginLeft="15dp"
                 android:text="0 đ"
                 android:textStyle="bold"
                 android:gravity="center_vertical"

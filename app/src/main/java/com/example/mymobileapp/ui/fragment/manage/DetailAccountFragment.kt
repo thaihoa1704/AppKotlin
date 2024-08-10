@@ -85,25 +85,6 @@ class DetailAccountFragment : Fragment() {
                     is Resource.Loading -> {}
                     is Resource.Success -> {
                         binding.tvQuantity.text = it.data!!.size.toString()
-                        var confirm = 0
-                        var shipping = 0
-                        var notRate = 0
-                        var rate = 0
-                        var cancel = 0
-                        it.data.forEach { order ->
-                            when (order.status) {
-                                CONFIRM_STATUS -> { confirm++ }
-                                SHIPPING_STATUS -> { shipping++ }
-                                NOT_RATE_STATUS -> { notRate++ }
-                                RATE_STATUS -> { rate++ }
-                                CANCEL_STATUS -> { cancel++ }
-                            }
-                        }
-                        binding.tvQuantityConfirm.text = confirm.toString()
-                        binding.tvQuantityShipping.text = shipping.toString()
-                        binding.tvQuantityNotRate.text = notRate.toString()
-                        binding.tvQuantityRate.text = rate.toString()
-                        binding.tvQuantityCancel.text = cancel.toString()
                     }
                 }
             }
@@ -120,6 +101,17 @@ class DetailAccountFragment : Fragment() {
                 Toast.makeText(requireContext(), "Chưa có địa chỉ giao hàng!", Toast.LENGTH_SHORT).show()
             }
         }
+        binding.imgMore1.setOnClickListener {
+            if (binding.tvQuantity.text.toString() == "0") {
+                Toast.makeText(requireContext(), "Chưa có đơn hàng!", Toast.LENGTH_SHORT).show()
+            } else {
+                val bundle = Bundle()
+                bundle.putSerializable("user", user)
+                bundle.putString("from", "detailAccountFragment")
+                controller.navigate(R.id.action_detailAccountFragment_to_orderProcessFragment2, bundle)
+            }
+        }
+
         binding.imgBack.setOnClickListener {
             controller.popBackStack()
         }

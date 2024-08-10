@@ -17,7 +17,7 @@ class ColorAdapter(private val clickItemColorListener: ClickItemColorListener
 
     private val diffCallback = object : DiffUtil.ItemCallback<ProductColor>() {
         override fun areItemsTheSame(oldItem: ProductColor, newItem: ProductColor): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.colorCode == newItem.colorCode
         }
         override fun areContentsTheSame(oldItem: ProductColor, newItem: ProductColor): Boolean {
             return oldItem == newItem

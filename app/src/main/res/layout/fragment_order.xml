@@ -100,7 +100,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="42C Đường số 2 phố 9 Phường Bình Hưng Hoà A Quận Bình Tân TP. Hồ Chí Minh"
             android:textColor="@color/black"
             android:textSize="18dp"
             android:layout_marginRight="3dp"

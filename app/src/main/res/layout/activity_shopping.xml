@@ -23,26 +23,18 @@
         tools:layout_editor_absoluteY="1dp">
     </androidx.fragment.app.FragmentContainerView>
 
-    <View
-        android:id="@+id/line_activity"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/fragmentContainerViewShopping"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/black"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"/>
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu"
-        android:background="@color/white"
+        android:background="@drawable/bg_bottom_nav"
         app:itemIconTint="@color/color_bottom_nav"
         app:labelVisibilityMode="unlabeled"
         app:itemActiveIndicatorStyle="@color/white"/>

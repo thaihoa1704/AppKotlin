@@ -43,6 +43,7 @@ class RateOrderFragment : Fragment() {
 
         val order = requireArguments().getSerializable("order") as Order
         val rate = requireArguments().getString("rate")
+        val type = requireArguments().getString("type")
 
         if (rate == RATE_STATUS) {
             binding.ratingBar.rating = order.rateStar.toFloat()
@@ -96,7 +97,11 @@ class RateOrderFragment : Fragment() {
         }
 
         binding.imgBack.setOnClickListener{
-            controller.popBackStack()
+            if (type == "admin") {
+                removeFragment()
+            } else {
+                controller.popBackStack()
+            }
         }
     }
     private val textWatcher: TextWatcher = object : TextWatcher {
@@ -112,5 +117,11 @@ class RateOrderFragment : Fragment() {
 
         override fun afterTextChanged(editable: Editable) {
         }
+    }
+    private fun removeFragment() {
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.remove(this)
+        fragmentTransaction.commit()
     }
 }

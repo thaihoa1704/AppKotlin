@@ -38,7 +38,6 @@ class OrderFragment : Fragment() {
     private val cartViewModel by viewModels<CartViewModel>()
     private val addressViewModel by viewModels<AddressViewModel>()
     private val orderViewModel by viewModels<OrderViewModel>()
-    private var list: List<Address> = ArrayList()
     private var listOrder: List<CartProduct> = ArrayList()
     private var position = 0
     private var user = User()
@@ -68,6 +67,7 @@ class OrderFragment : Fragment() {
                             tvUserName.text = it.data.name
                             tvPhone.text = it.data.phone
                         }
+                        addressViewModel.getAddressAccount(user)
                     }
                 }
             }
@@ -79,8 +79,7 @@ class OrderFragment : Fragment() {
                     is Resource.Error -> {}
                     is Resource.Loading -> {}
                     is Resource.Success -> {
-                        list = it.data!!
-                        if (it.data.isEmpty()) {
+                        if (it.data!!.isEmpty()) {
                             showEmptyAddress()
                         } else {
                             showAddress()
@@ -138,7 +137,7 @@ class OrderFragment : Fragment() {
             if (binding.tvAddress.text.toString().isEmpty()) {
                 Toast.makeText(requireContext(), "Bạn chưa chọn địa điểm giao hàng!", Toast.LENGTH_SHORT).show()
             } else {
-                val orderDialog = ChoiceDialog("OrderFragment", object : OnClickChoice {
+                val orderDialog = ChoiceDialog("orderFragment", object : OnClickChoice {
                     override fun onClick(choice: Boolean?) {
                         if (choice == true) {
                             order(user.id)
@@ -165,25 +164,22 @@ class OrderFragment : Fragment() {
                     }
                     is Resource.Success -> {
                         binding.btnOrder.revertAnimation()
-                        Toast.makeText(requireContext(), "Đặt hàng thành công!", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(requireContext(), "Đặt hàng thành công!", Toast.LENGTH_SHORT).show()
                         controller.navigate(R.id.action_orderFragment_to_handleOrderFragment)
                     }
                 }
             }
         }
-
         binding.imgBack.setOnClickListener{
             controller.popBackStack()
         }
     }
-
     private fun setupOrderProductRecyclerView() {
         binding.rcvCart.apply {
             layoutManager = LinearLayoutManager(this@OrderFragment.context)
             adapter = orderProductAdapter
         }
     }
-
     private fun showEmptyAddress() {
         binding.apply {
             tvAddress.visibility = View.GONE

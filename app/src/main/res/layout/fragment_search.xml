@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -21,21 +21,35 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="31dp"
                 android:src="@drawable/back_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginLeft="12dp"/>
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="15dp"
                 app:queryHint="Nhập tên sản phẩm..."
                 app:iconifiedByDefault="false"
+                app:layout_constraintStart_toEndOf="@+id/img_back"
+                app:layout_constraintTop_toTopOf="parent"
                 android:background="@drawable/search_view_bg"
                 android:theme="@style/AppSearchView"/>
+            <ImageView
+                android:id="@+id/img_mic"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="5dp"
+                app:layout_constraintStart_toEndOf="@+id/search_view"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/mic_icon"/>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
             android:id="@+id/process_bar"

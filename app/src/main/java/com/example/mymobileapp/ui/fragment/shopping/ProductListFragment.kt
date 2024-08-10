@@ -17,10 +17,13 @@ import com.example.mymobileapp.adapter.OrderPriceAdapter
 import com.example.mymobileapp.adapter.ProductAdapter
 import com.example.mymobileapp.databinding.FragmentProductListBinding
 import com.example.mymobileapp.listener.ClickItemProductListener
+import com.example.mymobileapp.listener.ClickItemProductListener1
 import com.example.mymobileapp.model.Brand
 import com.example.mymobileapp.model.Price
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.ui.dialog.FiltersDialog
+import com.example.mymobileapp.ui.fragment.manage.AddProductFragment
+import com.example.mymobileapp.ui.fragment.manage.EditProductFragment
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.FilterViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,11 +31,12 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
-class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.GetFilters {
+class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.GetFilters,
+    ClickItemProductListener1 {
     private lateinit var binding: FragmentProductListBinding
     private lateinit var controller: NavController
-    private lateinit var category: String
-    private lateinit var type: String
+    private var category = ""
+    private var type = ""
     private lateinit var productAdapter: ProductAdapter
     private lateinit var orderPriceAdapter: OrderPriceAdapter
     private val filterViewModel by viewModels<FilterViewModel>()
@@ -55,8 +59,9 @@ class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.
         super.onViewCreated(view, savedInstanceState)
         controller = Navigation.findNavController(view)
 
-        category = requireArguments().getString("category")!!
-        type = requireArguments().getString("type")!!
+        category = requireArguments().getString("category").toString()
+        type = requireArguments().getString("type").toString()
+
         if (type == "admin") {
             binding.imgAdd.visibility = View.VISIBLE
             binding.imgAdd.setOnClickListener {
@@ -157,8 +162,14 @@ class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.
 
         binding.imgFilter.setOnClickListener { showDialog() }
         binding.imgFilter1.setOnClickListener { showDialog() }
-        binding.tvFilter.setOnClickListener { showDialog() }
 
+        binding.imgAdd.setOnClickListener {
+            addFragment1(AddProductFragment())
+//            val bundle = Bundle()
+//            bundle.putString("type", type)
+//            bundle.putString("category", category)
+//            controller.navigate(R.id.action_productListFragment2_to_addProductFragment, bundle)
+        }
         binding.imgBack.setOnClickListener {
             controller.popBackStack()
         }
@@ -180,7 +191,7 @@ class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.
     }
 
     private fun setupProductRecyclerView() {
-        productAdapter = ProductAdapter(this)
+        productAdapter = ProductAdapter(type, this, this)
         binding.rcvProduct.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(this@ProductListFragment.context, 2)
@@ -189,8 +200,8 @@ class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.
     }
 
     override fun onClickItemProduct(product: Product) {
-        //Creat DetailProductFragment overlaps this fragment
-        //Purpose: Don't reload view of this fragment when close DetailProductFragmen
+        //Create DetailProductFragment overlaps this fragment
+        //Purpose: Don't reload view of this fragment when close DetailProductFragment
         addFragment(DetailProductFragment(), product)
     }
     private fun getList(): List<String> {
@@ -203,7 +214,20 @@ class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.
     private fun addFragment(fragment: Fragment, product: Product) {
         val bundle = Bundle()
         bundle.putSerializable("product", product)
-        bundle.putString("startFragment", "productListFragment");
+        bundle.putString("from", "productListFragment")
+        bundle.putString("type", type)
+        bundle.putString("category", category)
+        fragment.arguments = bundle
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.frame_layout_product_list, fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+    private fun addFragment1(fragment: Fragment) {
+        val bundle = Bundle()
+        bundle.putString("type", type)
+        bundle.putString("category", category)
         fragment.arguments = bundle
         val fragmentManager = requireActivity().supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
@@ -257,5 +281,14 @@ class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.
             else -> "Accessory"
         }
         return name.trim { it <= ' ' }
+    }
+
+    override fun onClickItemProduct1(product: Product) {
+        addFragment(EditProductFragment(), product)
+//        val bundle = Bundle()
+//        bundle.putString("type", type)
+//        bundle.putString("category", category)
+//        bundle.putSerializable("product", product)
+//        controller.navigate(R.id.action_productListFragment2_to_editProductFragment, bundle)
     }
 }

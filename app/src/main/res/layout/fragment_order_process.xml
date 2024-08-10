@@ -37,7 +37,6 @@
             android:layout_marginRight="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
-
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
             android:layout_width="match_parent"
@@ -174,59 +173,40 @@
             </LinearLayout>
         </HorizontalScrollView>
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/linear_progress"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            app:indicatorColor="@color/black"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"/>
+
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+            app:layout_constraintTop_toBottomOf="@+id/linear_progress"
             app:layout_constraintBottom_toBottomOf="parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
                 <TextView
-                    android:id="@+id/tv_empty1"
+                    android:id="@+id/tv_quantity"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Không có đơn hàng!"
+                    android:layout_height="30dp"
                     android:textColor="@color/black"
-                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
                     android:textSize="22dp"
-                    android:layout_marginTop="60dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:layout_marginTop="5dp"/>
                 <TextView
-                    android:id="@+id/tv_empty2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Không có đơn hàng!"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:textSize="22dp"
-                    android:layout_marginTop="60dp"
-                    android:visibility="gone"/>
-                <TextView
-                    android:id="@+id/tv_empty3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Không có đơn hàng!"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:textSize="22dp"
-                    android:layout_marginTop="60dp"
-                    android:visibility="gone"/>
-                <TextView
-                    android:id="@+id/tv_empty4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Không có đơn hàng!"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:textSize="22dp"
-                    android:layout_marginTop="60dp"
-                    android:visibility="gone"/>
-                <TextView
-                    android:id="@+id/tv_empty5"
+                    android:id="@+id/tv_empty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Không có đơn hàng!"

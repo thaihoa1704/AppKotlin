@@ -1,11 +1,11 @@
 package com.example.mymobileapp.ui.fragment.shopping
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -18,7 +18,9 @@ import com.example.mymobileapp.helper.Convert
 import com.example.mymobileapp.listener.ChangeQuantityCartProduct
 import com.example.mymobileapp.listener.ChangeSelectProductListener
 import com.example.mymobileapp.listener.ClickItemProductListener
+import com.example.mymobileapp.listener.OnClickChoice
 import com.example.mymobileapp.model.Product
+import com.example.mymobileapp.ui.dialog.ChoiceDialog
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,8 +75,23 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
             viewModel.totalPrice.collectLatest { price ->
                 price.let {
                     binding.tvTotal.text = Convert.DinhDangTien(it) + " đ"
+                    if (it == 0) {
+                        binding.imgDelete.visibility = View.GONE
+                    } else {
+                        binding.imgDelete.visibility = View.VISIBLE
+                    }
                 }
             }
+        }
+        binding.imgDelete.setOnClickListener {
+            val deleteDialog: ChoiceDialog = ChoiceDialog("cartFragment", object : OnClickChoice {
+                override fun onClick(choice: Boolean?) {
+                    if (choice == true) {
+                        delete()
+                    }
+                }
+            })
+            deleteDialog.show(requireActivity().supportFragmentManager, null)
         }
 
         binding.btnBuy.setOnClickListener {
@@ -84,6 +101,9 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
                 controller.navigate(R.id.action_cartFragment_to_orderFragment)
             }
         }
+    }
+    private fun delete() {
+
     }
 
     private fun showEmpty() {
@@ -132,5 +152,4 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
     override fun onChangeSelect(documentId: String, aBoolean: Boolean) {
         viewModel.selectProduct(documentId, aBoolean)
     }
-
 }

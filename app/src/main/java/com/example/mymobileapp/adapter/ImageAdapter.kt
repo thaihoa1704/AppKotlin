@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mymobileapp.databinding.ItemImageBinding
 
-class ImageAdapter(): RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
+class ImageAdapter: RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
     private val diffCallback = object : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {

@@ -1,9 +1,8 @@
 package com.example.mymobileapp.model
 
  data class ProductColor(
-     var id: String = "",
-     var color: String = "",
+     var name: String = "",
      var colorCode: String = ""
  ){
-    constructor(): this("", "", "")
+    constructor(): this( "", "")
 }

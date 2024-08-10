@@ -29,15 +29,12 @@ import kotlinx.coroutines.flow.collectLatest
 class DeliveredFragment : Fragment(), ClickItemOrderListener {
     private lateinit var binding: FragmentDeliveredBinding
     private lateinit var controller: NavController
-    private val orderViewModel by viewModels<OrderViewModel>()
     private lateinit var rateAdapter: OrderAdapter
     private lateinit var notRateAdapter: OrderAdapter
-//    private var notRate = -1
-//    private var rate = -1
-//    private var id = 1
-//    private var type = ""
+    private val orderViewModel by viewModels<OrderViewModel>()
     private var from = ""
-//    private var user = User()
+    private var user = User()
+    private var idStatus = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,75 +52,91 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
         from = requireArguments().getString("from").toString()
         val start = requireArguments().getLong("start")
         val end = requireArguments().getLong("end")
-        val user = requireArguments().getSerializable("user") as User
+        user = requireArguments().getSerializable("user") as User
+        idStatus = requireArguments().getInt("id")
 
         if(user.type == "admin"){
             orderViewModel.getRateOrderByTime(start, end)
             orderViewModel.getNotRateOrderByTime(start, end)
         }
         if (user.type == "customer"){
-            orderViewModel.getRateOrder()
-            orderViewModel.getNotRateOrder()
+            orderViewModel.getRateOrder(user.id)
+            orderViewModel.getNotRateOrder(user.id)
         }
 
         setRateOrderRecycleView()
         setNotRateOrderRecycleView()
 
-        var rate = -1
+        var rate = 0
         lifecycleScope.launchWhenStarted {
             orderViewModel.rateOrderList.collectLatest {
                 when(it){
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
+                    is Resource.Error -> {}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.rcvRate.visibility = View.GONE
                     }
-                    is Resource.Loading ->{}
                     is Resource.Success -> {
-                        if (it.data!!.isEmpty()) {
-                            rate = 0
+                        binding.linearProgress.visibility = View.INVISIBLE
+                        if (idStatus == 2){
+                            binding.rcvRate.visibility = View.VISIBLE
+                            if (it.data!!.isEmpty()) {
+                                rate = 0
+                            }else{
+                                rate = 1
+                                rateAdapter.differ.submitList(it.data)
+                            }
+                            setRate(rate)
+                            idStatus = 0
                         }else{
-                            rate = 1
-                            rateAdapter.differ.submitList(it.data)
+                            if (it.data!!.isEmpty()) {
+                                rate = 0
+                            }else {
+                                rate = 1
+                                rateAdapter.differ.submitList(it.data)
+                            }
                         }
                     }
                 }
             }
         }
 
-        var notRate = -1
+        var notRate = 0
         lifecycleScope.launchWhenStarted {
             orderViewModel.notRateOrderList.collectLatest {
                 when(it){
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "Lỗi lấy dữ liệu", Toast.LENGTH_SHORT).show()
+                    is Resource.Error -> {}
+                    is Resource.Loading ->{
+                        binding.linearProgress.visibility = View.VISIBLE
+                        binding.rcvNotRate.visibility = View.GONE
                     }
-                    is Resource.Loading ->{}
                     is Resource.Success -> {
-                        if (it.data!!.isEmpty()) {
-                            notRate = 0
-                        }else{
-                            notRate = 1
-                            notRateAdapter.differ.submitList(it.data)
+                        binding.linearProgress.visibility = View.INVISIBLE
+                        if (idStatus == 1){
+                            binding.rcvNotRate.visibility = View.VISIBLE
+                            if (it.data!!.isEmpty()) {
+                                notRate = 0
+                            }else{
+                                notRate = 1
+                                notRateAdapter.differ.submitList(it.data)
+                            }
+                            setNotRate(notRate)
+                            idStatus = 0
+                        } else{
+                            if (it.data!!.isEmpty()) {
+                                notRate = 0
+                            }else {
+                                notRate = 1
+                                notRateAdapter.differ.submitList(it.data)
+                            }
                         }
                     }
                 }
             }
         }
 
-        binding.tvNotRate.setOnClickListener { notRate(notRate) }
-        binding.tvRate.setOnClickListener { rate(rate) }
-
-        var id = 0
-        if (arguments != null) {
-            id = requireArguments().getInt("id")
-        }
-        when (id) {
-            1 -> {
-                notRate(notRate)
-            }
-            2 -> {
-                rate(rate)
-            }
-        }
+        binding.tvNotRate.setOnClickListener { setNotRate(notRate) }
+        binding.tvRate.setOnClickListener { setRate(rate) }
 
         binding.imgBack.setOnClickListener {
             if (user.type == "admin") {
@@ -133,16 +146,15 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
             }
         }
     }
-    private fun notRate(notRate: Int){
+    private fun setNotRate(notRate: Int){
+        idStatus = 1
         if (notRate == 0) {
-            binding.tvEmpty1.visibility = View.VISIBLE
-            binding.rcvRate.visibility = View.GONE
+            binding.tvEmpty.visibility = View.VISIBLE
         } else{
-            binding.tvEmpty1.visibility = View.GONE
-            binding.rcvNotRate.visibility = View.VISIBLE
+            binding.tvEmpty.visibility = View.GONE
         }
+        binding.rcvNotRate.visibility = View.VISIBLE
         binding.rcvRate.visibility = View.GONE
-        binding.tvEmpty2.visibility = View.GONE
         binding.tvNotRate.setTextColor(Color.parseColor("#FF5722"))
         binding.tvNotRate.typeface = Typeface.DEFAULT_BOLD
         binding.lineNotRate.visibility = View.VISIBLE
@@ -150,16 +162,15 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
         binding.tvRate.typeface = Typeface.DEFAULT
         binding.lineRate.visibility = View.GONE
     }
-    private fun rate(rate: Int){
+    private fun setRate(rate: Int){
+        idStatus = 2
         if (rate == 0) {
-            binding.tvEmpty2.visibility = View.VISIBLE
-            binding.rcvRate.visibility = View.GONE
+            binding.tvEmpty.visibility = View.VISIBLE
         } else{
-            binding.tvEmpty2.visibility = View.GONE
-            binding.rcvRate.visibility = View.VISIBLE
+            binding.tvEmpty.visibility = View.GONE
         }
+        binding.rcvRate.visibility = View.VISIBLE
         binding.rcvNotRate.visibility = View.GONE
-        binding.tvEmpty1.visibility = View.GONE
         binding.tvRate.setTextColor(Color.parseColor("#FF5722"))
         binding.tvRate.typeface = Typeface.DEFAULT_BOLD
         binding.lineRate.visibility = View.VISIBLE
@@ -169,7 +180,11 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
     }
 
     private fun setNotRateOrderRecycleView() {
-        rateAdapter = OrderAdapter(this)
+        if (from == "orderListFragment"){
+            rateAdapter = OrderAdapter("admin",this)
+        } else{
+            rateAdapter = OrderAdapter("customer",this)
+        }
         binding.rcvRate.apply {
             layoutManager = LinearLayoutManager(this@DeliveredFragment.context)
             adapter = rateAdapter
@@ -177,7 +192,11 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
     }
 
     private fun setRateOrderRecycleView() {
-        notRateAdapter = OrderAdapter(this)
+        if (from == "orderListFragment"){
+            notRateAdapter = OrderAdapter("admin",this)
+        } else{
+            notRateAdapter = OrderAdapter("customer",this)
+        }
         binding.rcvNotRate.apply {
             layoutManager = LinearLayoutManager(this@DeliveredFragment.context)
             adapter = notRateAdapter
@@ -185,15 +204,33 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
     }
 
     override fun onClick(order: Order) {
-        val bundle = Bundle()
-        bundle.putSerializable("order", order)
-        bundle.putString("from", from)
-        controller.navigate(R.id.action_deliveredFragment_to_detailOrderFragment, bundle)
+        if (user.type == "admin") {
+            addFragment(DetailOrderFragment(), user, order)
+        } else {
+            val bundle = Bundle()
+            bundle.putSerializable("order", order)
+            bundle.putSerializable("user", user)
+            bundle.putString("from", "deliveredFragment")
+            controller.navigate(R.id.action_deliveredFragment_to_detailOrderFragment, bundle)
+        }
     }
     private fun removeFragment() {
         val fragmentManager = requireActivity().supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.remove(this)
+        fragmentTransaction.commit()
+    }
+    private fun addFragment(fragment: Fragment, user: User, order: Order) {
+        val bundle = Bundle()
+        bundle.putSerializable("user", user)
+        bundle.putSerializable("order", order)
+        bundle.putString("type", "admin")
+        bundle.putString("from", from)
+        fragment.arguments = bundle
+        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.frame_layout_delivered, fragment)
+        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 }

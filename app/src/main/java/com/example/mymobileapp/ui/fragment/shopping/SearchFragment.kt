@@ -1,10 +1,16 @@
 package com.example.mymobileapp.ui.fragment.shopping
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymobileapp.R
 import com.example.mymobileapp.adapter.SearchAdapter
 import com.example.mymobileapp.databinding.FragmentSearchBinding
+import com.example.mymobileapp.helper.Convert
 import com.example.mymobileapp.listener.ClickItemProductListener
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.util.Resource
@@ -78,12 +85,27 @@ class SearchFragment : Fragment(), ClickItemProductListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     return false
                 }
-
                 override fun onQueryTextChange(newText: String): Boolean {
-                    filterList(newText)
-                    return true
+                    //Nếu input rỗng trả về tất cả sản phẩm hiện có
+                    if (newText.isEmpty()) {
+                        searchAdapter.differ.submitList(productList)
+                        show()
+                        return true
+                    }
+                    //Trả về sản phẩm có tên chứa từ khoá input
+                    else {
+                        viewModel.searchProduct(newText)
+                        return true
+                    }
                 }
             })
+        }
+        binding.imgMic.setOnClickListener {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_RESULTS, Locale.getDefault())
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Nói từ khoá liên quan đến sản phẩm...")
+            activityResultLauncher.launch(intent)
         }
         binding.imgBack.setOnClickListener {
             controller.popBackStack()
@@ -97,6 +119,7 @@ class SearchFragment : Fragment(), ClickItemProductListener {
     private fun hideLoading() {
         binding.processBar.visibility = View.GONE
         binding.rvProduct.visibility = View.VISIBLE
+        binding.tvEmpty.visibility = View.GONE
     }
     private fun showEmpty() {
         binding.processBar.visibility = View.GONE
@@ -136,6 +159,15 @@ class SearchFragment : Fragment(), ClickItemProductListener {
             show()
         }
     }
+    private val activityResultLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result ->
+            if (result.resultCode == RESULT_OK && result.data != null){
+                val data = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                val speechToText = data?.get(0)
+                binding.searchView.setQuery(speechToText, false)
+            }
+        }
 
     override fun onResume() {
         super.onResume()

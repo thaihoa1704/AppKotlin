@@ -37,10 +37,8 @@ class ShoppingActivity : AppCompatActivity() {
         controller.addOnDestinationChangedListener { _, destination, _ ->
             if (listFragment.contains(destination.id)) {
                 binding.bottomNavigationView.visibility = View.GONE
-                binding.lineActivity.visibility = View.GONE
             } else {
                 binding.bottomNavigationView.visibility = View.VISIBLE
-                binding.lineActivity.visibility = View.VISIBLE
             }
         }
     }

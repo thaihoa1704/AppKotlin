@@ -3,6 +3,7 @@ package com.example.mymobileapp.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymobileapp.model.Address
+import com.example.mymobileapp.model.Banner
 import com.example.mymobileapp.model.Order
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.User
@@ -47,6 +48,9 @@ class UserViewModel @Inject constructor(
 
     private val _orderList = MutableStateFlow<Resource<List<Order>>>(Resource.Loading())
     val orderList = _orderList.asStateFlow()
+
+    private val _banner = MutableStateFlow<Resource<List<Banner>>>(Resource.Loading())
+    val banner = _banner.asStateFlow()
 
     init {
         getUser()
@@ -218,6 +222,19 @@ class UserViewModel @Inject constructor(
             }.addOnFailureListener{
                 viewModelScope.launch {
                     _orderList.emit(Resource.Error(it.message.toString()))
+                }
+            }
+    }
+    fun getBanner(){
+        db.collection("Banner")
+            .get().addOnSuccessListener {
+                viewModelScope.launch {
+                    val list = it.toObjects(Banner::class.java)
+                    _banner.emit(Resource.Success(list))
+                }
+            }.addOnFailureListener{
+                viewModelScope.launch {
+                    _banner.emit(Resource.Error(it.message.toString()))
                 }
             }
     }

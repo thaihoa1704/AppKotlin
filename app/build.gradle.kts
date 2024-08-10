@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,6 +71,8 @@ dependencies {
     implementation (libs.circleindicator)
 
     implementation(libs.mpandroidchart)
+    implementation (libs.colorpickerview)
+    implementation (libs.kotlinx.coroutines.play.services)
 }
 
 kapt {

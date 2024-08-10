@@ -33,7 +33,6 @@ class LoginFragment : Fragment() {
     private lateinit var controller: NavController
     private val viewModel by viewModels<LoginViewModel>()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
