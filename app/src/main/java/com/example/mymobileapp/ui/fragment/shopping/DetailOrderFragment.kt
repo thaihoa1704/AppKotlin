@@ -133,12 +133,19 @@ class DetailOrderFragment : Fragment() {
             }
             SHIPPING_STATUS -> {
                 if (user.type == "customer") {
-                    binding.btnCancel.visibility = View.GONE
-                    binding.btnProcess.isEnabled = true
-                    binding.btnProcess.text = "Đã nhận được hàng"
+                    if (from == "detailAccountFragment") {
+                        binding.btnProcess.isEnabled = false
+                        binding.btnCancel.visibility = View.GONE
+                        binding.btnProcess.text = SHIPPING_STATUS
+                    } else {
+                        binding.btnCancel.visibility = View.GONE
+                        binding.btnProcess.isEnabled = true
+                        binding.btnProcess.text = "Đã nhận được hàng"
+                    }
                 } else {
                     binding.btnCancel.visibility = View.GONE
                     binding.btnProcess.text = SHIPPING_STATUS
+                    binding.btnProcess.isEnabled = false
                 }
             }
             NOT_RATE_STATUS -> {
@@ -191,18 +198,22 @@ class DetailOrderFragment : Fragment() {
                     }, 3000)
                 }
             } else if (status == SHIPPING_STATUS) {
-                if (user.type == "customer") {
-                    orderViewModel.updateOrder(order, NOT_RATE_STATUS)
-                    Handler().postDelayed({
-                        controller.popBackStack()
-                    }, 3000)
-                }else {
+                if (from == "detailAccountFragment") {
                     //DO NOTHING
+                } else {
+                    if (user.type == "customer") {
+                        orderViewModel.updateOrder(order, NOT_RATE_STATUS)
+                        Handler().postDelayed({
+                            controller.popBackStack()
+                        }, 3000)
+                    } else {
+                        //DO NOTHING
+                    }
                 }
             } else if (status == NOT_RATE_STATUS) {
                 if (user.type == "customer") {
                     val bundle = Bundle()
-                    bundle.putSerializable("Order", order)
+                    bundle.putSerializable("order", order)
                     controller.navigate(R.id.action_detailOrderFragment_to_rateOrderFragment, bundle)
                 } else {
                     //DO NOTHING

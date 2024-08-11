@@ -56,8 +56,11 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
         idStatus = requireArguments().getInt("id")
 
         if (from == "detailAccountFragment") {
+            binding.tvTitle.text = "Lịch sử mua hàng"
             binding.tvQuantity.visibility = View.VISIBLE
             idStatus = 4
+        } else if(from == "userFragment"){
+            binding.tvTitle.text = "Lịch sử mua hàng"
         }
 
         orderViewModel.getConfirmOrder(user.id)
@@ -243,9 +246,14 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
             binding.tvEmpty.visibility = View.VISIBLE
             binding.tvQuantity.visibility = View.GONE
         }else{
-            binding.tvQuantity.text = "Số lượng: $cancel"
-            binding.tvEmpty.visibility = View.GONE
-            binding.tvQuantity.visibility = View.VISIBLE
+            if (from == "userFragment"){
+                binding.tvEmpty.visibility = View.GONE
+                binding.tvQuantity.visibility = View.GONE
+            } else {
+                binding.tvQuantity.text = "Số lượng: $cancel"
+                binding.tvQuantity.visibility = View.VISIBLE
+                binding.tvEmpty.visibility = View.GONE
+            }
         }
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.GONE
@@ -274,9 +282,14 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
             binding.tvEmpty.visibility = View.VISIBLE
             binding.tvQuantity.visibility = View.GONE
         } else{
-            binding.tvEmpty.visibility = View.GONE
-            binding.tvQuantity.text = "Số lượng: $pack"
-            binding.tvQuantity.visibility = View.VISIBLE
+            if (from == "userFragment"){
+                binding.tvEmpty.visibility = View.GONE
+                binding.tvQuantity.visibility = View.GONE
+            } else {
+                binding.tvEmpty.visibility = View.GONE
+                binding.tvQuantity.text = "Số lượng: $pack"
+                binding.tvQuantity.visibility = View.VISIBLE
+            }
         }
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.GONE
@@ -305,9 +318,14 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
             binding.tvEmpty.visibility = View.VISIBLE
             binding.tvQuantity.visibility = View.GONE
         } else{
-            binding.tvEmpty.visibility = View.GONE
-            binding.tvQuantity.text = "Số lượng: $confirm"
-            binding.tvQuantity.visibility = View.VISIBLE
+            if (from == "userFragment"){
+                binding.tvEmpty.visibility = View.GONE
+                binding.tvQuantity.visibility = View.GONE
+            } else {
+                binding.tvEmpty.visibility = View.GONE
+                binding.tvQuantity.text = "Số lượng: $confirm"
+                binding.tvQuantity.visibility = View.VISIBLE
+            }
         }
         binding.rcvConfirm.visibility = View.VISIBLE
         binding.rcvShipping.visibility = View.GONE
@@ -336,9 +354,14 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
             binding.tvEmpty.visibility = View.VISIBLE
             binding.tvQuantity.visibility = View.GONE
         } else{
-            binding.tvEmpty.visibility = View.GONE
-            binding.tvQuantity.text = "Số lượng: $shipping"
-            binding.tvQuantity.visibility = View.VISIBLE
+            if (from == "userFragment"){
+                binding.tvEmpty.visibility = View.GONE
+                binding.tvQuantity.visibility = View.GONE
+            } else {
+                binding.tvEmpty.visibility = View.GONE
+                binding.tvQuantity.text = "Số lượng: $shipping"
+                binding.tvQuantity.visibility = View.VISIBLE
+            }
         }
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.VISIBLE
@@ -367,9 +390,14 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
             binding.tvEmpty.visibility = View.VISIBLE
             binding.tvQuantity.visibility = View.GONE
         } else{
-            binding.tvEmpty.visibility = View.GONE
-            binding.tvQuantity.text = "Số lượng: $complete"
-            binding.tvQuantity.visibility = View.VISIBLE
+            if (from == "userFragment"){
+                binding.tvEmpty.visibility = View.GONE
+                binding.tvQuantity.visibility = View.GONE
+            } else {
+                binding.tvEmpty.visibility = View.GONE
+                binding.tvQuantity.text = "Số lượng: $complete"
+                binding.tvQuantity.visibility = View.VISIBLE
+            }
         }
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.GONE

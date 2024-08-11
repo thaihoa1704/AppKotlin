@@ -9,15 +9,27 @@
     android:layout_marginBottom="10dp"
     tools:context=".ui.fragment.user.ProfileFragment">
 
-    <ImageView
-        android:id="@+id/img_back"
-        android:layout_width="25dp"
-        android:layout_height="24dp"
-        android:layout_marginLeft="4dp"
-        android:src="@drawable/back_icon"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_back"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_back"
+        app:layout_constraintBottom_toTopOf="@id/line"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/line"/>
+        app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_back"
+            android:layout_width="25dp"
+            android:layout_height="24dp"
+            android:src="@drawable/back_icon"
+            android:layout_marginRight="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
         android:id="@+id/label"
         android:layout_width="wrap_content"
@@ -27,7 +39,7 @@
         android:textSize="25dp"
         android:text="Tài khoản của tôi"
         android:gravity="center"
-        app:layout_constraintStart_toEndOf="@+id/img_back"
+        app:layout_constraintStart_toEndOf="@+id/constraint_back"
         app:layout_constraintTop_toTopOf="parent"/>
     <View
         android:id="@+id/line"

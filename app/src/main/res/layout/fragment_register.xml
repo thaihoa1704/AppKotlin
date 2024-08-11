@@ -9,14 +9,26 @@
     android:theme="@style/Theme"
     tools:context=".ui.fragment.start.RegisterFragment">
 
-    <ImageView
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="12dp"
-        android:id="@+id/img_back"
-        android:layout_width="24dp"
-        android:layout_height="25dp"
-        android:src="@drawable/back_icon"
-        android:layout_gravity="center|left"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_back"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_back"
+            android:layout_width="25dp"
+            android:layout_height="24dp"
+            android:src="@drawable/back_icon"
+            android:layout_marginRight="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

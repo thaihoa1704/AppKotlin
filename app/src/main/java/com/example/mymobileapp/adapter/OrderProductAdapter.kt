@@ -51,13 +51,10 @@ class OrderProductAdapter(): RecyclerView.Adapter<OrderProductAdapter.OrderViewH
                     setLaptopVersionData(cartProduct)
                 }
                 "Tai nghe" -> {
-                    setWatchVersionData(cartProduct)
-                }
-                "Đồng hồ" -> {
                     setHeadPhoneVersionData(cartProduct)
                 }
-                else -> {
-                    setAccessoryVersionData(cartProduct)
+                "Đồng hồ" -> {
+                    setWatchVersionData(cartProduct)
                 }
             }
             binding.apply {
@@ -75,15 +72,19 @@ class OrderProductAdapter(): RecyclerView.Adapter<OrderProductAdapter.OrderViewH
         }
 
         private fun setLaptopVersionData(cartProduct: CartProduct) {
+            val version: String = ((cartProduct.version.color + "-"
+                    + cartProduct.version.cpu + "-"
+                    + cartProduct.version.ram + "-"
+                    + cartProduct.version.hardDrive))
+            binding.tvVersion.text = version
         }
 
         private fun setWatchVersionData(cartProduct: CartProduct) {
         }
 
         private fun setHeadPhoneVersionData(cartProduct: CartProduct) {
-        }
-
-        private fun setAccessoryVersionData(cartProduct: CartProduct) {
+            val version: String = cartProduct.version.color
+            binding.tvVersion.text = version
         }
     }
 }

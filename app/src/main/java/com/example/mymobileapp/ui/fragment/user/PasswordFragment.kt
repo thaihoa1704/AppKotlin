@@ -78,7 +78,9 @@ class PasswordFragment : Fragment() {
             }
         }
 
-        binding.imgBack.setOnClickListener { controller.popBackStack() }
+        binding.imgBack.setOnClickListener {
+            controller.popBackStack()
+        }
     }
 
     private val textWatcher: TextWatcher = object : TextWatcher {

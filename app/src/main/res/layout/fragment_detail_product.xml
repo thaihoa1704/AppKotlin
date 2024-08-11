@@ -101,7 +101,7 @@
             <LinearLayout
                 android:id="@+id/linearLayout_color"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="41dp"
                 android:orientation="horizontal"
                 android:layout_marginRight="22dp"
                 android:layout_marginTop="8dp"
@@ -113,14 +113,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Màu sắc:"
-                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:textColor="@color/black"
                     android:textSize="21dp" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_color"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="20dp"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +130,7 @@
             <TextView
                 android:id="@+id/tv_version"
                 android:layout_width="wrap_content"
-                android:layout_height="35dp"
+                android:layout_height="40dp"
                 android:layout_marginLeft="22dp"
                 android:text="Phiên bản:"
                 android:gravity="center"
@@ -202,6 +202,7 @@
                     android:textColor="@color/black"
                     android:textSize="17dp"
                     android:background="@color/white"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>

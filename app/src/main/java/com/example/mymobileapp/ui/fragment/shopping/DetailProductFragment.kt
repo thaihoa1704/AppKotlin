@@ -13,11 +13,13 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymobileapp.adapter.ColorAdapter
 import com.example.mymobileapp.adapter.ImageProductAdapter
+import com.example.mymobileapp.adapter.LaptopVersionAdapter
 import com.example.mymobileapp.adapter.PhoneVersionAdapter
 import com.example.mymobileapp.databinding.FragmentDetailProductBinding
 import com.example.mymobileapp.helper.Convert
 import com.example.mymobileapp.listener.ClickItemColorListener
-import com.example.mymobileapp.listener.ClickItemVersionListener
+import com.example.mymobileapp.listener.ClickItemLaptopVersionListener
+import com.example.mymobileapp.listener.ClickItemPhoneVersionListener
 import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.ProductColor
@@ -31,7 +33,8 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
-class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersionListener {
+class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemPhoneVersionListener,
+    ClickItemLaptopVersionListener {
     private lateinit var binding: FragmentDetailProductBinding
     private lateinit var controller: NavController
     private lateinit var versionSelected: Version
@@ -44,6 +47,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
     private val imageAdapter by lazy { ImageProductAdapter() }
     private val colorAdapter by lazy { ColorAdapter(this) }
     private val phoneVersionAdapter by lazy { PhoneVersionAdapter(this) }
+    private val laptopVersionAdapter by lazy { LaptopVersionAdapter(this) }
 
     private var product: Product? = null
     private var startFragment: String? = null
@@ -76,6 +80,17 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
         product = requireArguments().getSerializable("product") as Product
         startFragment = requireArguments().getString("from")
 
+        if (product!!.category == "Điện thoại") {
+
+        } else if (product!!.category == "Laptop") {
+
+        } else if (product!!.category == "Tai nghe") {
+            binding.tvVersion.visibility = View.GONE
+            binding.rcvAttribute.visibility = View.GONE
+        } else {
+
+        }
+
         binding.tvProductName.text = product!!.name
         binding.tvDescription.text = product!!.description
 
@@ -103,6 +118,11 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
                             val newList: List<Version> = ArrayList(list)
                             phoneVersionAdapter.differ.submitList(newList)
                             setPhoneVersionAdapter()
+                        } else if (product!!.category == "Laptop") {
+                            val list: HashSet<Version> = HashSet(it.data!!)
+                            val newList: List<Version> = ArrayList(list)
+                            laptopVersionAdapter.differ.submitList(newList)
+                            setLaptopVersionAdapter()
                         }
                     }
                 }
@@ -131,10 +151,6 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
                     }
                 }
             }
-        }
-
-        if (type == "admin") {
-            binding.btnAdd.isEnabled = false
         }
 
         binding.btnAdd.setOnClickListener{
@@ -175,6 +191,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
 
         if (type == "admin") {
             binding.btnAdd.text = "Số lượng: " + quantity.toString()
+            binding.btnAdd.isEnabled = false
         } else {
             binding.apply {
                 btnAdd.text = "Thêm vào giỏ hàng"
@@ -197,6 +214,14 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
         }
     }
 
+    private fun setLaptopVersionAdapter() {
+        binding.rcvAttribute.apply {
+            visibility = View.VISIBLE
+            layoutManager = LinearLayoutManager(this@DetailProductFragment.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = laptopVersionAdapter
+        }
+    }
+
     private fun setColorAdapter() {
         binding.rcvColor.apply {
             visibility = View.VISIBLE
@@ -214,14 +239,37 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
 
     override fun onClickColor(productColor: ProductColor) {
         productColorSelected = productColor
-        binding.tvVersion.visibility = View.VISIBLE
 
-        if (versionSelected.id != "0"){
-            viewModel.getDetailPhone(product!!.id, productColorSelected.name, versionSelected.ram, versionSelected.storage)
+        if (product!!.category == "Điện thoại") {
+            binding.tvVersion.visibility = View.VISIBLE
+            if (versionSelected.id != "0"){
+                viewModel.getDetailPhone(
+                    product!!.id,
+                    productColorSelected.name,
+                    versionSelected.ram,
+                    versionSelected.storage
+                )
+            }
+        } else if (product!!.category == "Tai nghe") {
+            viewModel.getDetailHeadphone(
+                product!!.id,
+                productColorSelected.name
+            )
+        } else if (product!!.category == "Laptop"){
+            binding.tvVersion.visibility = View.VISIBLE
+            if (versionSelected.id != "0"){
+                viewModel.getDetailLaptop(
+                    product!!.id,
+                    productColorSelected.name,
+                    versionSelected.cpu,
+                    versionSelected.ram,
+                    versionSelected.hardDrive
+                )
+            }
         }
     }
 
-    override fun onClick(version: Version) {
+    override fun onClickPhone(version: Version) {
         versionSelected = version
 
         if (productColorSelected.name != "") {
@@ -248,5 +296,19 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemVersi
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.remove(this)
         fragmentTransaction.commit()
+    }
+
+    override fun onClickLaptop(version: Version) {
+        versionSelected = version
+
+        if (productColorSelected.name != "") {
+            viewModel.getDetailLaptop(
+                product!!.id,
+                productColorSelected.name,
+                versionSelected.cpu,
+                versionSelected.ram,
+                versionSelected.hardDrive
+            )
+        }
     }
 }

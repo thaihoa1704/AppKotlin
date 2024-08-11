@@ -60,6 +60,9 @@ class ProfileFragment : Fragment() {
                 controller.navigate(R.id.action_profileFragment_to_passwordFragment, bundle)
             }
         }
-        binding.imgBack.setOnClickListener { controller.popBackStack() }
+
+        binding.imgBack.setOnClickListener {
+            controller.popBackStack()
+        }
     }
 }

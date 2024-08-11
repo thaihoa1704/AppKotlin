@@ -15,13 +15,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymobileapp.R
-import com.example.mymobileapp.adapter.CountAdapter
 import com.example.mymobileapp.databinding.FragmentStatisticalBinding
 import com.example.mymobileapp.helper.Convert
 import com.example.mymobileapp.model.CartProduct
-import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.ProductCount
 import com.example.mymobileapp.model.Temp
 import com.example.mymobileapp.util.Resource
@@ -39,13 +36,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import java.text.SimpleDateFormat
-import java.util.Collections
 import java.util.Locale
-import java.util.function.BinaryOperator
-import java.util.function.Function
-import java.util.function.Supplier
-import java.util.stream.Collectors
-
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
@@ -155,13 +146,20 @@ class StatisticalFragment : Fragment() {
         binding.imgSearch.setOnClickListener {
             val start = dateFormat1.parse(dateString)!!.time
             val end = dateFormat1.parse(dateString1)!!.time
+            confirm = 0
+            pack = 0
+            shipping = 0
+            notRate = 0
+            rate = 0
+            cancel = 0
+            list.clear()
+            listCount.clear()
             orderViewModel.getOrderListByTime(start, end)
             binding.scrollView.visibility = View.VISIBLE
         }
         binding.btnProduct.setOnClickListener {
             addFragment(ProductOrderFragment(), listCount)
         }
-
         binding.imgBack.setOnClickListener {
             controller.popBackStack()
         }

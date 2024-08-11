@@ -209,8 +209,11 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
         idStatus = 4
         if (cancel == 0) {
             binding.tvEmpty.visibility = View.VISIBLE
+            binding.tvQuantity.visibility = View.GONE
         }else{
             binding.tvEmpty.visibility = View.GONE
+            binding.tvQuantity.text = "Số lượng: $cancel"
+            binding.tvQuantity.visibility = View.VISIBLE
         }
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.GONE
@@ -234,8 +237,11 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
         idStatus = 2
         if (pack == 0) {
             binding.tvEmpty.visibility = View.VISIBLE
+            binding.tvQuantity.visibility = View.GONE
         } else{
             binding.tvEmpty.visibility = View.GONE
+            binding.tvQuantity.text = "Số lượng: $pack"
+            binding.tvQuantity.visibility = View.VISIBLE
         }
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.GONE
@@ -259,8 +265,11 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
         idStatus = 1
         if (confirm == 0) {
             binding.tvEmpty.visibility = View.VISIBLE
+            binding.tvQuantity.visibility = View.GONE
         } else{
             binding.tvEmpty.visibility = View.GONE
+            binding.tvQuantity.text = "Số lượng: $confirm"
+            binding.tvQuantity.visibility = View.VISIBLE
         }
         binding.rcvConfirm.visibility = View.VISIBLE
         binding.rcvShipping.visibility = View.GONE
@@ -284,8 +293,11 @@ class StatusOrderFragment : Fragment(), ClickItemOrderListener {
         idStatus = 3
         if (shipping == 0) {
             binding.tvEmpty.visibility = View.VISIBLE
+            binding.tvQuantity.visibility = View.GONE
         } else{
             binding.tvEmpty.visibility = View.GONE
+            binding.tvQuantity.text = "Số lượng: $shipping"
+            binding.tvQuantity.visibility = View.VISIBLE
         }
         binding.rcvConfirm.visibility = View.GONE
         binding.rcvShipping.visibility = View.VISIBLE

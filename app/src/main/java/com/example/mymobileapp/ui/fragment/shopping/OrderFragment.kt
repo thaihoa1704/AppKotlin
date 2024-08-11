@@ -153,17 +153,14 @@ class OrderFragment : Fragment() {
                     is Resource.Error ->{
                         Toast.makeText(requireContext(), "Lỗi đặt hàng!", Toast.LENGTH_SHORT).show()
                         binding.btnOrder.setBackgroundColor(android.graphics.Color.parseColor("#000000"))
-                        binding.btnOrder.revertAnimation()
                         Handler().postDelayed({
                             controller.popBackStack()
                         }, 3000)
                     }
                     is Resource.Loading -> {
                         binding.btnOrder.setBackgroundColor(android.graphics.Color.parseColor("#FFFF5722"))
-                        binding.btnOrder.startAnimation()
                     }
                     is Resource.Success -> {
-                        binding.btnOrder.revertAnimation()
                         //Toast.makeText(requireContext(), "Đặt hàng thành công!", Toast.LENGTH_SHORT).show()
                         controller.navigate(R.id.action_orderFragment_to_handleOrderFragment)
                     }

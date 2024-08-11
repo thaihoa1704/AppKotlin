@@ -84,7 +84,7 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
             }
         }
         binding.imgDelete.setOnClickListener {
-            val deleteDialog: ChoiceDialog = ChoiceDialog("cartFragment", object : OnClickChoice {
+            val deleteDialog = ChoiceDialog("cartFragment", object : OnClickChoice {
                 override fun onClick(choice: Boolean?) {
                     if (choice == true) {
                         delete()
@@ -103,7 +103,7 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
         }
     }
     private fun delete() {
-
+        viewModel.deleteProductSelect()
     }
 
     private fun showEmpty() {

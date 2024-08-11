@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mymobileapp.databinding.ItemPhoneAttributeBinding
-import com.example.mymobileapp.listener.ClickItemPhoneVersionListener
+import com.example.mymobileapp.databinding.ItemLaptopAttributeBinding
+import com.example.mymobileapp.listener.ClickItemLaptopVersionListener
 import com.example.mymobileapp.model.Version
 
-class PhoneVersionAdapter(private val clickItemPhoneVersionListener: ClickItemPhoneVersionListener
-): RecyclerView.Adapter<PhoneVersionAdapter.PhoneVersionViewHolder>() {
+class LaptopVersionAdapter(private val clickItemLaptopVersionListener: ClickItemLaptopVersionListener
+): RecyclerView.Adapter<LaptopVersionAdapter.PhoneVersionViewHolder>() {
     private var selectedPosition = -1
 
     private val diffCallback = object : DiffUtil.ItemCallback<Version>() {
@@ -25,9 +25,9 @@ class PhoneVersionAdapter(private val clickItemPhoneVersionListener: ClickItemPh
     val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhoneVersionViewHolder {
-        val binding: ItemPhoneAttributeBinding =
-            ItemPhoneAttributeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PhoneVersionViewHolder(binding, clickItemPhoneVersionListener)
+        val binding: ItemLaptopAttributeBinding =
+            ItemLaptopAttributeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PhoneVersionViewHolder(binding, clickItemLaptopVersionListener)
     }
 
     override fun onBindViewHolder(holder: PhoneVersionViewHolder, position: Int) {
@@ -39,23 +39,28 @@ class PhoneVersionAdapter(private val clickItemPhoneVersionListener: ClickItemPh
         return differ.currentList.size
     }
 
-    inner class PhoneVersionViewHolder(private val binding: ItemPhoneAttributeBinding,
-                                private val clickItemPhoneVersionListener: ClickItemPhoneVersionListener
+    inner class PhoneVersionViewHolder(private val binding: ItemLaptopAttributeBinding,
+                                private val clickItemLaptopVersionListener: ClickItemLaptopVersionListener
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(version: Version, position: Int) {
             binding.apply {
-                tvMemory.text = version.ram + "-" + version.storage
+                tvCpu.text = version.cpu
+                tvMemory.text = version.ram + "-" + version.hardDrive
                 if (selectedPosition == position) {
                     card.strokeColor = Color.parseColor("#1835D6")
+                    tvCpu.setTextColor(Color.parseColor("#1835D6"))
+                    tvCpu.setBackgroundColor(Color.parseColor("#DDEFFD"))
                     tvMemory.setTextColor(Color.parseColor("#1835D6"))
                     tvMemory.setBackgroundColor(Color.parseColor("#DDEFFD"))
                 } else {
                     card.strokeColor = Color.parseColor("#FF000000")
+                    tvCpu.setTextColor(Color.parseColor("#FF000000"))
+                    tvCpu.setBackgroundColor(Color.parseColor("#FFFFFFFF"))
                     tvMemory.setTextColor(Color.parseColor("#FF000000"))
                     tvMemory.setBackgroundColor(Color.parseColor("#FFFFFFFF"))
                 }
                 itemView.setOnClickListener {
-                    clickItemPhoneVersionListener.onClickPhone(version)
+                    clickItemLaptopVersionListener.onClickLaptop(version)
                     setSingleSelection(bindingAdapterPosition)
                 }
             }

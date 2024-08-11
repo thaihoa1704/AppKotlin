@@ -198,6 +198,7 @@ class UserFragment : Fragment() {
         val bundle = Bundle()
         bundle.putInt("id", id)
         bundle.putSerializable("user", user)
+        bundle.putString("from", "userFragment")
         controller.navigate(R.id.action_userFragment_to_orderProcessFragment, bundle)
     }
     private fun userLogout() {

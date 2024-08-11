@@ -28,6 +28,7 @@ class RateOrderFragment : Fragment() {
     private lateinit var binding: FragmentRateOrderBinding
     private lateinit var controller: NavController
     private val orderViewModel by viewModels<OrderViewModel>()
+    private var order = Order()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,18 +42,29 @@ class RateOrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         controller = Navigation.findNavController(view)
 
-        val order = requireArguments().getSerializable("order") as Order
+        order = requireArguments().getSerializable("order") as Order
         val rate = requireArguments().getString("rate")
         val type = requireArguments().getString("type")
 
         if (rate == RATE_STATUS) {
             binding.ratingBar.rating = order.rateStar.toFloat()
+            val star = order.rateStar
+            when (star) {
+                1 -> binding.tvRate.text = "Tệ"
+                2 -> binding.tvRate.text = "Không hài lòng"
+                3 -> binding.tvRate.text = "Bình thường"
+                4 -> binding.tvRate.text = "Hài lòng"
+                5 -> binding.tvRate.text = "Tuyệt vời"
+                else -> binding.tvRate.text = " "
+            }
             binding.tvNote.visibility = View.GONE
-            binding.tvNote1.text = order.note
+            if (order.note.isNotEmpty()) {
+                binding.tvNote1.text = order.note
+            } else {
+                binding.tvNote1.text = "Không có nhận xét"
+            }
             binding.btnSend.visibility = View.GONE
             binding.edtNote.visibility = View.GONE
-        } else {
-            return
         }
 
         binding.ratingBar.onRatingBarChangeListener =
@@ -71,8 +83,8 @@ class RateOrderFragment : Fragment() {
 
         binding.btnSend.setOnClickListener {
             val star = binding.ratingBar.rating.toInt()
-            val note = binding.edtNote.text.toString().trim()
-            orderViewModel.rateOrder(order,star, note)
+            val note = binding.edtNote.text.toString()
+            orderViewModel.rateOrder(order, star, note)
         }
 
         lifecycleScope.launchWhenStarted {
@@ -109,9 +121,11 @@ class RateOrderFragment : Fragment() {
         }
 
         override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-            val note = binding.edtNote.text.toString().trim()
+            val note = binding.edtNote.text.toString()
             if (note.isNotEmpty()) {
                 binding.tvNote.visibility = View.GONE
+            } else {
+                binding.tvNote.visibility = View.VISIBLE
             }
         }
 

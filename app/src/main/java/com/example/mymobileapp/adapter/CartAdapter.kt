@@ -61,11 +61,9 @@ class CartAdapter(private val clickItemProductListener: ClickItemProductListener
             } else if (category == "Laptop") {
                 setLaptopVersionData(cartProduct)
             } else if (category == "Tai nghe") {
-                setWatchVersionData(cartProduct)
-            } else if (category == "Đồng hồ") {
                 setHeadPhoneVersionData(cartProduct)
-            } else {
-                setAccessoryVersionData(cartProduct)
+            } else if (category == "Đồng hồ") {
+                setWatchVersionData(cartProduct)
             }
             binding.apply {
                 Glide.with(itemView).load(cartProduct.product.images[0]).into(imgProduct)
@@ -99,15 +97,19 @@ class CartAdapter(private val clickItemProductListener: ClickItemProductListener
         }
 
         private fun setLaptopVersionData(cartProduct: CartProduct) {
+            val version: String = ((cartProduct.version.color + " - "
+                    + cartProduct.version.cpu + " - "
+                    + cartProduct.version.ram + " - "
+                    + cartProduct.version.hardDrive))
+            binding.tvVersion.text = version
         }
 
         private fun setWatchVersionData(cartProduct: CartProduct) {
         }
 
         private fun setHeadPhoneVersionData(cartProduct: CartProduct) {
-        }
-
-        private fun setAccessoryVersionData(cartProduct: CartProduct) {
+            val version: String = cartProduct.version.color
+            binding.tvVersion.text = version
         }
     }
 }

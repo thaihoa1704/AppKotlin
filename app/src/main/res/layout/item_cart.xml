@@ -12,6 +12,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:layout_marginRight="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,16 +44,17 @@
                     <TextView
                         android:id="@+id/tv_product_name"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Samsung Galaxy S23 Ultra"
-                        android:textColor="@color/black"
-                        android:gravity="center|left"
+                        android:layout_height="27dp"
                         android:layout_marginTop="5dp"
+                        android:gravity="center|left"
+                        android:text="Tai nghe Bluetooth True Wireless Samsung Galaxy Buds2 Pro"
+                        android:textColor="@color/black"
                         android:textSize="19dp" />
+
                     <TextView
                         android:id="@+id/tv_version"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="22dp"
                         android:text="Xanh Botanic - 8GB - 256GB"
                         android:textColor="@color/black"
                         android:gravity="center|left"

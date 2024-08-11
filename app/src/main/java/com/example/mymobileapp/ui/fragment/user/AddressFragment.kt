@@ -90,7 +90,7 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
             addFragment(AddAddressFragment())
             //controller.navigate(R.id.action_addressFragment_to_addAddressFragment)
         }
-        binding.imgBack.setOnClickListener{
+        binding.imgBack.setOnClickListener {
             controller.popBackStack()
         }
     }

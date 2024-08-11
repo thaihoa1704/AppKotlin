@@ -88,6 +88,37 @@ class ProductViewModel @Inject constructor(
                 }
             }
     }
+    fun getDetailHeadphone(idProduct: String, color: String) {
+        db.collection(PRODUCT_COLLECTION).document(idProduct).collection(VERSION_COLLECTION)
+            .whereEqualTo("color", color)
+            .get().addOnSuccessListener {result ->
+                val list = result.toObjects(Version::class.java)
+                viewModelScope.launch {
+                    _versionDetail.emit(Resource.Success(list))
+                }
+            }.addOnFailureListener {
+                viewModelScope.launch {
+                    _versionDetail.emit(Resource.Error(it.message.toString()))
+                }
+            }
+    }
+    fun getDetailLaptop(idProduct: String, color: String, cpu: String, ram: String, hardDrive: String) {
+        db.collection(PRODUCT_COLLECTION).document(idProduct).collection(VERSION_COLLECTION)
+            .whereEqualTo("color", color)
+            .whereEqualTo("cpu", cpu)
+            .whereEqualTo("ram", ram)
+            .whereEqualTo("hardDrive", hardDrive)
+            .get().addOnSuccessListener {result ->
+                val list = result.toObjects(Version::class.java)
+                viewModelScope.launch {
+                    _versionDetail.emit(Resource.Success(list))
+                }
+            }.addOnFailureListener {
+                viewModelScope.launch {
+                    _versionDetail.emit(Resource.Error(it.message.toString()))
+                }
+            }
+    }
     fun getBrand(category: String){
         db.collection(CATEGORY_COLLECTION).document(category)
             .collection(BRAND_COLLECTION)
