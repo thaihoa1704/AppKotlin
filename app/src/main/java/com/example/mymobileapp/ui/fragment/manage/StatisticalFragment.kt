@@ -53,6 +53,10 @@ class StatisticalFragment : Fragment() {
     private var notRate = 0
     private var rate = 0
     private var cancel = 0
+    private var phoneCount = 0
+    private var laptopCount = 0
+    private var headphoneCount = 0
+    private var watchCount = 0
     private val list = mutableListOf<CartProduct>()
     private val listCount = mutableListOf<ProductCount>()
 
@@ -91,7 +95,6 @@ class StatisticalFragment : Fragment() {
             binding.layoutSearch.visibility = View.VISIBLE
         }
 
-//        setupProductRecyclerView()
         lifecycleScope.launchWhenStarted {
             orderViewModel.time.collectLatest {
                 when(it){
@@ -137,7 +140,27 @@ class StatisticalFragment : Fragment() {
                                 listCount.add(productCount)
                             }
                             setPieCharOrder()
-                            setQuantity()
+                            setQuantityOrder()
+
+                            for (s in listCount){
+                                when(s.cartProduct.product.category){
+                                    "Điện thoại" -> {
+                                        phoneCount += s.quantity
+                                    }
+                                    "Laptop" -> {
+                                        laptopCount += s.quantity
+                                    }
+                                    "Tai nghe" -> {
+                                        headphoneCount += s.quantity
+                                    }
+                                    "Đồng hồ" -> {
+                                        watchCount += s.quantity
+                                    }
+                                }
+                            }
+                            binding.tvQuantity1.text = (phoneCount + laptopCount + headphoneCount + watchCount).toString()
+                            setPieCharCategory()
+                            setQuantityCategory()
                         }
                     }
                 }
@@ -152,20 +175,28 @@ class StatisticalFragment : Fragment() {
             notRate = 0
             rate = 0
             cancel = 0
+            phoneCount = 0
+            laptopCount = 0
+            headphoneCount = 0
+            watchCount = 0
             list.clear()
             listCount.clear()
             orderViewModel.getOrderListByTime(start, end)
             binding.scrollView.visibility = View.VISIBLE
         }
         binding.btnProduct.setOnClickListener {
-            addFragment(ProductOrderFragment(), listCount)
+            if (binding.tvPrice.text.isEmpty()){
+                return@setOnClickListener
+            } else {
+                addFragment(ProductOrderFragment(), listCount)
+            }
         }
         binding.imgBack.setOnClickListener {
             controller.popBackStack()
         }
     }
 
-    private fun setQuantity() {
+    private fun setQuantityOrder() {
         binding.apply {
             tvConfirm.text = confirm.toString()
             tvPack.text = pack.toString()
@@ -173,6 +204,14 @@ class StatisticalFragment : Fragment() {
             tvNotRate.text = notRate.toString()
             tvRate.text = rate.toString()
             tvCancel.text = cancel.toString()
+        }
+    }
+    private fun setQuantityCategory() {
+        binding.apply {
+            tvPhone.text = phoneCount.toString()
+            tvLaptop.text = laptopCount.toString()
+            tvHeadphone.text = headphoneCount.toString()
+            tvWatch.text = watchCount.toString()
         }
     }
 
@@ -205,6 +244,35 @@ class StatisticalFragment : Fragment() {
             pieChart.setCenterTextSize(22f)
             pieChart.setDrawCenterText(true)
             pieChart.invalidate()
+        }
+    }
+
+    private fun setPieCharCategory() {
+        val entries = listOf(
+            PieEntry(phoneCount.toFloat(), ""),
+            PieEntry(headphoneCount.toFloat(), ""),
+            PieEntry(laptopCount.toFloat(), ""),
+            PieEntry(watchCount.toFloat(), ""),
+        )
+        val pieDataSet = PieDataSet(entries, "")
+        pieDataSet.colors = listOf(Color.GRAY, Color.GREEN, Color.BLUE, Color.YELLOW)
+        val data = PieData(pieDataSet)
+        data.setValueFormatter(PercentFormatter())
+        data.setValueTextSize(20f)
+        data.setValueTypeface(Typeface.DEFAULT_BOLD)
+        data.setValueTextColor(Color.BLACK)
+
+        binding.apply {
+            pieChart1.data = data
+            pieChart1.setUsePercentValues(true)
+            pieChart1.setTransparentCircleColor(Color.WHITE)
+            pieChart1.legend.isEnabled = false
+            pieChart1.setEntryLabelColor(Color.WHITE)
+            pieChart1.description.isEnabled = false
+            pieChart1.centerText = "Phân loại"
+            pieChart1.setCenterTextSize(22f)
+            pieChart1.setDrawCenterText(true)
+            pieChart1.invalidate()
         }
     }
 

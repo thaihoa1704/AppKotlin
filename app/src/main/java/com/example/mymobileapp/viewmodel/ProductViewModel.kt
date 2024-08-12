@@ -1,26 +1,21 @@
 package com.example.mymobileapp.viewmodel
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymobileapp.model.Brand
-import com.example.mymobileapp.model.Order
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.ProductColor
 import com.example.mymobileapp.model.Version
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.util.constants.BRAND_COLLECTION
-import com.example.mymobileapp.util.constants.CART_COLLECTION
 import com.example.mymobileapp.util.constants.CATEGORY_COLLECTION
 import com.example.mymobileapp.util.constants.PRODUCT_COLLECTION
-import com.example.mymobileapp.util.constants.USER_COLLECTION
 import com.example.mymobileapp.util.constants.VERSION_COLLECTION
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -91,6 +86,21 @@ class ProductViewModel @Inject constructor(
     fun getDetailHeadphone(idProduct: String, color: String) {
         db.collection(PRODUCT_COLLECTION).document(idProduct).collection(VERSION_COLLECTION)
             .whereEqualTo("color", color)
+            .get().addOnSuccessListener {result ->
+                val list = result.toObjects(Version::class.java)
+                viewModelScope.launch {
+                    _versionDetail.emit(Resource.Success(list))
+                }
+            }.addOnFailureListener {
+                viewModelScope.launch {
+                    _versionDetail.emit(Resource.Error(it.message.toString()))
+                }
+            }
+    }
+    fun getDetailWatch(idProduct: String, color: String, diameter: Int) {
+        db.collection(PRODUCT_COLLECTION).document(idProduct).collection(VERSION_COLLECTION)
+            .whereEqualTo("color", color)
+            .whereEqualTo("diameter", diameter)
             .get().addOnSuccessListener {result ->
                 val list = result.toObjects(Version::class.java)
                 viewModelScope.launch {

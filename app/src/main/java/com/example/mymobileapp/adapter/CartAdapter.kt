@@ -97,14 +97,17 @@ class CartAdapter(private val clickItemProductListener: ClickItemProductListener
         }
 
         private fun setLaptopVersionData(cartProduct: CartProduct) {
-            val version: String = ((cartProduct.version.color + " - "
+            val version: String = (cartProduct.version.color + " - "
                     + cartProduct.version.cpu + " - "
                     + cartProduct.version.ram + " - "
-                    + cartProduct.version.hardDrive))
+                    + cartProduct.version.hardDrive)
             binding.tvVersion.text = version
         }
 
         private fun setWatchVersionData(cartProduct: CartProduct) {
+            val version: String = (cartProduct.version.color + " - "
+                    + cartProduct.version.diameter + " mm")
+            binding.tvVersion.text = version
         }
 
         private fun setHeadPhoneVersionData(cartProduct: CartProduct) {

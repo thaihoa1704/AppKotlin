@@ -15,11 +15,13 @@ import com.example.mymobileapp.adapter.ColorAdapter
 import com.example.mymobileapp.adapter.ImageProductAdapter
 import com.example.mymobileapp.adapter.LaptopVersionAdapter
 import com.example.mymobileapp.adapter.PhoneVersionAdapter
+import com.example.mymobileapp.adapter.WatchVersionAdapter
 import com.example.mymobileapp.databinding.FragmentDetailProductBinding
 import com.example.mymobileapp.helper.Convert
 import com.example.mymobileapp.listener.ClickItemColorListener
 import com.example.mymobileapp.listener.ClickItemLaptopVersionListener
 import com.example.mymobileapp.listener.ClickItemPhoneVersionListener
+import com.example.mymobileapp.listener.ClickItemWatchVersionListener
 import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.ProductColor
@@ -34,7 +36,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
 class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemPhoneVersionListener,
-    ClickItemLaptopVersionListener {
+    ClickItemLaptopVersionListener, ClickItemWatchVersionListener {
     private lateinit var binding: FragmentDetailProductBinding
     private lateinit var controller: NavController
     private lateinit var versionSelected: Version
@@ -48,6 +50,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemPhone
     private val colorAdapter by lazy { ColorAdapter(this) }
     private val phoneVersionAdapter by lazy { PhoneVersionAdapter(this) }
     private val laptopVersionAdapter by lazy { LaptopVersionAdapter(this) }
+    private val watchVersionAdapter by lazy { WatchVersionAdapter(this) }
 
     private var product: Product? = null
     private var startFragment: String? = null
@@ -123,6 +126,11 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemPhone
                             val newList: List<Version> = ArrayList(list)
                             laptopVersionAdapter.differ.submitList(newList)
                             setLaptopVersionAdapter()
+                        } else if (product!!.category == "Đồng hồ") {
+                            val list: HashSet<Version> = HashSet(it.data!!)
+                            val newList: List<Version> = ArrayList(list)
+                            watchVersionAdapter.differ.submitList(newList)
+                            setWatchVersionAdapter()
                         }
                     }
                 }
@@ -222,6 +230,14 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemPhone
         }
     }
 
+    private fun setWatchVersionAdapter() {
+        binding.rcvAttribute.apply {
+            visibility = View.VISIBLE
+            layoutManager = LinearLayoutManager(this@DetailProductFragment.context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = watchVersionAdapter
+        }
+    }
+
     private fun setColorAdapter() {
         binding.rcvColor.apply {
             visibility = View.VISIBLE
@@ -242,6 +258,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemPhone
 
         if (product!!.category == "Điện thoại") {
             binding.tvVersion.visibility = View.VISIBLE
+
             if (versionSelected.id != "0"){
                 viewModel.getDetailPhone(
                     product!!.id,
@@ -257,6 +274,7 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemPhone
             )
         } else if (product!!.category == "Laptop"){
             binding.tvVersion.visibility = View.VISIBLE
+
             if (versionSelected.id != "0"){
                 viewModel.getDetailLaptop(
                     product!!.id,
@@ -264,6 +282,16 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemPhone
                     versionSelected.cpu,
                     versionSelected.ram,
                     versionSelected.hardDrive
+                )
+            }
+        } else {
+            binding.tvVersion.visibility = View.VISIBLE
+
+            if (versionSelected.id != "0"){
+                viewModel.getDetailWatch(
+                    product!!.id,
+                    productColorSelected.name,
+                    versionSelected.diameter
                 )
             }
         }
@@ -308,6 +336,18 @@ class DetailProductFragment : Fragment(), ClickItemColorListener, ClickItemPhone
                 versionSelected.cpu,
                 versionSelected.ram,
                 versionSelected.hardDrive
+            )
+        }
+    }
+
+    override fun onClickWatch(version: Version) {
+        versionSelected = version
+
+        if (productColorSelected.name != "") {
+            viewModel.getDetailWatch(
+                product!!.id,
+                productColorSelected.name,
+                versionSelected.diameter
             )
         }
     }

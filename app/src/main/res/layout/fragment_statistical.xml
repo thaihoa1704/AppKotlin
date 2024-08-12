@@ -50,90 +50,120 @@
             android:background="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_label"/>
-        <ImageView
-            android:id="@+id/img_from"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/calendar_today"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line"/>
-        <TextView
-            android:id="@+id/tv_from"
-            android:layout_width="110dp"
-            android:layout_height="35dp"
-            android:text="Từ ngày:"
-            android:textSize="22dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center|bottom"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/img_from"
-            app:layout_constraintTop_toBottomOf="@+id/line"/>
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:textSize="22dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:gravity="center|bottom"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/tv_from"
-            app:layout_constraintTop_toBottomOf="@+id/line"/>
-        <ImageView
-            android:id="@+id/img_to"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/event_upcoming"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_from"/>
-        <TextView
-            android:id="@+id/tv_to"
-            android:layout_width="110dp"
-            android:layout_height="35dp"
-            android:text="đến ngày:"
-            android:textSize="22dp"
-            android:layout_marginTop="7dp"
-            android:gravity="center|bottom"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/img_to"
-            app:layout_constraintTop_toBottomOf="@+id/tv_from"/>
-        <TextView
-            android:id="@+id/tv_date1"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:textSize="22dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginLeft="10dp"
-            android:gravity="center|bottom"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/tv_to"
-            app:layout_constraintTop_toBottomOf="@+id/tv_date"/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_search"
-            android:layout_width="50dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/button_todo"
-            android:visibility="visible"
+            android:id="@+id/constraint_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_constrain_layout"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line">
-
-            <ImageView
-                android:id="@+id/img_search"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:src="@drawable/baseline_arrow_forward_white"
-                app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line">
+            <TextView
+                android:id="@+id/label_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Chọn khoảng thời gian bạn muốn thống kê:"/>
+            <ImageView
+                android:id="@+id/img_from"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/calendar_today"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label_date"/>
+            <TextView
+                android:id="@+id/tv_from"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
+                android:text="Từ ngày:"
+                android:textSize="22dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center|bottom"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/img_from"
+                app:layout_constraintTop_toBottomOf="@id/label_date"/>
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:textSize="22dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center|bottom"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@+id/tv_from"
+                app:layout_constraintTop_toBottomOf="@id/label_date"/>
+            <ImageView
+                android:id="@+id/img_to"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/event_upcoming"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_from"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                android:id="@+id/tv_to"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
+                android:text="đến ngày:"
+                android:textSize="22dp"
+                android:layout_marginTop="7dp"
+                android:gravity="center|bottom"
+                android:textColor="@color/black"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_to"
+                app:layout_constraintTop_toBottomOf="@+id/tv_from"/>
+            <TextView
+                android:id="@+id/tv_date1"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:textSize="22dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center|bottom"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_to"
+                app:layout_constraintTop_toBottomOf="@+id/tv_date"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_search"
+                android:layout_width="50dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button_default"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/label_date">
+
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:src="@drawable/baseline_arrow_forward_white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TextView
             android:id="@+id/tv_empty"
             android:layout_width="match_parent"
@@ -146,7 +176,7 @@
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_to"/>
+            app:layout_constraintTop_toBottomOf="@+id/constraint_date"/>
 
         <ScrollView
             android:id="@+id/scroll_view"
@@ -157,254 +187,469 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_to">
+            app:layout_constraintTop_toBottomOf="@id/constraint_date">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pie_chart"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:layout_marginTop="5dp"
-                    android:animateLayoutChanges="true"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraint_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_constrain_layout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pie_chart"
+                        android:layout_width="300dp"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="15dp"
+                        android:animateLayoutChanges="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Biểu đồ trạng thái đơn hàng tính theo %"
-                    android:textColor="@color/black"
-                    android:textSize="18dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/pie_chart" />
-
-                <TextView
-                    android:id="@+id/tv_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Tổng số đơn hàng:"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/label" />
-
-                <TextView
-                    android:id="@+id/tv_quantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    app:layout_constraintStart_toEndOf="@+id/tv_total"
-                    app:layout_constraintTop_toBottomOf="@+id/label" />
-
-                <HorizontalScrollView
-                    android:id="@+id/horizontalScrollView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_total">
-
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="5dp"
+                        android:text="Biểu đồ trạng thái đơn hàng tính theo %"
+                        android:textColor="@color/black"
+                        android:textSize="18dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/pie_chart" />
+
+                    <TextView
+                        android:id="@+id/tv_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Tổng số đơn hàng:"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/label" />
+
+                    <TextView
+                        android:id="@+id/tv_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_total"
+                        app:layout_constraintTop_toBottomOf="@+id/label" />
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_total">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="match_parent"
-                                    android:background="#888888" />
-
-                                <TextView
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:text="Chờ xác nhận:"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/tv_confirm"
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#888888" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Chờ xác nhận:"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_confirm"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#00FF00" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Đang được chuẩn bị:"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_pack"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#FF00FF" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Đang được giao:"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_shipping"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+                                </LinearLayout>
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="match_parent"
-                                    android:background="#00FF00" />
-
-                                <TextView
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:text="Đang được chuẩn bị:"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/tv_pack"
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#0000FF" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Chưa đánh giá:"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_not_rate"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
-                            </LinearLayout>
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#FFFF00" />
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="match_parent"
-                                    android:background="#FF00FF" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Đã đánh giá:"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
 
-                                <TextView
+                                    <TextView
+                                        android:id="@+id/tv_rate"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:text="Đang được giao:"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/tv_shipping"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#FF0000" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Đã huỷ:"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_cancel"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+                                </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
+                    </HorizontalScrollView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraint_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_constrain_layout"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraint_order">
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pie_chart1"
+                        android:layout_width="300dp"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="15dp"
+                        android:animateLayoutChanges="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/label1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Biểu đồ phân loại sản phẩm bán ra tính theo %"
+                        android:textColor="@color/black"
+                        android:textSize="17dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/pie_chart1" />
+
+                    <TextView
+                        android:id="@+id/tv_total1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Tổng số sản phẩm bán ra:"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/label1" />
+
+                    <TextView
+                        android:id="@+id/tv_quantity1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        app:layout_constraintStart_toEndOf="@+id/tv_total1"
+                        app:layout_constraintTop_toBottomOf="@+id/label1" />
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_total1">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="match_parent"
-                                    android:background="#0000FF" />
-
-                                <TextView
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:text="Chưa đánh giá:"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/tv_not_rate"
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#888888" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Điện thoại:"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_phone"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#00FF00" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Tai nghe:"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_headphone"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+                                </LinearLayout>
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="match_parent"
-                                    android:background="#FFFF00" />
-
-                                <TextView
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:text="Đã đánh giá:"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/tv_rate"
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#0000FF" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Laptop:"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+
+                                    <TextView
+                                        android:id="@+id/tv_laptop"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
-                            </LinearLayout>
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:orientation="horizontal">
+                                    <ImageView
+                                        android:layout_width="25dp"
+                                        android:layout_height="match_parent"
+                                        android:background="#FFFF00" />
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="match_parent"
-                                    android:background="#FF0000" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:text="Đồng hồ:"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:text="Đã huỷ:"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
-
-                                <TextView
-                                    android:id="@+id/tv_cancel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="17dp" />
+                                    <TextView
+                                        android:id="@+id/tv_watch"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="17dp" />
+                                </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
-                    </LinearLayout>
-                </HorizontalScrollView>
+                    </HorizontalScrollView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <TextView
                     android:id="@+id/label_price"
                     android:layout_width="wrap_content"
@@ -415,7 +660,7 @@
                     android:layout_marginTop="20dp"
                     android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"/>
+                    app:layout_constraintTop_toBottomOf="@+id/constraint_category"/>
                 <TextView
                     android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
@@ -426,7 +671,7 @@
                     android:layout_marginTop="20dp"
                     android:textColor="@color/orange"
                     app:layout_constraintStart_toEndOf="@+id/label_price"
-                    app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"/>
+                    app:layout_constraintTop_toBottomOf="@+id/constraint_category"/>
                 <TextView
                     android:id="@+id/tv_note"
                     android:layout_width="wrap_content"
@@ -445,14 +690,16 @@
                     android:textAllCaps="false"
                     android:textSize="18dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="15dp"
                     android:text="Xem danh sách sản phẩm bán ra"
                     app:layout_constraintTop_toBottomOf="@+id/tv_note"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

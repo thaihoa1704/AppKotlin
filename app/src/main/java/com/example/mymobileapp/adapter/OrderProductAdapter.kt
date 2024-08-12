@@ -65,21 +65,24 @@ class OrderProductAdapter(): RecyclerView.Adapter<OrderProductAdapter.OrderViewH
             }
         }
         private fun setPhoneVersionData(cartProduct: CartProduct) {
-            val version: String = ((cartProduct.version.color + " - "
+            val version: String = (cartProduct.version.color + " - "
                     + cartProduct.version.ram + " - "
-                    + cartProduct.version.storage))
+                    + cartProduct.version.storage)
             binding.tvVersion.text = version
         }
 
         private fun setLaptopVersionData(cartProduct: CartProduct) {
-            val version: String = ((cartProduct.version.color + "-"
+            val version: String = (cartProduct.version.color + "-"
                     + cartProduct.version.cpu + "-"
                     + cartProduct.version.ram + "-"
-                    + cartProduct.version.hardDrive))
+                    + cartProduct.version.hardDrive)
             binding.tvVersion.text = version
         }
 
         private fun setWatchVersionData(cartProduct: CartProduct) {
+            val version: String = (cartProduct.version.color + " - "
+                    + cartProduct.version.diameter + " mm")
+            binding.tvVersion.text = version
         }
 
         private fun setHeadPhoneVersionData(cartProduct: CartProduct) {

@@ -9,6 +9,16 @@
     tools:openDrawer="start"
     android:background="@color/white"
     tools:context=".ui.fragment.manage.AdminFragment">
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/nav_view"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        app:headerLayout="@layout/bg_side_bar"
+        app:menu="@menu/side_bar_menu"
+        app:itemIconTint="@color/lavender"
+        app:itemTextColor="@color/lavender" />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -189,16 +199,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/nav_view"
-        android:layout_gravity="start"
-        android:background="@color/white"
-        app:headerLayout="@layout/bg_side_bar"
-        app:menu="@menu/side_bar_menu"
-        app:itemIconTint="@color/lavender"
-        app:itemTextColor="@color/lavender"/>
 </androidx.drawerlayout.widget.DrawerLayout>

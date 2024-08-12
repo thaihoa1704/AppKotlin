@@ -64,9 +64,9 @@ class OrderAdapter(private val type: String, private val clickItemOrderListener:
             } else if (category == "Laptop") {
                 setLaptopVersionData(cartProduct)
             } else if (category == "Tai nghe") {
-                setWatchVersionData(cartProduct)
-            } else if (category == "Đồng hồ") {
                 setHeadPhoneVersionData(cartProduct)
+            } else if (category == "Đồng hồ") {
+                setWatchVersionData(cartProduct)
             } else {
                 setAccessoryVersionData(cartProduct)
             }
@@ -136,22 +136,33 @@ class OrderAdapter(private val type: String, private val clickItemOrderListener:
         }
 
         private fun setPhoneVersionData(cartProduct: CartProduct) {
-            val version: String = ((cartProduct.version.color + " - "
-                    + cartProduct.version.ram) + " - "
+            val version: String = (cartProduct.version.color + " - "
+                    + cartProduct.version.ram + " - "
                     + cartProduct.version.storage)
             binding.tvVersion.text = version
         }
 
         private fun setLaptopVersionData(cartProduct: CartProduct) {
+            val version: String = (cartProduct.version.color + "-"
+                    + cartProduct.version.cpu + "-"
+                    + cartProduct.version.ram + "-"
+                    + cartProduct.version.hardDrive)
+            binding.tvVersion.text = version
         }
 
         private fun setWatchVersionData(cartProduct: CartProduct) {
+            val version: String = ((cartProduct.version.color + " - "
+                    + cartProduct.version.diameter + " mm"))
+            binding.tvVersion.text = version
         }
 
         private fun setHeadPhoneVersionData(cartProduct: CartProduct) {
+            val version: String = cartProduct.version.color
+            binding.tvVersion.text = version
         }
 
         private fun setAccessoryVersionData(cartProduct: CartProduct) {
+
         }
     }
 }

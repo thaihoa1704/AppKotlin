@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="174dp"
+    android:layout_height="230dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp"
     android:orientation="vertical"
     android:background="@drawable/bg_side_bar">
     <com.google.android.material.card.MaterialCardView
@@ -12,7 +11,8 @@
         android:layout_height="70dp"
         app:cardCornerRadius="100dp"
         app:strokeWidth="3dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="20dp"
         android:theme="@style/Theme"/>
     <TextView
         android:id="@+id/tv_name"
@@ -22,5 +22,6 @@
         android:textStyle="bold"
         android:textSize="21dp"
         android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
         android:text="Thai Hoa"/>
 </LinearLayout>
