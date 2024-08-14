@@ -236,13 +236,6 @@ class OrderListFragment : Fragment() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString("start", binding.tvDate.text.toString().trim())
-        outState.putString("end", binding.tvDate1.text.toString().trim())
-
-        super.onSaveInstanceState(outState)
-    }
-
     private fun addFragment(fragment: Fragment, user: User, start: Long, end: Long, id: Int) {
         val bundle = Bundle()
         bundle.putSerializable("user", user)

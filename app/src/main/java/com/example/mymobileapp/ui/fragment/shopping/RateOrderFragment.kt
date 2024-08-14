@@ -85,6 +85,13 @@ class RateOrderFragment : Fragment() {
             val star = binding.ratingBar.rating.toInt()
             val note = binding.edtNote.text.toString()
             orderViewModel.rateOrder(order, star, note)
+            Handler().postDelayed({
+                if (type == "admin") {
+                    removeFragment()
+                } else {
+                    controller.popBackStack()
+                }
+            }, 3000)
         }
 
         lifecycleScope.launchWhenStarted {

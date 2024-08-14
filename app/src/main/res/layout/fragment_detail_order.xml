@@ -263,19 +263,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"/>
+
     <Button
         android:id="@+id/btn_cancel"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_process"
-        android:text="Huỷ đơn hàng"
-        android:textAllCaps="false"
-        android:textSize="20dp"
-        android:textColor="@color/white"
         android:layout_marginBottom="10dp"
         android:background="@drawable/bg_button_cancel"
-        android:visibility="gone"/>
+        android:text="Huỷ đơn hàng"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/btn_process"
+        app:layout_constraintStart_toStartOf="parent" />
     <com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton
         android:id="@+id/btn_process"
         android:layout_width="match_parent"

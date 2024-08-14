@@ -169,7 +169,6 @@ class AddProductFragment : Fragment(), ColorDialog.GetColor, PhoneVersionDialog.
         }
         binding.imgBack.setOnClickListener {
             removeFragment()
-
         }
     }
 

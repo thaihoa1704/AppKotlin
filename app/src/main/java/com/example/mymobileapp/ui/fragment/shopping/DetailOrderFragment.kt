@@ -183,10 +183,10 @@ class DetailOrderFragment : Fragment() {
                 if (user.type == "customer") {
                     //DO NOTHING
                 }else{
+                    orderViewModel.updateOrder(order, PACKING_STATUS)
                     Handler().postDelayed({
                         removeFragment()
                     }, 3000)
-                    orderViewModel.updateOrder(order, PACKING_STATUS)
                 }
             }else if (status == PACKING_STATUS) {
                 if (user.type == "customer") {

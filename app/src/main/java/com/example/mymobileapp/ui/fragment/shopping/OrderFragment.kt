@@ -17,7 +17,6 @@ import com.example.mymobileapp.adapter.OrderProductAdapter
 import com.example.mymobileapp.databinding.FragmentOrderBinding
 import com.example.mymobileapp.helper.Convert
 import com.example.mymobileapp.listener.OnClickChoice
-import com.example.mymobileapp.model.Address
 import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.model.User
 import com.example.mymobileapp.ui.dialog.ChoiceDialog
@@ -152,14 +151,11 @@ class OrderFragment : Fragment() {
                 when(it){
                     is Resource.Error ->{
                         Toast.makeText(requireContext(), "Lỗi đặt hàng!", Toast.LENGTH_SHORT).show()
-                        binding.btnOrder.setBackgroundColor(android.graphics.Color.parseColor("#000000"))
                         Handler().postDelayed({
                             controller.popBackStack()
                         }, 3000)
                     }
-                    is Resource.Loading -> {
-                        binding.btnOrder.setBackgroundColor(android.graphics.Color.parseColor("#FFFF5722"))
-                    }
+                    is Resource.Loading -> {}
                     is Resource.Success -> {
                         //Toast.makeText(requireContext(), "Đặt hàng thành công!", Toast.LENGTH_SHORT).show()
                         controller.navigate(R.id.action_orderFragment_to_handleOrderFragment)
