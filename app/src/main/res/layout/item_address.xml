@@ -15,7 +15,7 @@
         android:scaleY="1.5"
         android:layout_marginTop="3dp"
         android:layout_marginLeft="3dp"
-        android:buttonTint="@color/orange" />
+        android:buttonTint="@color/main" />
 
     <TextView
         android:id="@+id/tv_address"
