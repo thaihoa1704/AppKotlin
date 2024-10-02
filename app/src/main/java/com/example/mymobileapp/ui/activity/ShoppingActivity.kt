@@ -2,13 +2,16 @@ package com.example.mymobileapp.ui.activity
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import com.example.mymobileapp.R
 import com.example.mymobileapp.databinding.ActivityShoppingBinding
+import com.example.mymobileapp.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,6 +19,7 @@ class ShoppingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShoppingBinding
     private lateinit var controller: NavController
     private lateinit var navHostFragment: NavHostFragment
+    private val userViewModel by viewModels<UserViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

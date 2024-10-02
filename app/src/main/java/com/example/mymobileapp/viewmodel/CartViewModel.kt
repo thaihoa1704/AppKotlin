@@ -6,12 +6,10 @@ import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.util.constants.CART_COLLECTION
 import com.example.mymobileapp.util.constants.USER_COLLECTION
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

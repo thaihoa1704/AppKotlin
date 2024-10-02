@@ -12,7 +12,6 @@ import com.example.mymobileapp.util.constants.CATEGORY_COLLECTION
 import com.example.mymobileapp.util.constants.PRICE_COLLECTION
 import com.example.mymobileapp.util.constants.PRODUCT_COLLECTION
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -120,6 +119,7 @@ class FilterViewModel @Inject constructor(
             .whereEqualTo("category", category)
             .whereEqualTo("brand", brandSelected.name)
         val queryPrice = db.collection(PRODUCT_COLLECTION)
+            .whereEqualTo("category", category)
             .whereGreaterThanOrEqualTo("price", priceSelected.min)
             .whereLessThanOrEqualTo("price", priceSelected.max)
         val querySelected = if (brandSelected.name != "" && priceSelected.price != "") {
@@ -140,5 +140,27 @@ class FilterViewModel @Inject constructor(
                 _productList.emit(Resource.Error(it.message.toString()))
             }
         }
+    }
+
+    fun getPhoneListByAllAttribute(category: String, brandSelected: Brand, priceSelected: Price,
+                                   ramSelected: String, storageSelected: String){
+        db.collection(PRODUCT_COLLECTION)
+            .whereEqualTo("category", category)
+            .whereEqualTo("brand", brandSelected.name)
+            .whereArrayContains("attributes", ramSelected)
+            .whereArrayContains("attributes", storageSelected)
+            .whereGreaterThanOrEqualTo("price", priceSelected.min)
+            .whereLessThanOrEqualTo("price", priceSelected.max)
+            .get().addOnSuccessListener {
+                val list = it.toObjects(Product::class.java)
+                randomList = list
+                viewModelScope.launch {
+                    _productList.emit(Resource.Success(list))
+                }
+            }.addOnFailureListener {
+                viewModelScope.launch {
+                    _productList.emit(Resource.Error(it.message.toString()))
+                }
+            }
     }
 }

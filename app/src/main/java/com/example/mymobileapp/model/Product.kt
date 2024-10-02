@@ -11,7 +11,9 @@ data class Product (
     var brand: String = "",
     var description: String = "",
     var colors: List<ProductColor> = emptyList(),
-    var isSpecial: Boolean = false
+    var isSpecial: Boolean = false,
+    var attributes: List<String> = emptyList(),
+    var keywords: List<String> =  emptyList()
 ) : Serializable {
-    constructor(): this("", "", emptyList(), 0, "", "", "", emptyList(), false)
+    constructor(): this("", "", emptyList(), 0, "", "", "", emptyList(), false, emptyList(), emptyList())
 }

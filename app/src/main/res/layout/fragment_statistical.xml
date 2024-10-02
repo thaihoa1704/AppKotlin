@@ -453,11 +453,13 @@
                     android:id="@+id/constraint_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_constrain_layout"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@drawable/bg_constrain_layout"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraint_order">
+
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/pie_chart1"
                         android:layout_width="300dp"
@@ -507,12 +509,12 @@
                         android:id="@+id/horizontalScrollView1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginBottom="15dp"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_total1">
 
                         <LinearLayout

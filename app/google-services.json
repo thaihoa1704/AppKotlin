@@ -1,52 +1,13 @@
 {
   "project_info": {
-    "project_number": "154549389331",
-    "firebase_url": "https://highshop-fa7ca-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "highshop-fa7ca",
-    "storage_bucket": "highshop-fa7ca.appspot.com"
+    "project_number": "130207286507",
+    "project_id": "mobileapp-736fe",
+    "storage_bucket": "mobileapp-736fe.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:154549389331:android:a1247ae89b9c0bc4fe17e6",
-        "android_client_info": {
-          "package_name": "com.example.highshop"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAIjp4xR8VvAod_ADC4wv7IymCyLH3OFps"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:154549389331:android:622c318542ccbbeefe17e6",
-        "android_client_info": {
-          "package_name": "com.example.myapplication"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAIjp4xR8VvAod_ADC4wv7IymCyLH3OFps"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:154549389331:android:2d403509414a503afe17e6",
+        "mobilesdk_app_id": "1:130207286507:android:ca710c6eb5845e0531aaae",
         "android_client_info": {
           "package_name": "com.example.mymobileapp"
         }
@@ -54,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAIjp4xR8VvAod_ADC4wv7IymCyLH3OFps"
+          "current_key": "AIzaSyDXBwwpFj03aNsdczS51PqRAzQ5oJ1H-2g"
         }
       ],
       "services": {

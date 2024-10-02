@@ -45,8 +45,6 @@ public class FiltersDialog extends DialogFragment implements ClickItemBrandListe
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-//        Dialog dialog = new Dialog(getActivity());
-//        binding = FiltersDialogBinding.inflate(LayoutInflater.from(getActivity()));
         Dialog dialog = new Dialog(requireActivity());
         binding = FiltersDialogBinding.inflate(getLayoutInflater());
         dialog.setContentView(binding.getRoot());

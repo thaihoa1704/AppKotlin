@@ -48,7 +48,6 @@ class DeliveredFragment : Fragment(), ClickItemOrderListener {
         super.onViewCreated(view, savedInstanceState)
         controller = Navigation.findNavController(view)
 
-        //type = requireArguments().getString("type").toString()
         from = requireArguments().getString("from").toString()
         val start = requireArguments().getLong("start")
         val end = requireArguments().getLong("end")

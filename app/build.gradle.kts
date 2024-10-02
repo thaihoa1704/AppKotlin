@@ -69,7 +69,6 @@ dependencies {
     annotationProcessor(libs.glide.compiler)
     //circleindicator
     implementation (libs.circleindicator)
-
     implementation(libs.mpandroidchart)
     implementation (libs.colorpickerview)
     implementation (libs.kotlinx.coroutines.play.services)

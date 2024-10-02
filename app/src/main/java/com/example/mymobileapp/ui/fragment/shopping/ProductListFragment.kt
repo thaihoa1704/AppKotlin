@@ -280,7 +280,7 @@ class ProductListFragment : Fragment(), ClickItemProductListener, FiltersDialog.
             "Tai nghe" -> "Headphone"
             else -> "Accessory"
         }
-        return name.trim { it <= ' ' }
+        return name
     }
 
     override fun onClickItemProduct1(product: Product) {

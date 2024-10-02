@@ -224,6 +224,7 @@ class OrderProcessFragment : Fragment(), ClickItemOrderListener {
                 }
             }
         }
+
         setConfirmOrderRecycleView()
         setPackOrderRecycleView()
         setShippingOrderRecycleView()

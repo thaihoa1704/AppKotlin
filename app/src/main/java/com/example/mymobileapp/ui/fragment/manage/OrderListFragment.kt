@@ -15,7 +15,6 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.mymobileapp.R
 import com.example.mymobileapp.databinding.FragmentOrderListBinding
-import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.User
 import com.example.mymobileapp.ui.fragment.shopping.DeliveredFragment
 import com.example.mymobileapp.util.Resource

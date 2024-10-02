@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.model.Order
-import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.util.constants.CANCEL_STATUS
 import com.example.mymobileapp.util.constants.CART_COLLECTION

@@ -76,7 +76,6 @@ class AddProductFragment : Fragment(), ColorDialog.GetColor, PhoneVersionDialog.
         controller = Navigation.findNavController(view)
 
         val category = requireArguments().getString("category")
-        val type = requireArguments().getString("type")
 
         binding.tvCategoryName.text = category
         productViewModel.getBrand(changeName(category.toString()))

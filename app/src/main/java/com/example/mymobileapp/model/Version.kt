@@ -5,8 +5,8 @@ import java.util.Objects
 data class Version(
     var id: String = "",
     var color: String = "",
-    var ram: String = "",
     var storage: String = "",
+    var ram: String = "",
     var hardDrive: String = "",
     var cpu: String = "",
     var isBluetooth: Boolean = false,
