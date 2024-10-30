@@ -15,11 +15,9 @@ import com.example.mymobileapp.adapter.AddressAdapter
 import com.example.mymobileapp.databinding.FragmentAddressBinding
 import com.example.mymobileapp.listener.ClickItemAddressListener
 import com.example.mymobileapp.model.Address
-import com.example.mymobileapp.model.Product
 import com.example.mymobileapp.model.User
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.AddressViewModel
-import com.example.mymobileapp.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -74,9 +72,14 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
                     is Resource.Success -> {
                         binding.processIndicator.visibility = View.INVISIBLE
                         if (it.data!!.isEmpty()) {
-                            binding.rcvAddress.visibility = View.INVISIBLE
+                            binding.rcvAddress.visibility = View.GONE
+                            binding.emptyAddress.visibility = View.VISIBLE
+                            binding.line3.visibility = View.VISIBLE
                             check = true
                         } else {
+                            binding.rcvAddress.visibility = View.VISIBLE
+                            binding.emptyAddress.visibility = View.GONE
+                            binding.line3.visibility = View.GONE
                             addressAdapter.differ.submitList(it.data)
                             check = false
                         }
@@ -87,7 +90,7 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
         setupAddressRecyclerView()
 
         binding.constraintLayout.setOnClickListener {
-            addFragment(AddAddressFragment())
+            addFragment(AddAddressFragment(), check)
             //controller.navigate(R.id.action_addressFragment_to_addAddressFragment)
         }
         binding.imgBack.setOnClickListener {
@@ -108,7 +111,11 @@ class AddressFragment : Fragment(), ClickItemAddressListener {
             //DO NOTHING
         }
     }
-    private fun addFragment(fragment: Fragment) {
+    private fun addFragment(fragment: Fragment, check: Boolean) {
+        val bundle = Bundle()
+        bundle.putBoolean("check", check)
+        fragment.arguments = bundle
+
         val fragmentManager = requireActivity().supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.add(R.id.frame_layout_address, fragment)

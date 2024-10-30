@@ -128,12 +128,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
             app:layout_constraintBottom_toTopOf="@+id/rcv_cart"
-            android:visibility="gone">
+            android:visibility="visible">
             <ImageView
                 android:id="@+id/img_add_address"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/add_icon"
+                android:src="@drawable/add_icon_black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
             <TextView

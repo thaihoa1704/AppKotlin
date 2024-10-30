@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.mymobileapp" />
-                  <option name="mobileSdkAppId" value="1:154549389331:android:2d403509414a503afe17e6" />
-                  <option name="projectId" value="highshop-fa7ca" />
-                  <option name="projectNumber" value="154549389331" />
+                  <option name="mobileSdkAppId" value="1:130207286507:android:ca710c6eb5845e0531aaae" />
+                  <option name="projectId" value="mobileapp-736fe" />
+                  <option name="projectNumber" value="130207286507" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

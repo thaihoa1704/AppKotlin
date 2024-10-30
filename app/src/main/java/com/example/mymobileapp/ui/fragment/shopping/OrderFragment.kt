@@ -94,6 +94,13 @@ class OrderFragment : Fragment() {
             }
         }
 
+        binding.tvAddAddress.setOnClickListener{
+            val bundle = Bundle()
+            bundle.putSerializable("user", user)
+            bundle.putInt("position", position)
+            controller.navigate(R.id.action_orderFragment_to_addressFragment, bundle)
+        }
+
         binding.imgChangeAddress.setOnClickListener{
             val bundle = Bundle()
             bundle.putSerializable("user", user)
@@ -155,14 +162,18 @@ class OrderFragment : Fragment() {
                             controller.popBackStack()
                         }, 3000)
                     }
-                    is Resource.Loading -> {}
+                    is Resource.Loading -> {
+
+                    }
                     is Resource.Success -> {
-                        //Toast.makeText(requireContext(), "Đặt hàng thành công!", Toast.LENGTH_SHORT).show()
-                        controller.navigate(R.id.action_orderFragment_to_handleOrderFragment)
+                        if (controller.currentDestination?.id == R.id.orderFragment) {
+                            controller.navigate(R.id.action_orderFragment_to_handleOrderFragment)
+                        }
                     }
                 }
             }
         }
+
         binding.imgBack.setOnClickListener{
             controller.popBackStack()
         }
@@ -188,6 +199,8 @@ class OrderFragment : Fragment() {
             tvAddAddress.visibility = View.GONE
         }
     }
+
+    //Loi
     private fun order(userId: String) {
         val contact = binding.tvUserName.text.toString().trim() + " - " + binding.tvPhone.text.toString().trim()
         val address = binding.tvAddress.text.toString().trim()

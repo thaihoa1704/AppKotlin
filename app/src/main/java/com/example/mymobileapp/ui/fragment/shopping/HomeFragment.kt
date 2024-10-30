@@ -129,7 +129,6 @@ class HomeFragment : Fragment(), ClickItemProductListener, ClickItemProductListe
         binding.processBar.visibility = View.GONE
         binding.rcvProduct.visibility = View.VISIBLE
     }
-
     override fun onClickItemProduct(product: Product) {
         val bundle = Bundle()
         bundle.putSerializable("product", product)

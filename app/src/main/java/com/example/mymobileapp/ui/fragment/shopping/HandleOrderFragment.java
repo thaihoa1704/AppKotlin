@@ -11,10 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.example.mymobileapp.R;
 import com.example.mymobileapp.databinding.FragmentHandleOrderBinding;
-
 
 public class HandleOrderFragment extends Fragment {
     private FragmentHandleOrderBinding binding;
@@ -36,7 +34,6 @@ public class HandleOrderFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         controller = Navigation.findNavController(view);
-
         binding.constraintLayout.setVisibility(View.INVISIBLE);
 
         Handler handler = new Handler();

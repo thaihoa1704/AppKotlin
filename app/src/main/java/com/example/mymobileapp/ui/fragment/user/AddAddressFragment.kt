@@ -39,6 +39,7 @@ class AddAddressFragment : Fragment() {
         controller = Navigation.findNavController(view)
 
         //var position = requireArguments().getInt("position")
+        val check = requireArguments().getBoolean("check")
 
         binding.btnAdd.isEnabled = false
         binding.edtAddress1.addTextChangedListener(textWatcher)
@@ -47,7 +48,7 @@ class AddAddressFragment : Fragment() {
         binding.btnAdd.setOnClickListener {
             val address = binding.edtAddress1.text.toString().trim() +
                     " " + binding.edtAddress2.text.toString().trim()
-            userViewModel.addAddress(address, false)
+            userViewModel.addAddress(address, check)
         }
         lifecycleScope.launchWhenStarted {
             userViewModel.addressList.collectLatest{
@@ -56,7 +57,8 @@ class AddAddressFragment : Fragment() {
                         binding.btnAdd.revertAnimation()
                         Toast.makeText(requireContext(), "Lỗi hệ thống", Toast.LENGTH_SHORT).show()
                         Handler().postDelayed({
-                            controller.popBackStack()
+                            removeFragment()
+                            //controller.popBackStack()
                         },2000)
                     }
                     is Resource.Loading -> {
@@ -66,7 +68,8 @@ class AddAddressFragment : Fragment() {
                         binding.btnAdd.revertAnimation()
                         Toast.makeText(requireContext(), it.data, Toast.LENGTH_SHORT).show()
                         Handler().postDelayed({
-                            controller.popBackStack()
+                            removeFragment()
+                            //controller.popBackStack()
                         },2000)
                     }
                 }
