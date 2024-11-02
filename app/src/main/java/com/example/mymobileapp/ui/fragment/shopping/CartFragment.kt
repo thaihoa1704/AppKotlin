@@ -19,10 +19,13 @@ import com.example.mymobileapp.listener.ChangeQuantityCartProduct
 import com.example.mymobileapp.listener.ChangeSelectProductListener
 import com.example.mymobileapp.listener.ClickItemProductListener
 import com.example.mymobileapp.listener.OnClickChoice
+import com.example.mymobileapp.model.CartProduct
 import com.example.mymobileapp.model.Product
+import com.example.mymobileapp.model.Version
 import com.example.mymobileapp.ui.dialog.ChoiceDialog
 import com.example.mymobileapp.util.Resource
 import com.example.mymobileapp.viewmodel.CartViewModel
+import com.example.mymobileapp.viewmodel.ProductViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -33,7 +36,10 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
     private lateinit var binding: FragmentCartBinding
     private lateinit var controller: NavController
     private lateinit var cartAdapter: CartAdapter
-    private val viewModel by viewModels<CartViewModel>()
+    private val cartViewModel by viewModels<CartViewModel>()
+    private val productViewModel by viewModels<ProductViewModel>()
+
+    private var tempVersion = Version()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +56,7 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
         setupCartRecyclerView()
 
         lifecycleScope.launchWhenStarted {
-            viewModel.cartList.collectLatest {
+            cartViewModel.cartList.collectLatest {
                 when(it){
                     is Resource.Error -> {
                         hideLoading()
@@ -72,7 +78,7 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
         }
 
         lifecycleScope.launchWhenStarted {
-            viewModel.totalPrice.collectLatest { price ->
+            cartViewModel.totalPrice.collectLatest { price ->
                 price.let {
                     binding.tvTotal.text = Convert.DinhDangTien(it) + " đ"
                     if (it == 0) {
@@ -83,6 +89,19 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
                 }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            productViewModel.version.collectLatest {
+                when (it) {
+                    is Resource.Error -> {}
+                    is Resource.Loading -> {}
+                    is Resource.Success ->{
+                        tempVersion = it.data!!
+                    }
+                }
+            }
+        }
+
         binding.imgDelete.setOnClickListener {
             val deleteDialog = ChoiceDialog("cartFragment", object : OnClickChoice {
                 override fun onClick(choice: Boolean?) {
@@ -103,7 +122,7 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
         }
     }
     private fun delete() {
-        viewModel.deleteProductSelect()
+        cartViewModel.deleteProductSelect()
     }
 
     private fun showEmpty() {
@@ -137,19 +156,25 @@ class CartFragment : Fragment(), ClickItemProductListener, ChangeQuantityCartPro
         controller.navigate(R.id.action_cartFragment_to_detailProductFragment, bundle)
     }
 
-    override fun incrementQuantity(documentId: String) {
-        viewModel.incrementQuantityProductInCart(documentId)
+    override fun incrementQuantity(documentId: String, productId: String, quantity: Int) {
+        //check quantity in stock vs quantity in cart
+        productViewModel.getVersionInStock(productId, documentId)
+        if (tempVersion.quantity == quantity) {
+            Toast.makeText(requireContext(), "Số lượng sản phẩm đạt mức giới hạn!", Toast.LENGTH_SHORT).show()
+        } else {
+            cartViewModel.incrementQuantityProductInCart(documentId)
+        }
     }
 
     override fun decrementQuantity(documentId: String) {
-        viewModel.decrementQuantityProductInCart(documentId)
+        cartViewModel.decrementQuantityProductInCart(documentId)
     }
 
     override fun deleteProduct(documentId: String) {
-        viewModel.deleteProductInCart(documentId)
+        cartViewModel.deleteProductInCart(documentId)
     }
 
     override fun onChangeSelect(documentId: String, aBoolean: Boolean) {
-        viewModel.selectProduct(documentId, aBoolean)
+        cartViewModel.selectProduct(documentId, aBoolean)
     }
 }

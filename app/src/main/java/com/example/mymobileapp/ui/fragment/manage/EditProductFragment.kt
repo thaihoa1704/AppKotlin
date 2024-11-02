@@ -92,7 +92,7 @@ class EditProductFragment : Fragment(), OnClickDeleteColor, OnClickDeleteVersion
         setupImageRecycleView(images)
         setColorRecycleView(colorList)
 
-        binding.imgBack.setOnClickListener{
+        binding.imgBack.setOnClickListener {
             removeFragment()
         }
     }

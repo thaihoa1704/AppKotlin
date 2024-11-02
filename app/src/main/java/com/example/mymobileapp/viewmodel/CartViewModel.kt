@@ -64,6 +64,7 @@ class CartViewModel @Inject constructor(
                 }
             }
     }
+
     fun incrementQuantityProductInCart(documentId: String) {
         db.collection(USER_COLLECTION).document(firebaseAuth.uid!!)
             .collection(CART_COLLECTION).document(documentId)

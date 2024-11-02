@@ -11,15 +11,26 @@
     android:clickable="true"
     android:id="@+id/frame_layout_edit_product"
     tools:context=".ui.fragment.manage.EditProductFragment">
-    <ImageView
-        android:id="@+id/img_back"
-        android:layout_width="25dp"
-        android:layout_height="24dp"
-        android:layout_marginLeft="4dp"
-        android:src="@drawable/back_icon"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_back"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="2dp"
+        android:background="@drawable/bg_back"
+        app:layout_constraintBottom_toTopOf="@+id/line"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/line"/>
+        app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_back"
+            android:layout_width="25dp"
+            android:layout_height="24dp"
+            android:src="@drawable/back_icon"
+            android:layout_marginRight="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <TextView
         android:id="@+id/tv_label"
         android:layout_width="match_parent"

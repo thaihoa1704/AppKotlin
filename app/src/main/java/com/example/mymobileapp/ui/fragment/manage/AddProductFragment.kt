@@ -106,10 +106,15 @@ class AddProductFragment : Fragment(), ColorDialog.GetColor, PhoneVersionDialog.
         lifecycleScope.launchWhenStarted {
             productViewModel.message.collectLatest {
                 when(it){
-                    is Resource.Error -> {}
-                    is Resource.Loading -> {}
+                    is Resource.Error -> {
+                        binding.btnAddProduct.revertAnimation()
+                    }
+                    is Resource.Loading -> {
+                        binding.btnAddProduct.startAnimation()
+                    }
                     is Resource.Success -> {
                         if (it.data == "Success Add Version"){
+                            binding.btnAddProduct.revertAnimation()
                             Toast.makeText(requireContext(), "Thêm sản phẩm thành công", Toast.LENGTH_SHORT).show()
                             Handler().postDelayed({
                                 removeFragment()
@@ -318,8 +323,14 @@ class AddProductFragment : Fragment(), ColorDialog.GetColor, PhoneVersionDialog.
         val description = binding.edtDescription.text.toString()
         val price = priceMin
 
-        productViewModel.saveProduct(name = name, images = images, brand = brand,
-                      category = category!!, colors = colors, description = description, price = price)
+        productViewModel.saveProduct(name = name,
+                                    images = images,
+                                    brand = brand,
+                                    category = category!!,
+                                    colors = colors,
+                                    description = description,
+                                    price = price,
+                                    isSpecial = false)
     }
     private fun saveVersion(idProduct: String){
         if (versionList.isNotEmpty()){

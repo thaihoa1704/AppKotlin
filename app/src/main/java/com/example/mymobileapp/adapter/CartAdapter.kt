@@ -79,7 +79,7 @@ class CartAdapter(private val clickItemProductListener: ClickItemProductListener
                     changeSelectProductListener.onChangeSelect(documentId, checkBox.isChecked)
                 }
                 tvAdd.setOnClickListener {
-                    changeQuantityCartProduct.incrementQuantity(documentId)
+                    changeQuantityCartProduct.incrementQuantity(documentId, cartProduct.product.id, cartProduct.quantity)
                 }
                 tvMinus.setOnClickListener {
                     if (cartProduct.quantity == 1){

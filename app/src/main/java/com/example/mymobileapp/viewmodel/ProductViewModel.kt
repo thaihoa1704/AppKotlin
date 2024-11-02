@@ -26,7 +26,6 @@ import java.util.Objects
 import java.util.UUID
 import javax.inject.Inject
 
-
 @Suppress("UNCHECKED_CAST", "DEPRECATION")
 @HiltViewModel
 class ProductViewModel @Inject constructor(
@@ -44,6 +43,9 @@ class ProductViewModel @Inject constructor(
 
     private val _product = MutableStateFlow<Resource<Product>>(Resource.Loading())
     val product: StateFlow<Resource<Product>> = _product
+
+    private val _version = MutableStateFlow<Resource<Version>>(Resource.Loading())
+    val version: StateFlow<Resource<Version>> = _version
 
     private val _message = MutableSharedFlow<Resource<String>>()
     val message = _message.asSharedFlow()
@@ -145,7 +147,7 @@ class ProductViewModel @Inject constructor(
             }
     }
     fun saveProduct(name: String, images: ArrayList<String>, price: Int, category: String
-                    , brand: String, description: String, colors: ArrayList<ProductColor>){
+                    , brand: String, description: String, colors: ArrayList<ProductColor>, isSpecial: Boolean){
         viewModelScope.launch {
             _idProduct.emit(Resource.Loading())
         }
@@ -160,7 +162,9 @@ class ProductViewModel @Inject constructor(
         hashMap["brand"] = brand
         hashMap["description"] = description
         hashMap["colors"] = colors
-        hashMap["isSpecial"] = false
+        hashMap["isSpecial"] = isSpecial
+        //hashMap["attributes"] = emptyList<String>()
+        //hashMap["keywords"] = emptyList<String>()
 
         db.collection(PRODUCT_COLLECTION).document(idProduct)
             .set(hashMap)
@@ -251,6 +255,23 @@ class ProductViewModel @Inject constructor(
             }.addOnFailureListener {
                 viewModelScope.launch {
                     _message.emit(Resource.Error(it.message.toString()))
+                }
+            }
+    }
+
+    fun getVersionInStock(productId: String, versionId: String){
+        db.collection(PRODUCT_COLLECTION).document(productId)
+            .collection(VERSION_COLLECTION).document(versionId)
+            .addSnapshotListener{ value, error ->
+                if (error != null || value == null) {
+                    viewModelScope.launch {
+                        _version.emit(Resource.Error(error?.message.toString()))
+                    }
+                }else {
+                    val model = value.toObject(Version::class.java)
+                    viewModelScope.launch {
+                        _version.emit(Resource.Success(model!!))
+                    }
                 }
             }
     }
